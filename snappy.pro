@@ -14,7 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    applicationmodel.cpp
+    applicationmodel.cpp \
+    mainwidget.cpp
 
 HEADERS  += mainwindow.h \
-    applicationmodel.h
+    applicationmodel.h \
+    mainwidget.h
