@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <iostream>
+#include <string>
 #include "applicationmodel.h"
 #include "mainwidget.h"
 
@@ -18,6 +19,7 @@ public:
     ~MainWindow();
 private:
     MainWidget *mainWidget;
+    void checkForFirstTimeRunning();
 };
 
 #endif // MAINWINDOW_H

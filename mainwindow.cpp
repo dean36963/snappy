@@ -5,9 +5,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
     mainWidget = new MainWidget();
     setCentralWidget(mainWidget);
+
+    checkForFirstTimeRunning();
 }
 
 MainWindow::~MainWindow()
 {
     delete mainWidget;
+}
+
+void MainWindow::checkForFirstTimeRunning() {
+    cout << "Config dir: " << ApplicationModel::getApplicationModel()->getMainConfigFile() <<endl;
 }
