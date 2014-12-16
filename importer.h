@@ -5,14 +5,19 @@
 #include <QString>
 #include <QWidget>
 #include <QFileDialog>
+#include <QDirIterator>
 #include "applicationmodel.h"
+
+#include <iostream>
+
+using namespace std;
 
 class Importer
 {
 public:
     Importer();
     ~Importer();
-    void importPhotosFromFolder(QString path, QWidget parent);
+    void importPhotosFromFolder(QString path, QWidget *parent);
     void importPhotos(QWidget *parent);
 private:
     int importSuccess;
@@ -22,6 +27,7 @@ private:
     QList<QString> guessedFiles;
     QList<QString> failedFiles;
     void initialiseSummary();
+    QList<QString> findFiles(QString path);
 };
 
 #endif // IMPORTER_H
