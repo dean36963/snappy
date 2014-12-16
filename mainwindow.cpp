@@ -15,5 +15,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::checkForFirstTimeRunning() {
+    //TODO this needs to actually be done!!!
     cout << "Config dir: " << ApplicationModel::getApplicationModel()->getMainConfigFile() <<endl;
 }

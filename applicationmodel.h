@@ -16,6 +16,7 @@ public:
     static ApplicationModel* getApplicationModel();
     std::string getConfigDir();
     std::string getMainConfigFile();
+    std::string getLibraryDirectory();
     QString appendPath(std::string path1, std::string path2);
 
 private:

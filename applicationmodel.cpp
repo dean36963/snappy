@@ -29,3 +29,9 @@ QString ApplicationModel::appendPath(std::string path1, std::string path2)
     QString separator = QString(QDir::separator());
     return QDir::cleanPath(qPath1 + separator + qPath2);
 }
+
+std::string ApplicationModel::getLibraryDirectory() {
+    //TODO get actual config
+    std::string photoPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation).toStdString();
+    return appendPath(photoPath,"snappyPhotos").toStdString();
+}

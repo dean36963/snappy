@@ -15,8 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     applicationmodel.cpp \
-    mainwidget.cpp
+    mainwidget.cpp \
+    librarymodel.cpp \
+    eventfolder.cpp
 
 HEADERS  += mainwindow.h \
     applicationmodel.h \
-    mainwidget.h
+    mainwidget.h \
+    librarymodel.h \
+    eventfolder.h
