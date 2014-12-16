@@ -20,3 +20,10 @@ void Importer::initialiseSummary() {
 void Importer::importPhotosFromFolder(QString path, QWidget parent) {
 
 }
+
+void Importer::importPhotos(QWidget *parent) {
+    QString caption = QString::fromUtf8("Select a folder to import from");
+    QString importDir = QFileDialog::getExistingDirectory(parent,caption);
+    //,ApplicationModel::getApplicationModel()->getHomeDirectory());
+
+}

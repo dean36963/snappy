@@ -35,3 +35,7 @@ std::string ApplicationModel::getLibraryDirectory() {
     std::string photoPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation).toStdString();
     return appendPath(photoPath,"snappyPhotos").toStdString();
 }
+
+QString ApplicationModel::getHomeDirectory() {
+    return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+}

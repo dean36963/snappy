@@ -27,6 +27,8 @@ private:
     void setupMenus();
     Importer* importer;
     QAction *importAction;
+public slots:
+    void importClicked();
 };
 
 #endif // MAINWINDOW_H

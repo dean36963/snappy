@@ -4,6 +4,8 @@
 #include <QList>
 #include <QString>
 #include <QWidget>
+#include <QFileDialog>
+#include "applicationmodel.h"
 
 class Importer
 {
@@ -11,6 +13,7 @@ public:
     Importer();
     ~Importer();
     void importPhotosFromFolder(QString path, QWidget parent);
+    void importPhotos(QWidget *parent);
 private:
     int importSuccess;
     int importFail;

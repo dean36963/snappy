@@ -30,8 +30,13 @@ void MainWindow::setupMenus() {
     importAction = new QAction(QIcon(":/icons/folder.svg"),"Import photos from folder",this);
     importAction->setIconVisibleInMenu(true);
     importAction->setShortcut(QKeySequence("Ctrl+I"));
+    QObject::connect(importAction,SIGNAL(triggered()),this,SLOT(importClicked()));
     fileMenu->addAction(importAction);
 
     menu->setNativeMenuBar(false);
     menu->show();
+}
+
+void MainWindow::importClicked() {
+    importer->importPhotos(this);
 }
