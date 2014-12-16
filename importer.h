@@ -6,9 +6,13 @@
 #include <QWidget>
 #include <QFileDialog>
 #include <QDirIterator>
+#include <QListIterator>
+#include <QProgressDialog>
 #include "applicationmodel.h"
 
+#include <unistd.h>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -28,6 +32,8 @@ private:
     QList<QString> failedFiles;
     void initialiseSummary();
     QList<QString> findFiles(QString path);
+    QProgressDialog *createProgressDialog(QWidget *parent,int files);
+    void updateProgressDialog(QProgressDialog *dialog,int index);
 };
 
 #endif // IMPORTER_H

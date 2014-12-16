@@ -20,7 +20,18 @@ void Importer::initialiseSummary() {
 void Importer::importPhotosFromFolder(QString path, QWidget *parent) {
     initialiseSummary();
     QList<QString> photoList = findFiles(path);
-    cout << "Got " << photoList.size() << " photos" << endl;
+    QProgressDialog *dialog = createProgressDialog(parent,photoList.size());
+    QListIterator<QString> it(photoList);
+    int i=1;
+    while(it.hasNext()) {
+        QString photoPath = it.next();
+        //TODO import!!!
+        updateProgressDialog(dialog,i);
+        //cout << "processing " << i << " which is " << photoPath.toStdString() << endl;
+        i++;
+    }
+    dialog->close();
+    delete dialog;
 }
 
 void Importer::importPhotos(QWidget *parent) {
@@ -45,4 +56,21 @@ QList<QString> Importer::findFiles(QString path) {
         }
     }
     return photos;
+}
+
+QProgressDialog* Importer::createProgressDialog(QWidget *parent, int files) {
+    QProgressDialog* dialog = new QProgressDialog(parent);
+    dialog->setWindowTitle("Importing");
+    dialog->setMaximum(files);
+    updateProgressDialog(dialog,1);
+    dialog->show();
+    return dialog;
+}
+
+void Importer::updateProgressDialog(QProgressDialog *dialog, int index) {
+    stringstream ss;
+    ss << "Importing " << index << " of " << dialog->maximum();
+    QString label = QString::fromUtf8(ss.str().c_str());
+    dialog->setLabelText(label);
+    dialog->setValue(index);
 }
