@@ -17,10 +17,14 @@ SOURCES += main.cpp\
     applicationmodel.cpp \
     mainwidget.cpp \
     librarymodel.cpp \
-    eventfolder.cpp
+    eventfolder.cpp \
+    importer.cpp
 
 HEADERS  += mainwindow.h \
     applicationmodel.h \
     mainwidget.h \
     librarymodel.h \
-    eventfolder.h
+    eventfolder.h \
+    importer.h
+
+RESOURCES = application.qrc

@@ -4,8 +4,12 @@
 #include <QMainWindow>
 #include <iostream>
 #include <string>
+#include <QAction>
+#include <QIcon>
+#include <QMenuBar>
 #include "applicationmodel.h"
 #include "mainwidget.h"
+#include "importer.h"
 
 using namespace std;
 
@@ -20,6 +24,9 @@ public:
 private:
     MainWidget *mainWidget;
     void checkForFirstTimeRunning();
+    void setupMenus();
+    Importer* importer;
+    QAction *importAction;
 };
 
 #endif // MAINWINDOW_H
