@@ -24,10 +24,13 @@ void Importer::importPhotosFromFolder(QString path, QWidget *parent) {
     QListIterator<QString> it(photoList);
     int i=1;
     while(it.hasNext()) {
+        if(dialog->wasCanceled()) {
+            //TODO do some undo process
+            break;
+        }
         QString photoPath = it.next();
-        //TODO import!!!
+        importPhoto(photoPath);
         updateProgressDialog(dialog,i);
-        //cout << "processing " << i << " which is " << photoPath.toStdString() << endl;
         i++;
     }
     dialog->close();
@@ -60,6 +63,7 @@ QList<QString> Importer::findFiles(QString path) {
 
 QProgressDialog* Importer::createProgressDialog(QWidget *parent, int files) {
     QProgressDialog* dialog = new QProgressDialog(parent);
+    dialog->setWindowModality(Qt::WindowModal);
     dialog->setWindowTitle("Importing");
     dialog->setMaximum(files);
     updateProgressDialog(dialog,1);
@@ -70,7 +74,18 @@ QProgressDialog* Importer::createProgressDialog(QWidget *parent, int files) {
 void Importer::updateProgressDialog(QProgressDialog *dialog, int index) {
     stringstream ss;
     ss << "Importing " << index << " of " << dialog->maximum();
-    QString label = QString::fromUtf8(ss.str().c_str());
+    QString label = QString::fromLocal8Bit(ss.str().c_str());
     dialog->setLabelText(label);
     dialog->setValue(index);
+    QApplication::processEvents();
+}
+
+void Importer::importPhoto(QString filePath) {
+    ExifData* exifData = exif_data_new_from_file(filePath.toStdString().c_str());
+    ExifContent* content = *exifData->ifd;
+    ExifEntry* entry = exif_content_get_entry(content,EXIF_TAG_DATE_TIME);
+    string dateStringStd = string((const char*)entry->data);
+    QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
+    QDateTime datetime = QDateTime::fromString(dateString,ISODate);
+    cout << entry->data << " Datetime: " << datetime.toString().toStdString() << " datestring std " << dateStringStd << " datestring: " << dateString.toStdString() << endl;
 }
