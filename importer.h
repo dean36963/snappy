@@ -2,6 +2,7 @@
 #define IMPORTER_H
 
 #include <QList>
+#include <QFile>
 #include <QString>
 #include <QWidget>
 #include <QFileDialog>
@@ -11,6 +12,7 @@
 #include <QDateTime>
 #include <Qt>
 #include <QApplication>
+#include <QCryptographicHash>
 
 #include "applicationmodel.h"
 
@@ -51,6 +53,7 @@ private:
     void updateProgressDialog(QProgressDialog *dialog,int index);
     QString getPathToImportTo(QDateTime dateTime, QString filename);
     QString padInt(int i);
+    bool isDuplicate(QString file1, QString file2);
 };
 
 #endif // IMPORTER_H

@@ -88,8 +88,13 @@ void Importer::importPhoto(QString filePath) {
     QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
     QDateTime datetime = QDateTime::fromString(dateString,ISODate);
     QString importArea = getPathToImportTo(datetime,filePath);
-    //cout << entry->data << " Datetime: " << datetime.toString().toStdString() << " datestring std " << dateStringStd << " datestring: " << dateString.toStdString() << endl;
-    cout << "Would import to " << importArea.toStdString() << endl;
+    if(isDuplicate(filePath,importArea)) {
+        importDuplicatesIgnored++;
+    } else {
+        //safe copy needed as we could still have the filename existing
+        //where we are copying to.
+        cout << "Would import to " << importArea.toStdString() << endl;
+    }
 }
 
 QString Importer::getPathToImportTo(QDateTime dateTime, QString filepath) {
@@ -110,4 +115,17 @@ QString Importer::padInt(int i) {
         padded.insert(0,pad);
     }
     return padded;
+}
+
+bool Importer::isDuplicate(QString file1, QString file2) {
+    QFile f1(file1);
+    QFile f2(file2);
+    if(!f1.exists() || !f2.exists()) {
+        return false;
+    }
+    f1.open(QFile::ReadOnly);
+    f2.open(QFile::ReadOnly);
+    QString h1 = QString(QCryptographicHash::hash(f1.readAll(),QCryptographicHash::Md5));
+    QString h2 = QString(QCryptographicHash::hash(f2.readAll(),QCryptographicHash::Md5));
+    return h1.compare(h1,h2) == 0;
 }
