@@ -49,6 +49,8 @@ private:
     QList<QString> findFiles(QString path);
     QProgressDialog *createProgressDialog(QWidget *parent,int files);
     void updateProgressDialog(QProgressDialog *dialog,int index);
+    QString getPathToImportTo(QDateTime dateTime, QString filename);
+    QString padInt(int i);
 };
 
 #endif // IMPORTER_H

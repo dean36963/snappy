@@ -87,5 +87,27 @@ void Importer::importPhoto(QString filePath) {
     string dateStringStd = string((const char*)entry->data);
     QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
     QDateTime datetime = QDateTime::fromString(dateString,ISODate);
-    cout << entry->data << " Datetime: " << datetime.toString().toStdString() << " datestring std " << dateStringStd << " datestring: " << dateString.toStdString() << endl;
+    QString importArea = getPathToImportTo(datetime,filePath);
+    //cout << entry->data << " Datetime: " << datetime.toString().toStdString() << " datestring std " << dateStringStd << " datestring: " << dateString.toStdString() << endl;
+    cout << "Would import to " << importArea.toStdString() << endl;
+}
+
+QString Importer::getPathToImportTo(QDateTime dateTime, QString filepath) {
+    ApplicationModel *a = ApplicationModel::getApplicationModel();
+    QFileInfo info = QFileInfo(filepath);
+    QString libPath = QString::fromLocal8Bit(a->getLibraryDirectory().c_str());
+    QString dayString = padInt(dateTime.date().day());
+    QString monthString = padInt(dateTime.date().month());
+    QString pathToImportTo = libPath.append("/").append(dayString).append("/")
+            .append(monthString).append("/").append(info.fileName());
+    return pathToImportTo;
+}
+
+QString Importer::padInt(int i) {
+    QString pad = QString::fromLocal8Bit("0");
+    QString padded = QString::number(i);
+    if(padded.length()==1) {
+        padded.insert(0,pad);
+    }
+    return padded;
 }
