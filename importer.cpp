@@ -35,6 +35,7 @@ void Importer::importPhotosFromFolder(QString path, QWidget *parent) {
     }
     dialog->close();
     delete dialog;
+    showImportSummary(parent);
 }
 
 void Importer::importPhotos(QWidget *parent) {
@@ -84,10 +85,26 @@ void Importer::importPhoto(QString filePath) {
     ExifData* exifData = exif_data_new_from_file(filePath.toStdString().c_str());
     ExifContent* content = *exifData->ifd;
     ExifEntry* entry = exif_content_get_entry(content,EXIF_TAG_DATE_TIME);
-    string dateStringStd = string((const char*)entry->data);
-    QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
-    QDateTime datetime = QDateTime::fromString(dateString,ISODate);
-    QString importArea = getPathToImportTo(datetime,filePath);
+
+    QDateTime dateTime;
+
+    if(entry==NULL) {
+        cerr << "Cannot find tag on " << filePath.toStdString() << endl;
+        //Attempt to parse date from filename. IMG_20140812_143012.jpg for example;
+        dateTime = getDateTimeFromFilename(filePath);
+        if(dateTime == QDateTime()) {
+            //Final resort is creation date from filesystem
+            QFileInfo fInfo(filePath);
+            dateTime = fInfo.created();
+        }
+        importGuessed++;
+
+    } else {
+        string dateStringStd = string((const char*)entry->data);
+        QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
+        dateTime = QDateTime::fromString(dateString,ISODate);
+    }
+    QString importArea = getPathToImportTo(dateTime,filePath);
     if(isDuplicate(filePath,importArea)) {
         importDuplicatesIgnored++;
     } else {
@@ -128,4 +145,46 @@ bool Importer::isDuplicate(QString file1, QString file2) {
     QString h1 = QString(QCryptographicHash::hash(f1.readAll(),QCryptographicHash::Md5));
     QString h2 = QString(QCryptographicHash::hash(f2.readAll(),QCryptographicHash::Md5));
     return h1.compare(h1,h2) == 0;
+}
+
+void Importer::showImportSummary(QWidget *parent) {
+    QMessageBox messageBox(parent);
+    QString txt = QString::fromLocal8Bit("Imported ").append(QString::number(importSuccess)).append(" photos successfully.");
+    txt.append("\nFailed to import ").append(QString::number(importFail)).append(" photos.");
+    txt.append("\nIgnored ").append(QString::number(importDuplicatesIgnored)).append(" duplicate photos.");
+    QString details = QString::fromLocal8Bit("");
+    if(importFail>0) {
+        details.append("Failed to import:\n");
+        QListIterator<QString> iter(failedFiles);
+        while(iter.hasNext()) {
+            QString file = iter.next();
+            details.append(file).append("\n");
+        }
+    }
+    if(importGuessed>0) {
+        details.append("\nGuessed dates from timestamps (instead of EXIF metadata) for:");
+        QListIterator<QString> iter(guessedFiles);
+        while(iter.hasNext()) {
+            QString file = iter.next();
+            details.append(file).append("\n");
+        }
+    }
+    messageBox.setText(txt);
+    if(!details.isEmpty()) {
+        messageBox.setDetailedText(details);
+    }
+    messageBox.setWindowTitle(QString::fromLocal8Bit("Import Summary"));
+    messageBox.exec();
+}
+
+QDateTime Importer::getDateTimeFromFilename(QString fileName) {
+    QString dateTimeRegExpStr = QString::fromLocal8Bit("\\d{8}_\\d{6}");
+    QRegExp dateTimeRegExp(dateTimeRegExpStr);
+    int startPos = dateTimeRegExp.indexIn(fileName);
+    if(startPos==-1) {
+        return QDateTime();
+    }
+    QString dateStr = fileName.mid(startPos,dateTimeRegExp.matchedLength());
+    cout << "Guessed date <" << dateStr.toStdString() << "> from file: " << fileName.toStdString()<< endl;
+    return QDateTime::fromString(dateStr,"yyyyMMdd_HHmmss");
 }

@@ -13,6 +13,8 @@
 #include <Qt>
 #include <QApplication>
 #include <QCryptographicHash>
+#include <QMessageBox>
+#include <QRegExp>
 
 #include "applicationmodel.h"
 
@@ -54,6 +56,8 @@ private:
     QString getPathToImportTo(QDateTime dateTime, QString filename);
     QString padInt(int i);
     bool isDuplicate(QString file1, QString file2);
+    void showImportSummary(QWidget *parent);
+    QDateTime getDateTimeFromFilename(QString fileName);
 };
 
 #endif // IMPORTER_H
