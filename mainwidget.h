@@ -5,7 +5,8 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include <QTreeWidget>
-#include "librarymodel.h"
+
+#include "applicationmodel.h"
 
 class MainWidget : public QWidget
 {

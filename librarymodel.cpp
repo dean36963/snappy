@@ -24,10 +24,8 @@ void LibraryModel::populateModel(QString path) {
         dirIter.next();
         QFileInfo info(dirIter.filePath());
         EventFolder ev(path);
-        if(ev.isValidEventFolderPath(info.absoluteDir())) {
-            cout << info.absoluteFilePath().toStdString() << " IS an event folder" <<endl;
-        } else {
-            cout << info.absoluteFilePath().toStdString() << " is NOT an event folder" <<endl;
+        if(ev.isValidEventFolderPath(info.absoluteFilePath())) {
+            cout << info.absoluteFilePath().toStdString() << " is an event folder" <<endl;
         }
     }
 }

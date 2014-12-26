@@ -23,24 +23,20 @@ bool EventFolder::containsPhotos(QDir dir) {
             containsPhotos=true;
             break;
         }
-        std::cout << "file: " << (info.absoluteFilePath()+info.fileName()).toStdString() << " has suffix: " << suffix.toStdString() <<std::endl;
     }
-    std::cout << containsPhotos <<std::endl;
     return containsPhotos;
 }
 
 bool EventFolder::isCorrectDepth(QDir dir) {
     std::string libDir = libFolder.toStdString();
-    bool canChange = dir.cd("../..");
+    bool canChange = dir.cd("../../..");
     if(!canChange) {
-        std::cout << "cannot change to ../.." <<std::endl;
         return false;
     }
     std::string backTwo = dir.absolutePath().toStdString();
     if(libDir==backTwo) {
         return true;
     } else {
-        std::cout << backTwo <<std::endl;
         return false;
     }
 }

@@ -4,6 +4,7 @@ ApplicationModel *ApplicationModel::instance = NULL;
 
 ApplicationModel::ApplicationModel()
 {
+    libModel=NULL;
 }
 
 ApplicationModel *ApplicationModel::getApplicationModel() {
@@ -45,5 +46,5 @@ LibraryModel *ApplicationModel::getLibraryModel() {
         QString rootDirPath = QString::fromUtf8(ApplicationModel::getApplicationModel()->getLibraryDirectory().c_str());
         libModel = new LibraryModel(rootDirPath);
     }
-
+    return libModel;
 }

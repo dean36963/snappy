@@ -8,8 +8,7 @@ MainWidget::MainWidget(QWidget *parent) :
 
     //TODO replace this tree with a custom tree
     tree = new QTreeWidget();
-    //TODO reinstate this
-    //LibraryModel lM = LibraryModel();
+    LibraryModel* libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
 
     layout->addWidget(tree,0,0);
     layout->addWidget(button,0,1);
