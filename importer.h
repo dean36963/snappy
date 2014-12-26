@@ -41,6 +41,7 @@ public:
     ~Importer();
     void importPhotosFromFolder(QString path, QWidget *parent);
     void importPhotos(QWidget *parent);
+    static void createThumbnail(QString origFile);
 private:
     int importSuccess;
     int importFail;

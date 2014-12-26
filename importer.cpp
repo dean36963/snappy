@@ -219,5 +219,18 @@ void Importer::safeCopy(QString from, QString to) {
         toNew = toInfo.baseName().append("_").append(QString::number(duplicateName)).append(toInfo.completeSuffix());
     }
     QFile::copy(from,toNew);
+    createThumbnail(toNew);
     cout << "Copied " << from.toStdString() << " to " << toNew.toStdString() << endl;
+}
+
+void Importer::createThumbnail(QString origFile) {
+    QFileInfo origInfo(origFile);
+    QDir thumbnailDir(origInfo.absoluteDir().absolutePath().append("/.thumbnails"));
+    if(!thumbnailDir.exists()) {
+        thumbnailDir.mkdir(thumbnailDir.absolutePath());
+    }
+    QImage origImage(origFile);
+    QImage thumbImage = origImage.scaled(100,100,KeepAspectRatio);
+    QString thumbFile = thumbnailDir.absolutePath().append("/").append(origInfo.fileName());
+    thumbImage.save(thumbFile);
 }
