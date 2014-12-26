@@ -96,32 +96,39 @@ void Importer::importPhoto(QString filePath) {
             //Final resort is creation date from filesystem
             QFileInfo fInfo(filePath);
             dateTime = fInfo.created();
+            importGuessed++;
+            guessedFiles.append(filePath);
         }
-        importGuessed++;
 
     } else {
         string dateStringStd = string((const char*)entry->data);
         QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
         dateTime = QDateTime::fromString(dateString,ISODate);
     }
-    QString importArea = getPathToImportTo(dateTime,filePath);
-    if(isDuplicate(filePath,importArea)) {
+    QString importArea = getDirToImportTo(dateTime);
+    QString importFile = getPathToImportTo(dateTime,filePath);
+    if(isDuplicate(filePath,importFile)) {
         importDuplicatesIgnored++;
     } else {
-        //safe copy needed as we could still have the filename existing
-        //where we are copying to.
-        cout << "Would import to " << importArea.toStdString() << endl;
+        safeCopy(filePath,importArea);
+        importSuccess++;
     }
 }
 
 QString Importer::getPathToImportTo(QDateTime dateTime, QString filepath) {
+    QString dirToImportTo = getDirToImportTo(dateTime);
+    QFileInfo info(filepath);
+    return dirToImportTo.append("/").append(info.fileName());
+}
+
+QString Importer::getDirToImportTo(QDateTime dateTime) {
     ApplicationModel *a = ApplicationModel::getApplicationModel();
-    QFileInfo info = QFileInfo(filepath);
     QString libPath = QString::fromLocal8Bit(a->getLibraryDirectory().c_str());
     QString dayString = padInt(dateTime.date().day());
     QString monthString = padInt(dateTime.date().month());
-    QString pathToImportTo = libPath.append("/").append(dayString).append("/")
-            .append(monthString).append("/").append(info.fileName());
+    QString yearString = QString::number(dateTime.date().year());
+    QString pathToImportTo = libPath.append("/").append(yearString).append("/")
+            .append(monthString).append("/").append(dayString);
     return pathToImportTo;
 }
 
@@ -137,7 +144,10 @@ QString Importer::padInt(int i) {
 bool Importer::isDuplicate(QString file1, QString file2) {
     QFile f1(file1);
     QFile f2(file2);
-    if(!f1.exists() || !f2.exists()) {
+    if(!f1.exists()) {
+        return false;
+    }
+    if (!f2.exists()) {
         return false;
     }
     f1.open(QFile::ReadOnly);
@@ -187,4 +197,27 @@ QDateTime Importer::getDateTimeFromFilename(QString fileName) {
     QString dateStr = fileName.mid(startPos,dateTimeRegExp.matchedLength());
     cout << "Guessed date <" << dateStr.toStdString() << "> from file: " << fileName.toStdString()<< endl;
     return QDateTime::fromString(dateStr,"yyyyMMdd_HHmmss");
+}
+
+void Importer::safeCopy(QString from, QString to) {
+    QDir dir(to);
+    if(!dir.exists()) {
+        cout << "Making dir: " << dir.absolutePath().toStdString() << endl;
+        dir.mkpath(dir.absolutePath());
+    }
+    int duplicateName=1;
+    QFileInfo old(from);
+    to.append("/").append(old.fileName());
+    QString toNew(to);
+    while(true) {
+        QFile f(toNew);
+        if(!f.exists()) {
+            break;
+        }
+        duplicateName++;
+        QFileInfo toInfo(to);
+        toNew = toInfo.baseName().append("_").append(QString::number(duplicateName)).append(toInfo.completeSuffix());
+    }
+    QFile::copy(from,toNew);
+    cout << "Copied " << from.toStdString() << " to " << toNew.toStdString() << endl;
 }

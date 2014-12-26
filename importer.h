@@ -54,10 +54,12 @@ private:
     QProgressDialog *createProgressDialog(QWidget *parent,int files);
     void updateProgressDialog(QProgressDialog *dialog,int index);
     QString getPathToImportTo(QDateTime dateTime, QString filename);
+    QString getDirToImportTo(QDateTime dateTime);
     QString padInt(int i);
     bool isDuplicate(QString file1, QString file2);
     void showImportSummary(QWidget *parent);
     QDateTime getDateTimeFromFilename(QString fileName);
+    void safeCopy(QString from, QString to);
 };
 
 #endif // IMPORTER_H
