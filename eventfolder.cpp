@@ -1,7 +1,8 @@
 #include "eventfolder.h"
 
-EventFolder::EventFolder()
+EventFolder::EventFolder(QString libFolder)
 {
+    this->libFolder = libFolder;
 }
 
 bool EventFolder::isValidEventFolderPath(QDir dir) {
@@ -29,7 +30,7 @@ bool EventFolder::containsPhotos(QDir dir) {
 }
 
 bool EventFolder::isCorrectDepth(QDir dir) {
-    std::string libDir = ApplicationModel::getApplicationModel()->getLibraryDirectory();
+    std::string libDir = libFolder.toStdString();
     bool canChange = dir.cd("../..");
     if(!canChange) {
         std::cout << "cannot change to ../.." <<std::endl;

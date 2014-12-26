@@ -6,8 +6,6 @@
 #include <QFileInfo>
 #include <iostream>
 
-#include "applicationmodel.h"
-
 /*
  * EventFolder represents a folder that contains photos.
  * It should be contained below a year folder and a month folder.
@@ -17,10 +15,12 @@
 class EventFolder
 {
 public:
-    EventFolder();
-    static bool isValidEventFolderPath(QDir dir);
-    static bool containsPhotos(QDir dir);
-    static bool isCorrectDepth(QDir dir);
+    EventFolder(QString libFolder);
+    bool isValidEventFolderPath(QDir dir);
+    bool containsPhotos(QDir dir);
+    bool isCorrectDepth(QDir dir);
+private:
+    QString libFolder;
 };
 
 #endif // EVENTFOLDER_H

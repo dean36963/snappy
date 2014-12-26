@@ -1,18 +1,20 @@
 #include "librarymodel.h"
 
-LibraryModel::LibraryModel()
+LibraryModel::LibraryModel(QString path)
 {
-    populateModel();
+    populateModel(path);
 }
 
+LibraryModel::~LibraryModel() {
 
-void LibraryModel::populateModel() {
-    QString rootDirPath = QString::fromUtf8(ApplicationModel::getApplicationModel()->getLibraryDirectory().c_str());
-    QDir rootDir = QDir(rootDirPath);
+}
+
+void LibraryModel::populateModel(QString path) {
+    QDir rootDir = QDir(path);
     rootDir.setFilter(QDir::NoDotAndDotDot|QDir::Dirs);
     if(!rootDir.exists()) {
         cout << "Library path doesn't exist, creating..." << endl;
-        if(!rootDir.mkdir(rootDirPath)) {
+        if(!rootDir.mkdir(path)) {
             cerr << "Could not create library path." <<endl;
             return;
         }
@@ -21,7 +23,8 @@ void LibraryModel::populateModel() {
     while(dirIter.hasNext()) {
         dirIter.next();
         QFileInfo info(dirIter.filePath());
-        if(EventFolder::isValidEventFolderPath(info.absoluteDir())) {
+        EventFolder ev(path);
+        if(ev.isValidEventFolderPath(info.absoluteDir())) {
             cout << info.absoluteFilePath().toStdString() << " IS an event folder" <<endl;
         } else {
             cout << info.absoluteFilePath().toStdString() << " is NOT an event folder" <<endl;

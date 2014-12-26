@@ -6,8 +6,6 @@
 #include <QDirIterator>
 #include <QFileInfo>
 
-#include "librarymodel.h"
-#include "applicationmodel.h"
 #include "eventfolder.h"
 
 using namespace std;
@@ -15,9 +13,10 @@ using namespace std;
 class LibraryModel
 {
 public:
-    LibraryModel();
+    LibraryModel(QString path);
+    ~LibraryModel();
 private:
-    void populateModel();
+    void populateModel(QString path);
 };
 
 #endif // LIBRARYMODEL_H

@@ -6,7 +6,7 @@
 #include <QDir>
 #include <string>
 
-using namespace std;
+#include "librarymodel.h"
 
 class ApplicationModel
 {
@@ -19,9 +19,11 @@ public:
     std::string getLibraryDirectory();
     QString getHomeDirectory();
     QString appendPath(std::string path1, std::string path2);
+    LibraryModel *getLibraryModel();
 
 private:
     static ApplicationModel *instance;
+    LibraryModel *libModel;
 };
 
 #endif // APPLICATIONMODEL_H

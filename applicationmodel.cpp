@@ -39,3 +39,11 @@ std::string ApplicationModel::getLibraryDirectory() {
 QString ApplicationModel::getHomeDirectory() {
     return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 }
+
+LibraryModel *ApplicationModel::getLibraryModel() {
+    if(libModel==NULL) {
+        QString rootDirPath = QString::fromUtf8(ApplicationModel::getApplicationModel()->getLibraryDirectory().c_str());
+        libModel = new LibraryModel(rootDirPath);
+    }
+
+}
