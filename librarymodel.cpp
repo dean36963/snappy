@@ -65,21 +65,51 @@ void LibraryModel::getContainingFolders() {
 }
 
 void LibraryModel::createTreeItems() {
-    QListIterator<QString> containingFoldersIt(containingFolders);
-    while(containingFoldersIt.hasNext()) {
-        QString folder = containingFoldersIt.next();
-        QFileInfo dir(folder);
-        if(isRootItem(folder)) {
-            QTreeWidgetItem *item = new QTreeWidgetItem();
-            item->setText(0,dir.baseName());
-            treeItems.append(item);
-        }
+    QListIterator<QString> eventFoldersIt(eventFolders);
+    while(eventFoldersIt.hasNext()) {
+        QString folder = eventFoldersIt.next();
+        addTreeItem(folder);
     }
 }
 
-bool LibraryModel::isRootItem(QString path) {
+QTreeWidgetItem* LibraryModel::addTreeItem(QString folder) {
+    QFileInfo dirInfo(folder);
+    QTreeWidgetItem *item;
+    if(pathToItemMap.keys().contains(folder)) {
+        item = pathToItemMap.value(folder);
+        return item;
+    } else {
+        item = new QTreeWidgetItem();
+        pathToItemMap[folder] = item;
+    }
+    item->setText(0,dirInfo.baseName());
+    if(isYearItem(folder)) {
+        if(!treeItems.contains(item)) {
+            treeItems.append(item);
+            return item;
+        }
+    } else {
+        QDir dir(folder);
+        dir.cd("..");
+        QTreeWidgetItem *subItem = addTreeItem(dir.absolutePath());
+        subItem->addChild(item);
+        return item;
+    }
+}
+
+bool LibraryModel::isYearItem(QString path) {
     QDir dir(path);
     dir.cd("..");
+    if(dir.absolutePath()==libraryPath) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool LibraryModel::isMonthItem(QString path) {
+    QDir dir(path);
+    dir.cd("../..");
     if(dir.absolutePath()==libraryPath) {
         return true;
     } else {
@@ -91,3 +121,4 @@ bool LibraryModel::isRootItem(QString path) {
 QList<QTreeWidgetItem*> LibraryModel::getTreeItems() {
     return treeItems;
 }
+

@@ -23,11 +23,14 @@ private:
     void populateModel();
     void getContainingFolders();
     void createTreeItems();
-    bool isRootItem(QString path);
+    bool isYearItem(QString path);
+    bool isMonthItem(QString path);
+    QTreeWidgetItem* addTreeItem(QString folder);
     QString libraryPath;
     QList<QString> eventFolders;
     QList<QString> containingFolders;
     QList<QTreeWidgetItem*> treeItems;
+    QMap<QString, QTreeWidgetItem*> pathToItemMap;
 };
 
 #endif // LIBRARYMODEL_H
