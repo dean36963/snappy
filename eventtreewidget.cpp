@@ -15,4 +15,5 @@ EventTreeWidget::~EventTreeWidget()
 
 void EventTreeWidget::onSelectionChange() {
     ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(currentItem());
+    expandItem(currentItem());
 }

@@ -18,6 +18,7 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
 PhotoArea::~PhotoArea()
 {
     delete layout;
+    delete label;
 }
 
 
