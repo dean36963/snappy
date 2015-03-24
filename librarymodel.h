@@ -10,6 +10,7 @@
 #include <QTreeWidgetItem>
 
 #include "eventfolder.h"
+#include "notifier.h"
 
 using namespace std;
 
@@ -19,6 +20,10 @@ public:
     LibraryModel(QString path);
     ~LibraryModel();
     QList<QTreeWidgetItem*> getTreeItems();
+    Notifier *getNotifier();
+    QString getSelectedEventPath();
+    void setSelectedEventPath(QString selectedEventPath);
+    void setSelectedEventPath(QTreeWidgetItem *selectedEventPath);
 private:
     void populateModel();
     void getContainingFolders();
@@ -26,11 +31,14 @@ private:
     bool isYearItem(QString path);
     bool isMonthItem(QString path);
     QTreeWidgetItem* addTreeItem(QString folder);
+
     QString libraryPath;
     QList<QString> eventFolders;
     QList<QString> containingFolders;
     QList<QTreeWidgetItem*> treeItems;
     QMap<QString, QTreeWidgetItem*> pathToItemMap;
+    Notifier *notifier;
+    QString selectedEventPath;
 };
 
 #endif // LIBRARYMODEL_H

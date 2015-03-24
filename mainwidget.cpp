@@ -4,25 +4,18 @@ MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent)
 {
     layout = new QGridLayout();
-    button = new QPushButton("TEST");
+    photoArea = new PhotoArea(this);
 
     //TODO replace this tree with a custom tree
-    tree = new QTreeWidget();
-    LibraryModel* libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
-    tree->addTopLevelItems(libraryModel->getTreeItems());
+    tree = new EventTreeWidget(this);
 
     layout->addWidget(tree,0,0);
-    layout->addWidget(button,0,1);
+    layout->addWidget(photoArea,0,1);
 
     setLayout(layout);
 }
 
 MainWidget::~MainWidget() {
     delete layout;
-    delete button;
-    //for(int i=0; i<tree->topLevelItemCount();i++) {
-    //    delete tree->topLevelItem(i);
-    //}
-    //tree->clear();
-    //delete tree;
+    delete photoArea;
 }

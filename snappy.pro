@@ -19,13 +19,19 @@ SOURCES += main.cpp\
     mainwidget.cpp \
     librarymodel.cpp \
     eventfolder.cpp \
-    importer.cpp
+    importer.cpp \
+    photoarea.cpp \
+    notifier.cpp \
+    eventtreewidget.cpp
 
 HEADERS  += mainwindow.h \
     applicationmodel.h \
     mainwidget.h \
     librarymodel.h \
     eventfolder.h \
-    importer.h
+    importer.h \
+    photoarea.h \
+    notifier.h \
+    eventtreewidget.h
 
 RESOURCES = application.qrc

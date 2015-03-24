@@ -1,0 +1,18 @@
+#include "eventtreewidget.h"
+
+EventTreeWidget::EventTreeWidget(QWidget *parent) : QTreeWidget(parent)
+{
+    LibraryModel* libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
+    addTopLevelItems(libraryModel->getTreeItems());
+    setHeaderHidden(true);
+    connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(onSelectionChange()));
+}
+
+EventTreeWidget::~EventTreeWidget()
+{
+
+}
+
+void EventTreeWidget::onSelectionChange() {
+    ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(currentItem());
+}

@@ -7,6 +7,8 @@
 #include <QTreeWidget>
 
 #include "applicationmodel.h"
+#include "photoarea.h"
+#include "eventtreewidget.h"
 
 class MainWidget : public QWidget
 {
@@ -17,8 +19,8 @@ public:
 
 private:
     QGridLayout *layout;
-    QPushButton *button;
-    QTreeWidget *tree;
+    EventTreeWidget *tree;
+    PhotoArea *photoArea;
 
 signals:
 
