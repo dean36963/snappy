@@ -84,10 +84,8 @@ QTreeWidgetItem* LibraryModel::addTreeItem(QString folder) {
     }
     item->setText(0,dirInfo.baseName());
     if(isYearItem(folder)) {
-        if(!treeItems.contains(item)) {
-            treeItems.append(item);
-            return item;
-        }
+        treeItems.append(item);
+        return item;
     } else {
         QDir dir(folder);
         dir.cd("..");
