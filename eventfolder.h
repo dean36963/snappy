@@ -5,6 +5,9 @@
 #include <QDir>
 #include <QFileInfo>
 #include <iostream>
+#include <QList>
+
+#include <iostream>
 
 /*
  * EventFolder represents a folder that contains photos.
@@ -19,6 +22,7 @@ public:
     bool isValidEventFolderPath(QDir dir);
     bool containsPhotos(QDir dir);
     bool isCorrectDepth(QDir dir);
+    QList<QString> *getPhotos(QDir dir);
 private:
     QString libFolder;
 };

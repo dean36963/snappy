@@ -138,3 +138,12 @@ void LibraryModel::setSelectedEventPath(QTreeWidgetItem *item) {
     selectedEventPath = pathToItemMap.key(item);
     notifier->trigger();
 }
+
+QList<QString> *LibraryModel::getPhotosFromPath(QString path) {
+    EventFolder ev(libraryPath);
+    QDir pathDir(path);
+    if(ev.isValidEventFolderPath(pathDir)) {
+        return ev.getPhotos(pathDir);
+    }
+    return NULL;
+}

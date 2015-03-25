@@ -40,3 +40,16 @@ bool EventFolder::isCorrectDepth(QDir dir) {
         return false;
     }
 }
+
+QList<QString>* EventFolder::getPhotos(QDir dir) {
+    QList<QString> *photos = new QList<QString>();
+    if(isValidEventFolderPath(dir)) {
+        dir.setFilter(QDir::NoDotAndDotDot|QDir::Files);
+        QDirIterator it(dir);
+        while(it.hasNext()) {
+            it.next();
+            photos->append(it.filePath());
+        }
+    }
+    return photos;
+}

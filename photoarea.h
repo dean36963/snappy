@@ -10,6 +10,7 @@
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
+#include "thumbnailview.h"
 
 class PhotoArea : public QWidget
 {
@@ -18,7 +19,7 @@ public:
     explicit PhotoArea(QWidget *parent = 0);
     ~PhotoArea();
 private:
-    QListWidget *listArea;
+    ThumbnailView *listArea;
     QGridLayout *layout;
     QLabel *label;
 

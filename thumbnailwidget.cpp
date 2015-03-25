@@ -20,8 +20,6 @@ ThumbnailWidget::~ThumbnailWidget()
 
 
 void ThumbnailWidget::setImage() {
-    QImage icon(photoPath);
-
     QMatrix rotation = QMatrix();
     ExifData* exifData = exif_data_new_from_file(photoPath.toStdString().c_str());
     ExifContent* content = *exifData->ifd;
@@ -36,6 +34,7 @@ void ThumbnailWidget::setImage() {
             rotation.rotate(180);
         }
     }
+    QImage icon(photoPath);
     icon = icon.transformed(rotation);
     QSize size(80,80);
     label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));

@@ -22,6 +22,7 @@ public:
     QList<QTreeWidgetItem*> getTreeItems();
     Notifier *getNotifier();
     QString getSelectedEventPath();
+    QList<QString> *getPhotosFromPath(QString path);
     void setSelectedEventPath(QString selectedEventPath);
     void setSelectedEventPath(QTreeWidgetItem *selectedEventPath);
 private:
