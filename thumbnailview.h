@@ -4,6 +4,7 @@
 #include <QListWidget>
 #include <QPalette>
 #include <QColor>
+#include <QEventLoop>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
@@ -17,6 +18,9 @@ public:
     ThumbnailView(QWidget *parent = 0);
     ~ThumbnailView();
 private:
+    QEventLoop *event;
+    void startProgress();
+    void endProgress();
 
 public slots:
     void refresh();
