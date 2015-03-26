@@ -7,6 +7,8 @@
 #include <QImage>
 #include <QMatrix>
 #include <QPixmap>
+#include <QFileInfo>
+#include <QDir>
 
 #include <string>
 
@@ -19,6 +21,9 @@
 #include <libexif/exif-content.h>
 #include <libexif/exif-mnote-data.h>
 #include <libexif/exif-mem.h>
+
+
+#include "importer.h"
 
 class ThumbnailWidget : public QWidget
 {
@@ -33,6 +38,8 @@ private:
     QLabel *label;
 
     void setImage();
+    QString getThumbPath();
+    bool ifThumbExists();
 
 signals:
 

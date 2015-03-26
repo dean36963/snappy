@@ -34,8 +34,24 @@ void ThumbnailWidget::setImage() {
             rotation.rotate(180);
         }
     }
-    QImage icon(photoPath);
+    if(!ifThumbExists()) {
+        Importer::createThumbnail(photoPath);
+    }
+    QImage icon(getThumbPath());
     icon = icon.transformed(rotation);
     QSize size(80,80);
     label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
+}
+
+QString ThumbnailWidget::getThumbPath() {
+    QFileInfo mainPhotoInfo(photoPath);
+    return mainPhotoInfo.dir().absolutePath().append("/.thumbnails/").append(mainPhotoInfo.fileName());
+}
+
+bool ThumbnailWidget::ifThumbExists() {
+    QFileInfo thumb(getThumbPath());
+    if(thumb.exists() && thumb.isFile()) {
+        return true;
+    }
+    return false;
 }
