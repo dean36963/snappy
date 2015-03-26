@@ -2,6 +2,8 @@
 #define THUMBNAILVIEW_H
 
 #include <QListWidget>
+#include <QPalette>
+#include <QColor>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"

@@ -5,6 +5,13 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
     setViewMode(QListWidget::IconMode);
     setDragEnabled(false);
     setResizeMode(QListView::Adjust);
+    QColor greyIsh(32,32,32);
+    QPalette pal(palette());
+    pal.setColor(QPalette::Background,greyIsh);
+    viewport()->setAutoFillBackground(false);
+    setAutoFillBackground(true);
+    setPalette(pal);
+    show();
     //setSelectionMode(QAbstractItemView::MultiSelection);
 
     Notifier* notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
