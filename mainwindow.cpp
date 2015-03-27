@@ -33,6 +33,8 @@ void MainWindow::setupMenus() {
     QObject::connect(importAction,SIGNAL(triggered()),this,SLOT(importClicked()));
     fileMenu->addAction(importAction);
 
+    fileMenu->addSeparator();
+
     quitAction = new QAction(QIcon::fromTheme("application-exit"),"Quit",this);
     quitAction->setIconVisibleInMenu(true);
     quitAction->setShortcut(QKeySequence("Ctrl+Q"));
