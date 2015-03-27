@@ -29,8 +29,6 @@ private:
     LibraryModel *libModel;
     QSize *preferredThumbnailSize;
 
-signals:
-    void preferredThumbnailSizeChanged();
 };
 
 #endif // APPLICATIONMODEL_H

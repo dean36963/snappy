@@ -8,7 +8,7 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
 
     label = new QLabel(this);
     label->setText("Welcome");
-    label->setAlignment(Qt::AlignBottom | Qt::AlignCenter);
+    label->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
     label->setMinimumWidth(500);
 
     thumbSizeSlider = new QSlider(Qt::Horizontal,this);
