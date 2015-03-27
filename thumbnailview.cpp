@@ -39,6 +39,9 @@ void ThumbnailView::refresh() {
         ThumbnailWidget *widget = new ThumbnailWidget(path,this);
         widget->setAutoFillBackground(false);
         QListWidgetItem *item = new QListWidgetItem();
+        QFont f = QFont();
+        f.setPointSize(1);
+        item->setFont(f);
         QSize size(100,100);
         item->setSizeHint(size);
         item->setText(path);

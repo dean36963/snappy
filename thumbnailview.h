@@ -5,6 +5,7 @@
 #include <QPalette>
 #include <QColor>
 #include <QEventLoop>
+#include <QFont>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
