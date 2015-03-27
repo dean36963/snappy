@@ -27,8 +27,10 @@ private:
     void setupMenus();
     Importer* importer;
     QAction *importAction;
+    QAction *quitAction;
 public slots:
     void importClicked();
+    void quitClicked();
 };
 
 #endif // MAINWINDOW_H

@@ -33,10 +33,20 @@ void MainWindow::setupMenus() {
     QObject::connect(importAction,SIGNAL(triggered()),this,SLOT(importClicked()));
     fileMenu->addAction(importAction);
 
+    quitAction = new QAction(QIcon::fromTheme("application-exit"),"Quit",this);
+    quitAction->setIconVisibleInMenu(true);
+    quitAction->setShortcut(QKeySequence("Ctrl+Q"));
+    QObject::connect(quitAction,SIGNAL(triggered()),this,SLOT(quitClicked()));
+    fileMenu->addAction(quitAction);
+
     menu->setNativeMenuBar(false);
     menu->show();
 }
 
 void MainWindow::importClicked() {
     importer->importPhotos(this);
+}
+
+void MainWindow::quitClicked() {
+    QApplication::quit();
 }
