@@ -11,8 +11,14 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
     label->setAlignment(Qt::AlignBottom | Qt::AlignCenter);
     label->setMinimumWidth(500);
 
-    layout->addWidget(listArea,0,0);
+    thumbSizeSlider = new QSlider(Qt::Horizontal,this);
+    thumbSizeSlider->setMinimum(100);
+    thumbSizeSlider->setMaximum(200);
+    thumbSizeSlider->connect(thumbSizeSlider,SIGNAL(valueChanged(int)),listArea,SLOT(thumbSizeChanged(int)));
+
+    layout->addWidget(listArea,0,0,1,2);
     layout->addWidget(label,1,0);
+    layout->addWidget(thumbSizeSlider,1,1);
     setLayout(layout);
 
     Notifier *notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
@@ -23,6 +29,7 @@ PhotoArea::~PhotoArea()
 {
     delete layout;
     delete label;
+    delete thumbSizeSlider;
 }
 
 

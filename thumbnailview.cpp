@@ -69,3 +69,22 @@ void ThumbnailView::endProgress() {
 QSize ThumbnailView::sizeHint() const {
     return QSize(600,400);
 }
+
+void ThumbnailView::thumbSizeChanged(int newValue) {
+    QSize *size = new QSize(newValue,newValue);
+    ApplicationModel::getApplicationModel()->setPreferredThumbnailSize(size);
+    LibraryModel *libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
+    QList<QString> *photos = libraryModel->getPhotosFromPath(libraryModel->getSelectedEventPath());
+    QListIterator<QString> it(*photos);
+    int i=0;
+    while(it.hasNext()) {
+        it.next();
+        QListWidgetItem *localItem = item(i);
+        localItem->setSizeHint(*size);
+        ThumbnailWidget *localItemWidget = (ThumbnailWidget*) itemWidget(localItem);
+        localItemWidget->changeSize(0.8*newValue,0.8*newValue);
+        i++;
+    }
+    doItemsLayout();
+    delete photos;
+}

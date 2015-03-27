@@ -145,5 +145,5 @@ QList<QString> *LibraryModel::getPhotosFromPath(QString path) {
     if(ev.isValidEventFolderPath(pathDir)) {
         return ev.getPhotos(pathDir);
     }
-    return NULL;
+    return new QList<QString>();
 }

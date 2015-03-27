@@ -4,7 +4,7 @@ ApplicationModel *ApplicationModel::instance = NULL;
 
 ApplicationModel::ApplicationModel()
 {
-    preferredThumbnailSize = new QSize(200,200);
+    preferredThumbnailSize = new QSize(100,100);
     libModel=NULL;
 }
 

@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QListWidget>
-
+#include <QSlider>
 #include <QPushButton>
 
 #include "applicationmodel.h"
@@ -23,6 +23,7 @@ private:
     QGridLayout *layout;
     QLabel *label;
     QPushButton *button;
+    QSlider *thumbSizeSlider;
 signals:
 
 public slots:

@@ -40,11 +40,7 @@ void ThumbnailWidget::setImage() {
     if(!ifThumbExists()) {
         Importer::createThumbnail(photoPath);
     }
-    QString imagePath = getThumbPath();
-    if(width > 100) {
-        imagePath = photoPath;
-    }
-    QImage icon(imagePath);
+    QImage icon(getThumbPath());
     icon = icon.transformed(rotation);
     QSize size(width,height);
     label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
@@ -61,4 +57,11 @@ bool ThumbnailWidget::ifThumbExists() {
         return true;
     }
     return false;
+}
+
+void ThumbnailWidget::changeSize(int w, int h) {
+    width = w;
+    height = h;
+    label->setMinimumSize(width,height);
+    setImage();
 }

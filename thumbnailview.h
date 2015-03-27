@@ -7,6 +7,7 @@
 #include <QEventLoop>
 #include <QFont>
 #include <QSize>
+#include <QWidget>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
@@ -27,6 +28,7 @@ private:
 
 public slots:
     void refresh();
+    void thumbSizeChanged(int newValue);
 };
 
 #endif // THUMBNAILVIEW_H

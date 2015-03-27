@@ -230,7 +230,7 @@ void Importer::createThumbnail(QString origFile) {
         thumbnailDir.mkdir(thumbnailDir.absolutePath());
     }
     QImage origImage(origFile);
-    QImage thumbImage = origImage.scaled(100,100,KeepAspectRatio);
+    QImage thumbImage = origImage.scaled(200,200,KeepAspectRatio);
     QString thumbFile = thumbnailDir.absolutePath().append("/").append(origInfo.fileName());
     thumbImage.save(thumbFile);
 }

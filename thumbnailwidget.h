@@ -33,6 +33,7 @@ class ThumbnailWidget : public QWidget
 public:
     explicit ThumbnailWidget(QString photoPath, QWidget *parent = 0, int w = 80, int h = 80);
     ~ThumbnailWidget();
+    void changeSize(int w, int h);
 
 private:
     QString photoPath;
