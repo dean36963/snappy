@@ -4,6 +4,7 @@ ApplicationModel *ApplicationModel::instance = NULL;
 
 ApplicationModel::ApplicationModel()
 {
+    preferredThumbnailSize = new QSize(200,200);
     libModel=NULL;
 }
 
@@ -47,4 +48,13 @@ LibraryModel *ApplicationModel::getLibraryModel() {
         libModel = new LibraryModel(rootDirPath);
     }
     return libModel;
+}
+
+QSize *ApplicationModel::getPreferredThumbnailSize() {
+    return preferredThumbnailSize;
+}
+
+void ApplicationModel::setPreferredThumbnailSize(QSize *thumbnailSize) {
+    delete preferredThumbnailSize;
+    preferredThumbnailSize = thumbnailSize;
 }

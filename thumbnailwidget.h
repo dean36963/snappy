@@ -11,6 +11,7 @@
 #include <QDir>
 
 #include <string>
+#include <iostream>
 
 #include <libexif/exif-data.h>
 #include <libexif/exif-byte-order.h>
@@ -22,14 +23,15 @@
 #include <libexif/exif-mnote-data.h>
 #include <libexif/exif-mem.h>
 
-
 #include "importer.h"
+
+using namespace std;
 
 class ThumbnailWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ThumbnailWidget(QString photoPath, QWidget *parent = 0);
+    explicit ThumbnailWidget(QString photoPath, QWidget *parent = 0, int w = 80, int h = 80);
     ~ThumbnailWidget();
 
 private:
@@ -40,6 +42,7 @@ private:
     void setImage();
     QString getThumbPath();
     bool ifThumbExists();
+    int width,height;
 
 signals:
 

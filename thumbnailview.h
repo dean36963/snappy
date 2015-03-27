@@ -6,6 +6,7 @@
 #include <QColor>
 #include <QEventLoop>
 #include <QFont>
+#include <QSize>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
@@ -18,6 +19,7 @@ class ThumbnailView : public QListWidget
 public:
     ThumbnailView(QWidget *parent = 0);
     ~ThumbnailView();
+    QSize sizeHint() const;
 private:
     QEventLoop *event;
     void startProgress();

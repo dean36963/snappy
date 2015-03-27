@@ -22,8 +22,6 @@ private:
     ThumbnailView *listArea;
     QGridLayout *layout;
     QLabel *label;
-
-    ThumbnailWidget *photoWidget;
     QPushButton *button;
 signals:
 

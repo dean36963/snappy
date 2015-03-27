@@ -1,14 +1,17 @@
 #include "thumbnailwidget.h"
 
-ThumbnailWidget::ThumbnailWidget(QString photoPath, QWidget *parent) : QWidget(parent)
+ThumbnailWidget::ThumbnailWidget(QString photoPath, QWidget *parent, int w, int h) : QWidget(parent)
 {
     this->photoPath = photoPath;
     layout = new QGridLayout();
     label = new QLabel(this);
     layout->addWidget(label);
+    width = w;
+    height = h;
     setImage();
     label->setAlignment(Qt::AlignCenter);
-    label->setMinimumSize(80,80);
+    label->setMinimumSize(width,height);
+
     setLayout(layout);
 }
 
@@ -37,9 +40,13 @@ void ThumbnailWidget::setImage() {
     if(!ifThumbExists()) {
         Importer::createThumbnail(photoPath);
     }
-    QImage icon(getThumbPath());
+    QString imagePath = getThumbPath();
+    if(width > 100) {
+        imagePath = photoPath;
+    }
+    QImage icon(imagePath);
     icon = icon.transformed(rotation);
-    QSize size(80,80);
+    QSize size(width,height);
     label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
 }
 

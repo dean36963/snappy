@@ -5,6 +5,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <string>
+#include <QSize>
 
 #include "librarymodel.h"
 
@@ -20,10 +21,16 @@ public:
     QString getHomeDirectory();
     QString appendPath(std::string path1, std::string path2);
     LibraryModel *getLibraryModel();
+    QSize *getPreferredThumbnailSize();
+    void setPreferredThumbnailSize(QSize *thumbnailSize);
 
 private:
     static ApplicationModel *instance;
     LibraryModel *libModel;
+    QSize *preferredThumbnailSize;
+
+signals:
+    void preferredThumbnailSizeChanged();
 };
 
 #endif // APPLICATIONMODEL_H

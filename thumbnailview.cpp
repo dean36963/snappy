@@ -34,20 +34,25 @@ void ThumbnailView::refresh() {
         return;
     }
     QListIterator<QString> it(*photos);
+    QSize size = *ApplicationModel::getApplicationModel()->getPreferredThumbnailSize();
+    int i=1;
+    int refreshAfterThisManyPhotos = 20;
     while(it.hasNext()) {
         QString path = it.next();
-        ThumbnailWidget *widget = new ThumbnailWidget(path,this);
+        ThumbnailWidget *widget = new ThumbnailWidget(path,this,(int)(size.width()*0.8),(int)(size.height()*0.8));
         widget->setAutoFillBackground(false);
         QListWidgetItem *item = new QListWidgetItem();
         QFont f = QFont();
         f.setPointSize(1);
         item->setFont(f);
-        QSize size(100,100);
         item->setSizeHint(size);
         item->setText(path);
         addItem(item);
         setItemWidget(item,widget);
-        event->processEvents();
+        if(i % refreshAfterThisManyPhotos == 0) {
+            event->processEvents();
+        }
+        i++;
     }
     delete photos;
     endProgress();
@@ -59,4 +64,8 @@ void ThumbnailView::startProgress() {
 }
 void ThumbnailView::endProgress() {
     delete event;
+}
+
+QSize ThumbnailView::sizeHint() const {
+    return QSize(600,400);
 }
