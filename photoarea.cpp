@@ -27,8 +27,8 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
     layout->addWidget(thumbSizeSlider,1,1);
     setLayout(layout);
 
-    Notifier *notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
-    notifier->connect(notifier,SIGNAL(triggered()),this,SLOT(eventChanged()));
+    LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
+    connect(model,SIGNAL(eventPathChanged(QString)),this,SLOT(eventChanged()));
 
     connect(listArea,SIGNAL(photoDoubleClicked(QString)),this,SLOT(showFullPhoto(QString)));
 }

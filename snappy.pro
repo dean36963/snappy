@@ -21,7 +21,6 @@ SOURCES += main.cpp\
     eventfolder.cpp \
     importer.cpp \
     photoarea.cpp \
-    notifier.cpp \
     eventtreewidget.cpp \
     thumbnailwidget.cpp \
     thumbnailview.cpp \
@@ -35,7 +34,6 @@ HEADERS  += mainwindow.h \
     eventfolder.h \
     importer.h \
     photoarea.h \
-    notifier.h \
     eventtreewidget.h \
     thumbnailwidget.h \
     thumbnailview.h \

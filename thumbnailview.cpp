@@ -16,10 +16,7 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(photoChanged(QString)));
-
-    Notifier* notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
-    notifier->connect(notifier,SIGNAL(triggered()),this,SLOT(refresh()));
-
+    connect(model,SIGNAL(eventPathChanged(QString)),this,SLOT(refresh()));
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
 }
 

@@ -6,7 +6,6 @@ LibraryModel::LibraryModel(QString path) : QObject()
     eventFolders = QList<QString>();
     containingFolders = QList<QString>();
     treeItems = QList<QTreeWidgetItem*>();
-    notifier = new Notifier();
     populateModel();
 }
 
@@ -121,22 +120,18 @@ QList<QTreeWidgetItem*> LibraryModel::getTreeItems() {
     return treeItems;
 }
 
-Notifier *LibraryModel::getNotifier() {
-    return notifier;
-}
-
 QString LibraryModel::getSelectedEventPath() {
     return selectedEventPath;
 }
 
 void LibraryModel::setSelectedEventPath(QString selectedEventPath) {
     this->selectedEventPath = selectedEventPath;
-    notifier->trigger();
+    emit eventPathChanged(selectedEventPath);
 }
 
 void LibraryModel::setSelectedEventPath(QTreeWidgetItem *item) {
     selectedEventPath = pathToItemMap.key(item);
-    notifier->trigger();
+    emit eventPathChanged(selectedEventPath);
 }
 
 QList<QString> *LibraryModel::getPhotosFromPath(QString path) {
