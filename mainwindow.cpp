@@ -15,6 +15,7 @@ MainWindow::~MainWindow()
     delete mainWidget;
     delete importer;
     delete importAction;
+    delete quitAction;
 
     //Final should be settings
     ApplicationModel::deleteModel();

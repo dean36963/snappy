@@ -31,30 +31,27 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
     notifier->connect(notifier,SIGNAL(triggered()),this,SLOT(eventChanged()));
 
     connect(listArea,SIGNAL(photoDoubleClicked(QString)),this,SLOT(showFullPhoto(QString)));
-    //connect(listArea,SIGNAL(itemActivated(QListWidgetItem*)),this,SLOT(eventActivated(QListWidgetItem*)));
 }
 
 PhotoArea::~PhotoArea()
 {
     delete layout;
     delete label;
+    delete listArea;
     delete thumbSizeSlider;
+    delete backAction;
 }
 
 
 void PhotoArea::eventChanged() {
     QString path = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventPath();
     label->setText(path);
-
-    cout << "Event chagned" << endl;
-
     if(backAction->isEnabled()) {
         showThumbs();
     }
 }
 
 void PhotoArea::showFullPhoto(QString photoPath) {
-    cout << "Show a big copy of this: "<< photoPath.toStdString() << endl;
     layout->removeWidget(listArea);
     layout->removeWidget(label);
     layout->removeWidget(thumbSizeSlider);
@@ -96,7 +93,6 @@ void PhotoArea::showThumbs() {
 
 
 void PhotoArea::eventActivated(QTreeWidgetItem *, int) {
-    cout << "eventActivated" << endl;
     if(backAction->isEnabled()) {
         showThumbs();
     }

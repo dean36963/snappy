@@ -21,6 +21,7 @@ MainWidget::MainWidget(QWidget *parent) :
 MainWidget::~MainWidget() {
     delete layout;
     delete photoArea;
+    delete tree;
 }
 
 void MainWidget::addMenuItems(QMenuBar *menu) {

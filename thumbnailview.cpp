@@ -65,7 +65,11 @@ void ThumbnailView::startProgress() {
     event->processEvents();
 }
 void ThumbnailView::endProgress() {
-    delete event;
+    if(event!=NULL) {
+        delete event;
+        event = NULL;
+    } else {
+    }
 }
 
 QSize ThumbnailView::sizeHint() const {

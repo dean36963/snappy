@@ -24,7 +24,8 @@ LargePhotoView::LargePhotoView(QString photoPath, QWidget *parent) : QWidget(par
 
 LargePhotoView::~LargePhotoView()
 {
-
+    delete label;
+    delete layout;
 }
 
 void LargePhotoView::setImage(QSize size) {
@@ -42,6 +43,9 @@ void LargePhotoView::setImage(QSize size) {
             rotation.rotate(180);
         }
     }
+    delete exifData;
+    delete content;
+    delete entry;
     QImage icon(photoPath);
     icon = icon.transformed(rotation);
     label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
