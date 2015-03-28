@@ -27,10 +27,12 @@ public:
     QString getPreviousPhoto(QString photo);
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent * event);
 private:
     QEventLoop *event;
     void startProgress();
     void endProgress();
+    int mouseModifiers;
 
 signals:
     void photoDoubleClicked(QString photoPath);
@@ -40,6 +42,7 @@ public slots:
     void thumbSizeChanged(int newValue);
     void itemDoubleClicked(QListWidgetItem *item);
     void photoChanged(QString newPhoto);
+    void itemClicked(QListWidgetItem* item);
 };
 
 #endif // THUMBNAILVIEW_H

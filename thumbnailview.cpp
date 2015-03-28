@@ -12,12 +12,13 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
     setAutoFillBackground(true);
     setPalette(pal);
     show();
-    //setSelectionMode(QAbstractItemView::MultiSelection);
+    setSelectionMode(QAbstractItemView::MultiSelection);
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(photoChanged(QString)));
     connect(model,SIGNAL(eventPathChanged(QString)),this,SLOT(refresh()));
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
+    connect(this,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(itemClicked(QListWidgetItem*)));
 }
 
 ThumbnailView::~ThumbnailView()
@@ -145,5 +146,22 @@ void ThumbnailView::keyPressEvent(QKeyEvent *event) {
         }
     } else {
         QListWidget::keyPressEvent(event);
+    }
+}
+
+void ThumbnailView::mousePressEvent(QMouseEvent * event) {
+    mouseModifiers = event->modifiers();
+    QListWidget::mousePressEvent(event);
+}
+
+void ThumbnailView::itemClicked(QListWidgetItem* item) {
+    if(mouseModifiers == Qt::ControlModifier) {
+    } else {
+        QListIterator<QListWidgetItem*> currentSelectedItems = selectedItems();
+        while(currentSelectedItems.hasNext()) {
+            QListWidgetItem* selectedItem = currentSelectedItems.next();
+            setItemSelected(selectedItem,false);
+        }
+        setItemSelected(item,true);
     }
 }
