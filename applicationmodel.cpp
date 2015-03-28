@@ -6,6 +6,11 @@ ApplicationModel::ApplicationModel()
 {
     preferredThumbnailSize = new QSize(100,100);
     libModel=NULL;
+    properties = new PersistedProperties(getMainConfigFile());
+}
+
+ApplicationModel::~ApplicationModel() {
+    delete properties;
 }
 
 ApplicationModel *ApplicationModel::getApplicationModel() {
@@ -15,13 +20,18 @@ ApplicationModel *ApplicationModel::getApplicationModel() {
     return instance;
 }
 
-std::string ApplicationModel::getConfigDir() {
+QString ApplicationModel::getConfigDir() {
     std::string mainConfigPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString();
-    return appendPath(mainConfigPath,"snappy").toStdString();
+    QString path = appendPath(mainConfigPath,"snappy");
+    QDir dir(path);
+    if(!dir.exists()) {
+        dir.mkdir(dir.absolutePath());
+    }
+    return path;
 }
 
-std::string ApplicationModel::getMainConfigFile() {
-    return appendPath(getConfigDir(),"config").toStdString();
+QString ApplicationModel::getMainConfigFile() {
+    return appendPath(getConfigDir().toStdString(),"config");
 }
 
 QString ApplicationModel::appendPath(std::string path1, std::string path2)
@@ -57,4 +67,12 @@ QSize *ApplicationModel::getPreferredThumbnailSize() {
 void ApplicationModel::setPreferredThumbnailSize(QSize *thumbnailSize) {
     delete preferredThumbnailSize;
     preferredThumbnailSize = thumbnailSize;
+}
+
+PersistedProperties *ApplicationModel::getProperties() {
+    return properties;
+}
+
+void ApplicationModel::deleteModel() {
+    delete instance;
 }

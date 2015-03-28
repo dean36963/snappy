@@ -14,7 +14,13 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
     thumbSizeSlider = new QSlider(Qt::Horizontal,this);
     thumbSizeSlider->setMinimum(100);
     thumbSizeSlider->setMaximum(200);
+    thumbSizeSlider->setMaximumWidth(200);
     thumbSizeSlider->connect(thumbSizeSlider,SIGNAL(valueChanged(int)),listArea,SLOT(thumbSizeChanged(int)));
+    if(ApplicationModel::getApplicationModel()->getProperties()->hasProperty(QString("preferred.thumbsize"))) {
+        QString preferred = ApplicationModel::getApplicationModel()->getProperties()->getPropertyValue((QString("preferred.thumbsize")));
+        thumbSizeSlider->setValue(preferred.toInt());
+        listArea->thumbSizeChanged(thumbSizeSlider->value());
+    }
 
     layout->addWidget(listArea,0,0,1,2);
     layout->addWidget(label,1,0);

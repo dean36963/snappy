@@ -86,5 +86,6 @@ void ThumbnailView::thumbSizeChanged(int newValue) {
         i++;
     }
     doItemsLayout();
+    ApplicationModel::getApplicationModel()->getProperties()->setProperty(QString("preferred.thumbsize"),QString::number(newValue));
     delete photos;
 }

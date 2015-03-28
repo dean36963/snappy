@@ -15,11 +15,14 @@ MainWindow::~MainWindow()
     delete mainWidget;
     delete importer;
     delete importAction;
+
+    //Final should be settings
+    ApplicationModel::deleteModel();
 }
 
 void MainWindow::checkForFirstTimeRunning() {
     //TODO this needs to actually be done!!!
-    cout << "Config dir: " << ApplicationModel::getApplicationModel()->getMainConfigFile() <<endl;
+    //cout << "Config dir: " << ApplicationModel::getApplicationModel()->getMainConfigFile() <<endl;
 }
 
 void MainWindow::setupMenus() {

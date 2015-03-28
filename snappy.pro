@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     notifier.cpp \
     eventtreewidget.cpp \
     thumbnailwidget.cpp \
-    thumbnailview.cpp
+    thumbnailview.cpp \
+    persistedproperties.cpp
 
 HEADERS  += mainwindow.h \
     applicationmodel.h \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     notifier.h \
     eventtreewidget.h \
     thumbnailwidget.h \
-    thumbnailview.h
+    thumbnailview.h \
+    persistedproperties.h
 
 RESOURCES = application.qrc
