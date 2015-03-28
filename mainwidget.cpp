@@ -13,10 +13,16 @@ MainWidget::MainWidget(QWidget *parent) :
     layout->setColumnStretch(0,1);
     layout->setColumnStretch(1,3);
 
+    connect(tree,SIGNAL(itemActivated(QTreeWidgetItem*,int)),photoArea,SLOT(eventActivated(QTreeWidgetItem*,int)));
+
     setLayout(layout);
 }
 
 MainWidget::~MainWidget() {
     delete layout;
     delete photoArea;
+}
+
+void MainWidget::addMenuItems(QMenuBar *menu) {
+    photoArea->addMenuItems(menu);
 }

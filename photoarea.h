@@ -7,10 +7,13 @@
 #include <QListWidget>
 #include <QSlider>
 #include <QPushButton>
+#include <QMenu>
+#include <QMenuBar>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
 #include "thumbnailview.h"
+#include "largephotoview.h"
 
 class PhotoArea : public QWidget
 {
@@ -18,16 +21,23 @@ class PhotoArea : public QWidget
 public:
     explicit PhotoArea(QWidget *parent = 0);
     ~PhotoArea();
+    void addMenuItems(QMenuBar *menu);
 private:
     ThumbnailView *listArea;
     QGridLayout *layout;
     QLabel *label;
     QPushButton *button;
     QSlider *thumbSizeSlider;
+    LargePhotoView *largePhotoView;
+    QAction *backAction;
+
 signals:
 
 public slots:
     void eventChanged();
+    void showFullPhoto(QString photoPath);
+    void showThumbs();
+    void eventActivated(QTreeWidgetItem *, int);
 };
 
 #endif // PHOTOAREA_H

@@ -16,6 +16,7 @@ class MainWidget : public QWidget
 public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
+    void addMenuItems(QMenuBar *menu);
 
 private:
     QGridLayout *layout;

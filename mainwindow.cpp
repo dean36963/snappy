@@ -45,6 +45,9 @@ void MainWindow::setupMenus() {
     fileMenu->addAction(quitAction);
 
     menu->setNativeMenuBar(false);
+
+    mainWidget->addMenuItems(menu);
+
     menu->show();
 }
 

@@ -37,6 +37,9 @@ void ThumbnailWidget::setImage() {
             rotation.rotate(180);
         }
     }
+    delete exifData;
+    delete content;
+    delete entry;
     if(!ifThumbExists()) {
         Importer::createThumbnail(photoPath);
     }
@@ -64,4 +67,8 @@ void ThumbnailWidget::changeSize(int w, int h) {
     height = h;
     label->setMinimumSize(width,height);
     setImage();
+}
+
+QString ThumbnailWidget::getType() {
+    return QString("Photo");
 }

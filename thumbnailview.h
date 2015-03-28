@@ -8,6 +8,7 @@
 #include <QFont>
 #include <QSize>
 #include <QWidget>
+#include <QAction>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
@@ -26,9 +27,13 @@ private:
     void startProgress();
     void endProgress();
 
+signals:
+    void photoDoubleClicked(QString photoPath);
+
 public slots:
     void refresh();
     void thumbSizeChanged(int newValue);
+    void itemDoubleClicked(QListWidgetItem *item);
 };
 
 #endif // THUMBNAILVIEW_H

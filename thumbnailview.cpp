@@ -17,6 +17,8 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
 
     Notifier* notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
     notifier->connect(notifier,SIGNAL(triggered()),this,SLOT(refresh()));
+
+    connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
 }
 
 ThumbnailView::~ThumbnailView()
@@ -88,4 +90,14 @@ void ThumbnailView::thumbSizeChanged(int newValue) {
     doItemsLayout();
     ApplicationModel::getApplicationModel()->getProperties()->setProperty(QString("preferred.thumbsize"),QString::number(newValue));
     delete photos;
+}
+
+void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
+    ThumbnailWidget *widget = (ThumbnailWidget*) itemWidget(item);
+    if(widget->getType()=="Photo") {
+        emit photoDoubleClicked(item->text());
+    } else if(widget->getType()=="Event") {
+        //TODO currently I haven't got a thumbnail widget for events so this wont trigger
+        //but eventually will.
+    }
 }

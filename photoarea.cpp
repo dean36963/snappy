@@ -29,6 +29,9 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
 
     Notifier *notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
     notifier->connect(notifier,SIGNAL(triggered()),this,SLOT(eventChanged()));
+
+    connect(listArea,SIGNAL(photoDoubleClicked(QString)),this,SLOT(showFullPhoto(QString)));
+    //connect(listArea,SIGNAL(itemActivated(QListWidgetItem*)),this,SLOT(eventActivated(QListWidgetItem*)));
 }
 
 PhotoArea::~PhotoArea()
@@ -42,4 +45,59 @@ PhotoArea::~PhotoArea()
 void PhotoArea::eventChanged() {
     QString path = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventPath();
     label->setText(path);
+
+    cout << "Event chagned" << endl;
+
+    if(backAction->isEnabled()) {
+        showThumbs();
+    }
+}
+
+void PhotoArea::showFullPhoto(QString photoPath) {
+    cout << "Show a big copy of this: "<< photoPath.toStdString() << endl;
+    layout->removeWidget(listArea);
+    layout->removeWidget(label);
+    layout->removeWidget(thumbSizeSlider);
+    listArea->hide();
+    label->hide();
+    thumbSizeSlider->hide();
+
+    largePhotoView = new LargePhotoView(photoPath,this);
+    layout->addWidget(largePhotoView,1,1);
+
+    backAction->setEnabled(true);
+}
+
+void PhotoArea::addMenuItems(QMenuBar *menu) {
+    QMenu *navMenu = menu->addMenu("Navigation");
+
+    //Add navigation Items
+    backAction = new QAction("Back",this);
+    backAction->setShortcut(QKeySequence("Escape"));
+    navMenu->addAction(backAction);
+    backAction->setEnabled(false);
+    connect(backAction,SIGNAL(triggered()),this,SLOT(showThumbs()));
+}
+
+void PhotoArea::showThumbs() {
+    if(largePhotoView!=NULL) {
+        layout->removeWidget(largePhotoView);
+        delete largePhotoView;
+    }
+    layout->addWidget(listArea,0,0,1,2);
+    layout->addWidget(label,1,0);
+    layout->addWidget(thumbSizeSlider,1,1);
+    listArea->show();
+    label->show();
+    thumbSizeSlider->show();
+
+    backAction->setEnabled(false);
+}
+
+
+void PhotoArea::eventActivated(QTreeWidgetItem *, int) {
+    cout << "eventActivated" << endl;
+    if(backAction->isEnabled()) {
+        showThumbs();
+    }
 }
