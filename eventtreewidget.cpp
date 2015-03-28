@@ -6,6 +6,7 @@ EventTreeWidget::EventTreeWidget(QWidget *parent) : QTreeWidget(parent)
     addTopLevelItems(libraryModel->getTreeItems());
     setHeaderHidden(true);
     connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(onSelectionChange()));
+    setSortingEnabled(true);
 }
 
 EventTreeWidget::~EventTreeWidget()
