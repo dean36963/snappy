@@ -97,6 +97,7 @@ void ThumbnailView::thumbSizeChanged(int newValue) {
 }
 
 void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
+    setSelectionMode(QAbstractItemView::SingleSelection);
     ThumbnailWidget *widget = (ThumbnailWidget*) itemWidget(item);
     if(widget->getType()=="Photo") {
         ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->text());
@@ -139,6 +140,7 @@ void ThumbnailView::photoChanged(QString newPhoto) {
 }
 
 void ThumbnailView::keyPressEvent(QKeyEvent *event) {
+    setSelectionMode(QAbstractItemView::SingleSelection);
     if(event->key()==Qt::Key_Return) {
         if(selectedItems().length()==1) {
             QListWidgetItem * first = selectedItems().first();
@@ -150,6 +152,7 @@ void ThumbnailView::keyPressEvent(QKeyEvent *event) {
 }
 
 void ThumbnailView::mousePressEvent(QMouseEvent * event) {
+    setSelectionMode(QAbstractItemView::MultiSelection);
     mouseModifiers = event->modifiers();
     QListWidget::mousePressEvent(event);
 }
