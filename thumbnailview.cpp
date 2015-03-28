@@ -19,6 +19,8 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
     connect(model,SIGNAL(eventPathChanged(QString)),this,SLOT(refresh()));
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
     connect(this,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(itemClicked(QListWidgetItem*)));
+
+    setSortingEnabled(true);
 }
 
 ThumbnailView::~ThumbnailView()
