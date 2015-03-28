@@ -9,6 +9,7 @@
 #include <QSize>
 #include <QWidget>
 #include <QAction>
+#include <QKeyEvent>
 
 #include "applicationmodel.h"
 #include "thumbnailwidget.h"
@@ -24,6 +25,8 @@ public:
     QSize sizeHint() const;
     QString getNextPhoto(QString photo);
     QString getPreviousPhoto(QString photo);
+protected:
+    void keyPressEvent(QKeyEvent *event);
 private:
     QEventLoop *event;
     void startProgress();

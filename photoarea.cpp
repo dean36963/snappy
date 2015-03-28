@@ -101,6 +101,7 @@ void PhotoArea::showThumbs() {
     listArea->show();
     label->show();
     thumbSizeSlider->show();
+    listArea->setFocus();
 
     backAction->setEnabled(false);
     nextAction->setEnabled(false);

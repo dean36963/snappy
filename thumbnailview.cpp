@@ -133,8 +133,20 @@ void ThumbnailView::photoChanged(QString newPhoto) {
         QListWidgetItem *localItem = item(i);
         if(localItem->text()==newPhoto) {
             setItemSelected(localItem,true);
+            setCurrentItem(localItem);
             scrollTo(indexFromItem(localItem));
             break;
         }
+    }
+}
+
+void ThumbnailView::keyPressEvent(QKeyEvent *event) {
+    if(event->key()==Qt::Key_Return) {
+        if(selectedItems().length()==1) {
+            QListWidgetItem * first = selectedItems().first();
+            itemDoubleClicked(first);
+        }
+    } else {
+        QListWidget::keyPressEvent(event);
     }
 }
