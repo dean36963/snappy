@@ -71,19 +71,22 @@ void PhotoArea::addMenuItems(QMenuBar *menu) {
     QMenu *navMenu = menu->addMenu("Navigation");
 
     //Add navigation Items
-    backAction = new QAction("Back",this);
+
+    backAction = new QAction(QIcon::fromTheme("go-up"),"Back",this);
     backAction->setShortcut(QKeySequence("Escape"));
     navMenu->addAction(backAction);
     backAction->setEnabled(false);
     connect(backAction,SIGNAL(triggered()),this,SLOT(showThumbs()));
 
-    nextAction = new QAction("Next",this);
+    navMenu->addSeparator();
+
+    nextAction = new QAction(QIcon::fromTheme("go-next"),"Next",this);
     nextAction->setShortcut(QKeySequence("Right"));
     navMenu->addAction(nextAction);
     nextAction->setEnabled(false);
     connect(nextAction,SIGNAL(triggered()),this,SLOT(nextPhoto()));
 
-    prevAction = new QAction("Previous",this);
+    prevAction = new QAction(QIcon::fromTheme("go-previous"),"Previous",this);
     prevAction->setShortcut(QKeySequence("Left"));
     navMenu->addAction(prevAction);
     prevAction->setEnabled(false);

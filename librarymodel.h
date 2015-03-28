@@ -32,6 +32,7 @@ private:
     void createTreeItems();
     bool isYearItem(QString path);
     bool isMonthItem(QString path);
+    bool isEventItem(QString path);
     QTreeWidgetItem* addTreeItem(QString folder);
 
     QString libraryPath;

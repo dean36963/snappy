@@ -83,6 +83,11 @@ QTreeWidgetItem* LibraryModel::addTreeItem(QString folder) {
         pathToItemMap[folder] = item;
     }
     item->setText(0,dirInfo.baseName());
+    if(isEventItem(folder)) {
+        item->setIcon(0,QIcon::fromTheme("folder-images"));
+    } else {
+        item->setIcon(0,QIcon::fromTheme("folder"));
+    }
     if(isYearItem(folder)) {
         treeItems.append(item);
         return item;
@@ -109,6 +114,16 @@ bool LibraryModel::isMonthItem(QString path) {
     QDir dir(path);
     dir.cd("../..");
     if(dir.absolutePath()==libraryPath) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool LibraryModel::isEventItem(QString path) {
+    EventFolder ev(libraryPath);
+    QDir pathDir(path);
+    if(ev.isValidEventFolderPath(pathDir)) {
         return true;
     } else {
         return false;
