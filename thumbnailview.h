@@ -36,6 +36,7 @@ public slots:
     void refresh();
     void thumbSizeChanged(int newValue);
     void itemDoubleClicked(QListWidgetItem *item);
+    void photoChanged(QString newPhoto);
 };
 
 #endif // THUMBNAILVIEW_H

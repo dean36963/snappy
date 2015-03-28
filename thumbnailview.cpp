@@ -14,6 +14,8 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
     show();
     //setSelectionMode(QAbstractItemView::MultiSelection);
 
+    LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
+    connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(photoChanged(QString)));
 
     Notifier* notifier = ApplicationModel::getApplicationModel()->getLibraryModel()->getNotifier();
     notifier->connect(notifier,SIGNAL(triggered()),this,SLOT(refresh()));
@@ -124,4 +126,15 @@ QString ThumbnailView::getPreviousPhoto(QString photo) {
         }
     }
     return NULL;
+}
+
+void ThumbnailView::photoChanged(QString newPhoto) {
+    for(int i=0; i<count(); i++) {
+        QListWidgetItem *localItem = item(i);
+        if(localItem->text()==newPhoto) {
+            setItemSelected(localItem,true);
+            scrollTo(indexFromItem(localItem));
+            break;
+        }
+    }
 }
