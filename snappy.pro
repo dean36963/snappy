@@ -25,7 +25,10 @@ SOURCES += main.cpp\
     thumbnailwidget.cpp \
     thumbnailview.cpp \
     persistedproperties.cpp \
-    largephotoview.cpp
+    largephotoview.cpp \
+    setupwizard.cpp \
+    librarywizardpage.cpp \
+    imageutils.cpp
 
 HEADERS  += mainwindow.h \
     applicationmodel.h \
@@ -38,6 +41,9 @@ HEADERS  += mainwindow.h \
     thumbnailwidget.h \
     thumbnailview.h \
     persistedproperties.h \
-    largephotoview.h
+    largephotoview.h \
+    setupwizard.h \
+    librarywizardpage.h \
+    imageutils.h
 
 RESOURCES = application.qrc

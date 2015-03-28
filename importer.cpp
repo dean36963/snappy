@@ -123,7 +123,7 @@ QString Importer::getPathToImportTo(QDateTime dateTime, QString filepath) {
 
 QString Importer::getDirToImportTo(QDateTime dateTime) {
     ApplicationModel *a = ApplicationModel::getApplicationModel();
-    QString libPath = QString::fromLocal8Bit(a->getLibraryDirectory().c_str());
+    QString libPath = a->getLibraryDirectory();
     QString dayString = padInt(dateTime.date().day());
     QString monthString = padInt(dateTime.date().month());
     QString yearString = QString::number(dateTime.date().year());

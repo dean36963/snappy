@@ -1,5 +1,7 @@
 #include "applicationmodel.h"
 
+const QString ApplicationModel::LIBRARY_PATH_PROPERTY = "library.path";
+
 ApplicationModel *ApplicationModel::instance = NULL;
 
 ApplicationModel::ApplicationModel()
@@ -42,10 +44,12 @@ QString ApplicationModel::appendPath(std::string path1, std::string path2)
     return QDir::cleanPath(qPath1 + separator + qPath2);
 }
 
-std::string ApplicationModel::getLibraryDirectory() {
-    //TODO get actual config
-    std::string photoPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation).toStdString();
-    return appendPath(photoPath,"snappyPhotos").toStdString();
+QString ApplicationModel::getLibraryDirectory() {
+    if(!properties->hasProperty(LIBRARY_PATH_PROPERTY)) {
+        return NULL;
+    } else {
+        return properties->getPropertyValue(LIBRARY_PATH_PROPERTY);
+    }
 }
 
 QString ApplicationModel::getHomeDirectory() {
@@ -54,7 +58,7 @@ QString ApplicationModel::getHomeDirectory() {
 
 LibraryModel *ApplicationModel::getLibraryModel() {
     if(libModel==NULL) {
-        QString rootDirPath = QString::fromUtf8(ApplicationModel::getApplicationModel()->getLibraryDirectory().c_str());
+        QString rootDirPath = ApplicationModel::getApplicationModel()->getLibraryDirectory();
         libModel = new LibraryModel(rootDirPath);
     }
     return libModel;
@@ -75,4 +79,9 @@ PersistedProperties *ApplicationModel::getProperties() {
 
 void ApplicationModel::deleteModel() {
     delete instance;
+}
+
+void ApplicationModel::setLibraryDirectory(QString libraryDirectory) {
+    properties->setProperty(LIBRARY_PATH_PROPERTY,libraryDirectory);
+    properties->saveProperties();
 }

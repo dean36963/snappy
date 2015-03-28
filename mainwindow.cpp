@@ -4,31 +4,47 @@ const QString MainWindow::WINDOW_HEIGHT_PROPERTY = "window.height";
 const QString MainWindow::WINDOW_WIDTH_PROPERTY = "window.width";
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
-    mainWidget = new MainWidget();
-    setCentralWidget(mainWidget);
-    restoreSize();
+    : QMainWindow(parent) {
+    quit = false;
+    checkForFirstTimeRunning();
 
-    setupMenus();
-    //checkForFirstTimeRunning();
+    if(!quit) {
+        mainWidget = new MainWidget();
+        setCentralWidget(mainWidget);
+        restoreSize();
+
+        setupMenus();
+    }
 }
 
 MainWindow::~MainWindow()
 {
-    saveSize();
-    delete mainWidget;
-    delete importer;
-    delete importAction;
-    delete quitAction;
+    if(!quit) {
+        saveSize();
+        delete mainWidget;
+        delete importer;
+        delete importAction;
+        delete quitAction;
+    }
 
     //Final should be settings
     ApplicationModel::deleteModel();
 }
 
 void MainWindow::checkForFirstTimeRunning() {
-    //TODO this needs to actually be done!!!
-    //cout << "Config dir: " << ApplicationModel::getApplicationModel()->getMainConfigFile() <<endl;
+    QString libraryPath = ApplicationModel::getApplicationModel()->getLibraryDirectory();
+    QFileInfo libraryDir(libraryPath);
+    if(libraryPath=="" || !libraryDir.exists() || !libraryDir.isDir()) {
+        SetupWizard* wiz = new SetupWizard(this);
+        if(wiz->exec()==QWizard::Accepted) {
+            cout << "Saving library location as: " << ApplicationModel::getApplicationModel()->getLibraryDirectory().toStdString() << endl;
+            ApplicationModel::getApplicationModel()->setLibraryDirectory(wiz->getLibraryPath());
+        } else {
+            cerr << "Library not set. Quitting..." << endl;
+            quit = true;
+            ApplicationModel::getApplicationModel()->getProperties()->setSaveOnExit(false);
+        }
+    }
 }
 
 void MainWindow::setupMenus() {
@@ -77,4 +93,8 @@ void MainWindow::restoreSize() {
 void MainWindow::saveSize() {
     ApplicationModel::getApplicationModel()->getProperties()->setProperty(WINDOW_WIDTH_PROPERTY,QString::number(size().width()));
     ApplicationModel::getApplicationModel()->getProperties()->setProperty(WINDOW_HEIGHT_PROPERTY,QString::number(size().height()));
+}
+
+bool MainWindow::hasQuit() {
+    return quit;
 }

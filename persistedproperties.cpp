@@ -5,11 +5,14 @@ PersistedProperties::PersistedProperties(QString savePath)
     this->savePath = savePath;
     map = new QMap<QString,QString>();
     readProperties();
+    saveOnExit = true;
 }
 
 PersistedProperties::~PersistedProperties()
 {
-    saveProperties();
+    if(saveOnExit) {
+        saveProperties();
+    }
     delete map;
 }
 
@@ -54,8 +57,12 @@ void PersistedProperties::readProperties() {
                 QString line(buf);
                 QStringList keyValue = line.split(QRegularExpression("="));
                 if(keyValue.size()==2) {
-                    (*map)[keyValue.at(0)] = keyValue.at(1);
-                    //cout << "Read in: " << keyValue.at(0).toStdString() << " equals: " << keyValue.at(1).toStdString() << endl;
+                    QString value = keyValue.at(1);
+                    value = value.remove("\n");
+                    (*map)[keyValue.at(0)] = value;
+                    cout << "Read in property ${" << keyValue.at(0).toStdString() << "} = \'" << value.toStdString() << "\'" << endl;
+                } else {
+                    cerr << "Read malformed property: \'" << line.toStdString() << "\'" << endl;
                 }
             }
         }
@@ -63,4 +70,8 @@ void PersistedProperties::readProperties() {
         cerr << "Couldn't restore preferences." << endl;
     }
     file.close();
+}
+
+void PersistedProperties::setSaveOnExit(bool saveOnExit) {
+    this->saveOnExit = saveOnExit;
 }

@@ -13,16 +13,7 @@
 #include <string>
 #include <iostream>
 
-#include <libexif/exif-data.h>
-#include <libexif/exif-byte-order.h>
-#include <libexif/exif-data-type.h>
-#include <libexif/exif-ifd.h>
-#include <libexif/exif-log.h>
-#include <libexif/exif-tag.h>
-#include <libexif/exif-content.h>
-#include <libexif/exif-mnote-data.h>
-#include <libexif/exif-mem.h>
-
+#include "imageutils.h"
 #include "importer.h"
 
 using namespace std;

@@ -10,6 +10,7 @@
 #include <QResizeEvent>
 
 #include "applicationmodel.h"
+#include "imageutils.h"
 
 class LargePhotoView : public QWidget
 {

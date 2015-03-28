@@ -52,7 +52,9 @@ void ThumbnailView::refresh() {
         addItem(item);
         setItemWidget(item,widget);
         if(i % refreshAfterThisManyPhotos == 0) {
-            event->processEvents();
+            if(event!=NULL) {
+                event->processEvents();
+            }
         }
         i++;
     }

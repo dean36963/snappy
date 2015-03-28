@@ -20,10 +20,12 @@ public:
     bool hasProperty(QString property);
     QString getPropertyValue(QString property);
     void saveProperties();
+    void setSaveOnExit(bool saveOnExit);
 private:
     QString savePath;
     QMap<QString,QString> *map;
     void readProperties();
+    bool saveOnExit;
 };
 
 #endif // PERSISTEDPROPERTIES_H
