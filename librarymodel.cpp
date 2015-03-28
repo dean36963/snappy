@@ -1,6 +1,6 @@
 #include "librarymodel.h"
 
-LibraryModel::LibraryModel(QString path)
+LibraryModel::LibraryModel(QString path) : QObject()
 {
     libraryPath = path;
     eventFolders = QList<QString>();
@@ -146,4 +146,13 @@ QList<QString> *LibraryModel::getPhotosFromPath(QString path) {
         return ev.getPhotos(pathDir);
     }
     return new QList<QString>();
+}
+
+void LibraryModel::setSelectedPhotoPath(QString selectedPhoto) {
+    this->selectedPhoto = selectedPhoto;
+    emit selectedPhotoChanged(selectedPhoto);
+}
+
+QString LibraryModel::getSelectedPhotoPath() {
+    return selectedPhoto;
 }

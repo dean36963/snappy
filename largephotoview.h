@@ -9,6 +9,8 @@
 #include <QGridLayout>
 #include <QResizeEvent>
 
+#include "applicationmodel.h"
+
 class LargePhotoView : public QWidget
 {
     Q_OBJECT
@@ -31,7 +33,9 @@ protected:
 
 signals:
 
+
 public slots:
+    void pictureChanged(QString newPic);
 };
 
 #endif // LARGEPHOTOVIEW_H

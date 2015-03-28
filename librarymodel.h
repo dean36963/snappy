@@ -14,8 +14,9 @@
 
 using namespace std;
 
-class LibraryModel
+class LibraryModel : public QObject
 {
+    Q_OBJECT
 public:
     LibraryModel(QString path);
     ~LibraryModel();
@@ -25,6 +26,8 @@ public:
     QList<QString> *getPhotosFromPath(QString path);
     void setSelectedEventPath(QString selectedEventPath);
     void setSelectedEventPath(QTreeWidgetItem *selectedEventPath);
+    void setSelectedPhotoPath(QString selectedPhoto);
+    QString getSelectedPhotoPath();
 private:
     void populateModel();
     void getContainingFolders();
@@ -40,6 +43,10 @@ private:
     QMap<QString, QTreeWidgetItem*> pathToItemMap;
     Notifier *notifier;
     QString selectedEventPath;
+    QString selectedPhoto;
+
+signals:
+    void selectedPhotoChanged(QString selectedPhoto);
 };
 
 #endif // LIBRARYMODEL_H

@@ -99,9 +99,29 @@ void ThumbnailView::thumbSizeChanged(int newValue) {
 void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
     ThumbnailWidget *widget = (ThumbnailWidget*) itemWidget(item);
     if(widget->getType()=="Photo") {
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->text());
         emit photoDoubleClicked(item->text());
     } else if(widget->getType()=="Event") {
         //TODO currently I haven't got a thumbnail widget for events so this wont trigger
         //but eventually will.
     }
+}
+
+QString ThumbnailView::getNextPhoto(QString photo) {
+    for(int i=0; i<count(); i++) {
+        QListWidgetItem *localItem = item(i);
+        if(localItem->text()==photo && (i+1)<count()) {
+            return item(i+1)->text();
+        }
+    }
+    return NULL;
+}
+QString ThumbnailView::getPreviousPhoto(QString photo) {
+    for(int i=0; i<count(); i++) {
+        QListWidgetItem *localItem = item(i);
+        if(localItem->text()==photo && (i-1)>=0) {
+            return item(i-1)->text();
+        }
+    }
+    return NULL;
 }

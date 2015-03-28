@@ -19,7 +19,16 @@ LargePhotoView::LargePhotoView(QString photoPath, QWidget *parent) : QWidget(par
     label->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
     layout = new QGridLayout(this);
     layout->addWidget(label);
+    QColor greyIsh(42,42,42);
+    QPalette pal(palette());
+    pal.setColor(QPalette::Background,greyIsh);
+    setAutoFillBackground(true);
+    setPalette(pal);
+    show();
     setImage(parent->size());
+
+    LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
+    connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(pictureChanged(QString)));
 }
 
 LargePhotoView::~LargePhotoView()
@@ -57,4 +66,12 @@ void LargePhotoView::resizeEvent(QResizeEvent *) {
     QImage image(photoPath);
     label->setPixmap(QPixmap::fromImage(image.scaled(w,h,Qt::KeepAspectRatio)));
     label->setMinimumSize(200,200);
+}
+
+void LargePhotoView::pictureChanged(QString newPic) {
+    if(newPic=="") {
+        return;
+    }
+    this->photoPath = newPic;
+    setImage(parent->size());
 }

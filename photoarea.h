@@ -30,6 +30,8 @@ private:
     QSlider *thumbSizeSlider;
     LargePhotoView *largePhotoView;
     QAction *backAction;
+    QAction *nextAction;
+    QAction *prevAction;
 
 signals:
 
@@ -38,6 +40,8 @@ public slots:
     void showFullPhoto(QString photoPath);
     void showThumbs();
     void eventActivated(QTreeWidgetItem *, int);
+    void nextPhoto();
+    void prevPhoto();
 };
 
 #endif // PHOTOAREA_H

@@ -22,6 +22,8 @@ public:
     ThumbnailView(QWidget *parent = 0);
     ~ThumbnailView();
     QSize sizeHint() const;
+    QString getNextPhoto(QString photo);
+    QString getPreviousPhoto(QString photo);
 private:
     QEventLoop *event;
     void startProgress();
