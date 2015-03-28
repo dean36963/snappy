@@ -1,10 +1,14 @@
 #include "mainwindow.h"
 
+const QString MainWindow::WINDOW_HEIGHT_PROPERTY = "window.height";
+const QString MainWindow::WINDOW_WIDTH_PROPERTY = "window.width";
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     mainWidget = new MainWidget();
     setCentralWidget(mainWidget);
+    restoreSize();
 
     setupMenus();
     //checkForFirstTimeRunning();
@@ -12,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    saveSize();
     delete mainWidget;
     delete importer;
     delete importAction;
@@ -58,4 +63,18 @@ void MainWindow::importClicked() {
 
 void MainWindow::quitClicked() {
     QApplication::quit();
+}
+
+void MainWindow::restoreSize() {
+    PersistedProperties *props = ApplicationModel::getApplicationModel()->getProperties();
+    if(props->hasProperty(WINDOW_WIDTH_PROPERTY) && props->hasProperty(WINDOW_HEIGHT_PROPERTY)) {
+        QString widthProperty = props->getPropertyValue(WINDOW_WIDTH_PROPERTY);
+        QString heightProperty = props->getPropertyValue(WINDOW_HEIGHT_PROPERTY);
+        resize(widthProperty.toInt(),heightProperty.toInt());
+    }
+}
+
+void MainWindow::saveSize() {
+    ApplicationModel::getApplicationModel()->getProperties()->setProperty(WINDOW_WIDTH_PROPERTY,QString::number(size().width()));
+    ApplicationModel::getApplicationModel()->getProperties()->setProperty(WINDOW_HEIGHT_PROPERTY,QString::number(size().height()));
 }

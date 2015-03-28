@@ -10,6 +10,7 @@
 #include "applicationmodel.h"
 #include "mainwidget.h"
 #include "importer.h"
+#include "persistedproperties.h"
 
 using namespace std;
 
@@ -25,9 +26,13 @@ private:
     MainWidget *mainWidget;
     void checkForFirstTimeRunning();
     void setupMenus();
+    void saveSize();
+    void restoreSize();
     Importer* importer;
     QAction *importAction;
     QAction *quitAction;
+    static const QString WINDOW_HEIGHT_PROPERTY;
+    static const QString WINDOW_WIDTH_PROPERTY;
 public slots:
     void importClicked();
     void quitClicked();

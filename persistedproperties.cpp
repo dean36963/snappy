@@ -47,14 +47,16 @@ void PersistedProperties::saveProperties() {
 void PersistedProperties::readProperties() {
     QFile file(savePath);
     if (file.open(QFile::ReadOnly)) {
-        char buf[1024];
-        qint64 lineLength = file.readLine(buf, sizeof(buf));
-        if (lineLength != -1) {
-            QString line(buf);
-            QStringList keyValue = line.split(QRegularExpression("="));
-            if(keyValue.size()==2) {
-                (*map)[keyValue.at(0)] = keyValue.at(1);
-                //cout << "Read in: " << keyValue.at(0).toStdString() << " equals: " << keyValue.at(1).toStdString() << endl;
+        while(file.isReadable() && !file.atEnd()) {
+            char buf[1024];
+            qint64 lineLength = file.readLine(buf, sizeof(buf));
+            if (lineLength != -1) {
+                QString line(buf);
+                QStringList keyValue = line.split(QRegularExpression("="));
+                if(keyValue.size()==2) {
+                    (*map)[keyValue.at(0)] = keyValue.at(1);
+                    //cout << "Read in: " << keyValue.at(0).toStdString() << " equals: " << keyValue.at(1).toStdString() << endl;
+                }
             }
         }
     } else {
