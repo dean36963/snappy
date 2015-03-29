@@ -83,8 +83,12 @@ void Importer::updateProgressDialog(QProgressDialog *dialog, int index) {
 
 void Importer::importPhoto(QString filePath) {
     ExifData* exifData = exif_data_new_from_file(filePath.toStdString().c_str());
-    ExifContent* content = *exifData->ifd;
-    ExifEntry* entry = exif_content_get_entry(content,EXIF_TAG_DATE_TIME);
+    ExifContent* content = NULL;
+    ExifEntry* entry = NULL;
+    if(exifData!=NULL) {
+        content = *exifData->ifd;
+        entry = exif_content_get_entry(content,EXIF_TAG_DATE_TIME);
+    }
 
     QDateTime dateTime;
 
