@@ -17,7 +17,7 @@ void Importer::initialiseSummary() {
     failedFiles = QList<QString>();
 }
 
-void Importer::importPhotosFromFolder(QString path, QWidget *parent) {
+int Importer::importPhotosFromFolder(QString path, QWidget *parent) {
     initialiseSummary();
     QList<QString> photoList = findFiles(path);
     QProgressDialog *dialog = createProgressDialog(parent,photoList.size());
@@ -36,15 +36,20 @@ void Importer::importPhotosFromFolder(QString path, QWidget *parent) {
     dialog->close();
     delete dialog;
     showImportSummary(parent);
+    return importSuccess;
 }
 
-void Importer::importPhotos(QWidget *parent) {
+bool Importer::importPhotos(QWidget *parent) {
     QString caption = QString::fromUtf8("Select a folder to import from");
     QString importDir = QFileDialog::getExistingDirectory(parent,caption,ApplicationModel::getApplicationModel()->getHomeDirectory());
     if(importDir=="") {
-        return;
+        return false;
     }
-    importPhotosFromFolder(importDir,parent);
+    int numPhotosImported = importPhotosFromFolder(importDir,parent);
+    if(numPhotosImported > 0) {
+        return true;
+    }
+    return false;
 }
 
 QList<QString> Importer::findFiles(QString path) {

@@ -26,6 +26,7 @@ public:
     void setSelectedEventPath(QTreeWidgetItem *selectedEventPath);
     void setSelectedPhotoPath(QString selectedPhoto);
     QString getSelectedPhotoPath();
+    void libraryHasChanged();
 private:
     void populateModel();
     void getContainingFolders();
@@ -46,6 +47,7 @@ private:
 signals:
     void selectedPhotoChanged(QString selectedPhoto);
     void eventPathChanged(QString eventPath);
+    void libraryChanged();
 };
 
 #endif // LIBRARYMODEL_H

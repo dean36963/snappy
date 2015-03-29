@@ -39,8 +39,8 @@ class Importer
 public:
     Importer();
     ~Importer();
-    void importPhotosFromFolder(QString path, QWidget *parent);
-    void importPhotos(QWidget *parent);
+    int importPhotosFromFolder(QString path, QWidget *parent);
+    bool importPhotos(QWidget *parent);
     static void createThumbnail(QString origFile);
 private:
     int importSuccess;

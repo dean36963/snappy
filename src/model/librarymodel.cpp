@@ -21,6 +21,10 @@ LibraryModel::~LibraryModel() {
 }
 
 void LibraryModel::populateModel() {
+    pathToItemMap.clear();
+    treeItems.clear();
+    containingFolders.clear();
+    eventFolders.clear();
     QDir rootDir = QDir(libraryPath);
     rootDir.setFilter(QDir::NoDotAndDotDot|QDir::Dirs);
     if(!rootDir.exists()) {
@@ -164,4 +168,9 @@ void LibraryModel::setSelectedPhotoPath(QString selectedPhoto) {
 
 QString LibraryModel::getSelectedPhotoPath() {
     return selectedPhoto;
+}
+
+void LibraryModel::libraryHasChanged() {
+    populateModel();
+    emit libraryChanged();
 }

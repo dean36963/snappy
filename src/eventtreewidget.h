@@ -16,6 +16,7 @@ public:
 signals:
 public slots:
     void onSelectionChange();
+    void onLibraryChange();
 };
 
 #endif // EVENTTREEWIDGET_H

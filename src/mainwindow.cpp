@@ -74,7 +74,9 @@ void MainWindow::setupMenus() {
 }
 
 void MainWindow::importClicked() {
-    importer->importPhotos(this);
+    if(importer->importPhotos(this)) {
+        ApplicationModel::getApplicationModel()->getLibraryModel()->libraryHasChanged();
+    }
 }
 
 void MainWindow::quitClicked() {
