@@ -17,7 +17,7 @@ Also, if you are running on a Mac, you may need to add an include library path t
 
 - [x] Make event folder listen for library changed events. I.e. so when the importer has completed, the event tree should update accordingly.
 - [x] Make importer slightly more robust
-- [ ] Photo area should show one picture per event under whatever folder is selected.
+- [x] Photo area should show one picture per event under whatever folder is selected.
 - [ ] Add right click menu for photo area
 - [ ] Zoom functionality in large photo mode
 - [ ] Fullscreen functionality in large photo mode.
