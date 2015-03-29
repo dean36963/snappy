@@ -31,36 +31,14 @@ ThumbnailView::~ThumbnailView()
 void ThumbnailView::refresh() {
     startProgress();
     LibraryModel *libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
-    QList<QString> *photos = libraryModel->getPhotosFromPath(libraryModel->getSelectedEventPath());
+    QList<QString> photos = libraryModel->getPhotosFromPath(libraryModel->getSelectedEventPath());
     clear();
-    if(photos==NULL) {
-        delete photos;
-        return;
+    if(photos.empty()) {
+        QList<QString> events = libraryModel->getEventsUnderPath(libraryModel->getSelectedEventPath());
+        refreshWithEvents(events);
+    } else {
+        refreshWithPhotos(photos);
     }
-    QListIterator<QString> it(*photos);
-    QSize size = *ApplicationModel::getApplicationModel()->getPreferredThumbnailSize();
-    int i=1;
-    int refreshAfterThisManyPhotos = 20;
-    while(it.hasNext()) {
-        QString path = it.next();
-        ThumbnailWidget *widget = new ThumbnailWidget(path,this,(int)(size.width()*0.8),(int)(size.height()*0.8));
-        widget->setAutoFillBackground(false);
-        QListWidgetItem *item = new QListWidgetItem();
-        QFont f = QFont();
-        f.setPointSize(1);
-        item->setFont(f);
-        item->setSizeHint(size);
-        item->setText(path);
-        addItem(item);
-        setItemWidget(item,widget);
-        if(i % refreshAfterThisManyPhotos == 0) {
-            if(event!=NULL) {
-                event->processEvents();
-            }
-        }
-        i++;
-    }
-    delete photos;
     endProgress();
 }
 
@@ -83,21 +61,17 @@ QSize ThumbnailView::sizeHint() const {
 void ThumbnailView::thumbSizeChanged(int newValue) {
     QSize *size = new QSize(newValue,newValue);
     ApplicationModel::getApplicationModel()->setPreferredThumbnailSize(size);
-    LibraryModel *libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
-    QList<QString> *photos = libraryModel->getPhotosFromPath(libraryModel->getSelectedEventPath());
-    QListIterator<QString> it(*photos);
-    int i=0;
+
+    QList<QListWidgetItem*> allItems = findItems("*",Qt::MatchWildcard);
+    QListIterator<QListWidgetItem*> it(allItems);
     while(it.hasNext()) {
-        it.next();
-        QListWidgetItem *localItem = item(i);
-        localItem->setSizeHint(*size);
-        ThumbnailWidget *localItemWidget = (ThumbnailWidget*) itemWidget(localItem);
-        localItemWidget->changeSize(0.8*newValue,0.8*newValue);
-        i++;
+        QListWidgetItem * thisItem = it.next();
+        thisItem->setSizeHint(*size);
+        ThumbnailWidget *thisItemWidget = (ThumbnailWidget*) itemWidget(thisItem);
+        thisItemWidget->changeSize(0.8*newValue,0.8*newValue);
     }
     doItemsLayout();
     ApplicationModel::getApplicationModel()->getProperties()->setProperty(QString("preferred.thumbsize"),QString::number(newValue));
-    delete photos;
 }
 
 void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
@@ -107,25 +81,30 @@ void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
         ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->text());
         emit photoDoubleClicked(item->text());
     } else if(widget->getType()=="Event") {
-        //TODO currently I haven't got a thumbnail widget for events so this wont trigger
-        //but eventually will.
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(item->text());
     }
 }
 
 QString ThumbnailView::getNextPhoto(QString photo) {
-    for(int i=0; i<count(); i++) {
-        QListWidgetItem *localItem = item(i);
-        if(localItem->text()==photo && (i+1)<count()) {
-            return item(i+1)->text();
+    QList<QListWidgetItem*> foundItems = findItems(photo,Qt::MatchExactly);
+    if(foundItems.size()>0) {
+        QListWidgetItem* foundItem = foundItems.first();
+        QModelIndex index = indexFromItem(foundItem);
+        QModelIndex next = index.sibling(index.row()+1,index.column());
+        if(next.isValid()) {
+            return itemFromIndex(next)->text();
         }
     }
     return NULL;
 }
 QString ThumbnailView::getPreviousPhoto(QString photo) {
-    for(int i=0; i<count(); i++) {
-        QListWidgetItem *localItem = item(i);
-        if(localItem->text()==photo && (i-1)>=0) {
-            return item(i-1)->text();
+    QList<QListWidgetItem*> foundItems = findItems(photo,Qt::MatchExactly);
+    if(foundItems.size()>0) {
+        QListWidgetItem* foundItem = foundItems.first();
+        QModelIndex index = indexFromItem(foundItem);
+        QModelIndex next = index.sibling(index.row()-1,index.column());
+        if(next.isValid()) {
+            return itemFromIndex(next)->text();
         }
     }
     return NULL;
@@ -170,5 +149,59 @@ void ThumbnailView::itemClicked(QListWidgetItem* item) {
             setItemSelected(selectedItem,false);
         }
         setItemSelected(item,true);
+    }
+}
+
+void ThumbnailView::refreshWithEvents(QList<QString> events) {
+    QListIterator<QString> it(events);
+    QSize size = *ApplicationModel::getApplicationModel()->getPreferredThumbnailSize();
+    int i=1;
+    int refreshAfterThisManyEvents= 20;
+    while(it.hasNext()) {
+        QString path = it.next();
+        ThumbnailWidget *widget = new ThumbnailWidget(path,this,(int)(size.width()*0.8),(int)(size.height()*0.8));
+        widget->setAutoFillBackground(false);
+        QListWidgetItem *item = new QListWidgetItem();
+        QFont f = QFont();
+        f.setPointSize(1);
+        item->setFont(f);
+        item->setSizeHint(size);
+        item->setText(path);
+        addItem(item);
+        setItemWidget(item,widget);
+        if(i % refreshAfterThisManyEvents == 0) {
+            if(event!=NULL) {
+                event->processEvents();
+            }
+        }
+        i++;
+    }
+}
+
+void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
+    QListIterator<QString> it(photos);
+    QSize size = *ApplicationModel::getApplicationModel()->getPreferredThumbnailSize();
+    int i=1;
+    int refreshAfterThisManyPhotos = 20;
+    while(it.hasNext()) {
+        QString path = it.next();
+        ThumbnailWidget *widget = new ThumbnailWidget(path,this,(int)(size.width()*0.8),(int)(size.height()*0.8));
+        widget->setAutoFillBackground(false);
+        QListWidgetItem *item = new QListWidgetItem();
+        QFont f = QFont();
+        f.setPointSize(1);
+        item->setFont(f);
+        item->setSizeHint(size);
+        item->setText(path);
+        if(findItems(item->text(),Qt::MatchExactly).size()==0) {
+            addItem(item);
+        }
+        setItemWidget(item,widget);
+        if(i % refreshAfterThisManyPhotos == 0) {
+            if(event!=NULL) {
+                event->processEvents();
+            }
+        }
+        i++;
     }
 }

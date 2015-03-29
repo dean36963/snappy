@@ -152,13 +152,19 @@ void LibraryModel::setSelectedEventPath(QTreeWidgetItem *item) {
     emit eventPathChanged(selectedEventPath);
 }
 
-QList<QString> *LibraryModel::getPhotosFromPath(QString path) {
+QList<QString> LibraryModel::getPhotosFromPath(QString path) {
     EventFolder ev(libraryPath);
     QDir pathDir(path);
     if(ev.isValidEventFolderPath(pathDir)) {
         return ev.getPhotos(pathDir);
     }
-    return new QList<QString>();
+    return QList<QString>();
+}
+
+QList<QString> LibraryModel::getEventsUnderPath(QString path) {
+    EventFolder ev(libraryPath);
+    QDir pathDir(path);
+    return ev.getEventSubdirectories(pathDir);
 }
 
 void LibraryModel::setSelectedPhotoPath(QString selectedPhoto) {

@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 /*
  * EventFolder represents a folder that contains photos.
  * It should be contained below a year folder and a month folder.
@@ -22,7 +24,8 @@ public:
     bool isValidEventFolderPath(QDir dir);
     bool containsPhotos(QDir dir);
     bool isCorrectDepth(QDir dir);
-    QList<QString> *getPhotos(QDir dir);
+    QList<QString> getPhotos(QDir dir);
+    QList<QString> getEventSubdirectories(QDir dir);
 private:
     QString libFolder;
 };

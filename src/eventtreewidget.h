@@ -17,6 +17,8 @@ signals:
 public slots:
     void onSelectionChange();
     void onLibraryChange();
+    void onItemClicked(QTreeWidgetItem*item, int);
+    void onEventChanged();
 };
 
 #endif // EVENTTREEWIDGET_H

@@ -7,6 +7,8 @@ EventTreeWidget::EventTreeWidget(QWidget *parent) : QTreeWidget(parent)
     setHeaderHidden(true);
     connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(onSelectionChange()));
     connect(libraryModel,SIGNAL(libraryChanged()),this,SLOT(onLibraryChange()));
+    connect(libraryModel,SIGNAL(eventPathChanged(QString)),this,SLOT(onEventChanged()));
+    connect(this,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(onItemClicked(QTreeWidgetItem*,int)));
     setSortingEnabled(true);
 }
 
@@ -17,11 +19,22 @@ EventTreeWidget::~EventTreeWidget()
 
 void EventTreeWidget::onSelectionChange() {
     ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(currentItem());
-    expandItem(currentItem());
 }
 
 void EventTreeWidget::onLibraryChange() {
     clear();
     LibraryModel* libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
     addTopLevelItems(libraryModel->getTreeItems());
+}
+
+void EventTreeWidget::onItemClicked(QTreeWidgetItem * item, int) {
+    QString event = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventPath();
+    if(item->text(0)!=event) {
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(item);
+    }
+    expandItem(item);
+}
+
+void EventTreeWidget::onEventChanged() {
+    expandItem(currentItem());
 }

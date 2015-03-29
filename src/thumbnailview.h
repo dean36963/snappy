@@ -33,6 +33,8 @@ private:
     void startProgress();
     void endProgress();
     int mouseModifiers;
+    void refreshWithEvents(QList<QString> events);
+    void refreshWithPhotos(QList<QString> photos);
 
 signals:
     void photoDoubleClicked(QString photoPath);

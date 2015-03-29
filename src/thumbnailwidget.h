@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QFileInfo>
 #include <QDir>
+#include <QRect>
 
 #include <string>
 #include <iostream>
@@ -31,11 +32,15 @@ private:
     QString photoPath;
     QGridLayout *layout;
     QLabel *label;
+    QString type;
 
+    void setType();
     void setImage();
-    QString getThumbPath();
+    QString getThumbPath(QString path);
     bool ifThumbExists();
+    bool ifPhotoExists();
     int width,height;
+    QPixmap roundCorners(QImage icon, QSize size);
 
 signals:
 

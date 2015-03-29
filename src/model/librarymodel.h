@@ -21,7 +21,8 @@ public:
     ~LibraryModel();
     QList<QTreeWidgetItem*> getTreeItems();
     QString getSelectedEventPath();
-    QList<QString> *getPhotosFromPath(QString path);
+    QList<QString> getPhotosFromPath(QString path);
+    QList<QString> getEventsUnderPath(QString path);
     void setSelectedEventPath(QString selectedEventPath);
     void setSelectedEventPath(QTreeWidgetItem *selectedEventPath);
     void setSelectedPhotoPath(QString selectedPhoto);
