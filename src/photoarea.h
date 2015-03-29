@@ -10,10 +10,10 @@
 #include <QMenu>
 #include <QMenuBar>
 
-#include "applicationmodel.h"
-#include "thumbnailwidget.h"
-#include "thumbnailview.h"
-#include "largephotoview.h"
+#include "src/model/applicationmodel.h"
+#include "src/thumbnailwidget.h"
+#include "src/thumbnailview.h"
+#include "src/largephotoview.h"
 
 class PhotoArea : public QWidget
 {

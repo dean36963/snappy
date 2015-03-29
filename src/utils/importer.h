@@ -16,7 +16,7 @@
 #include <QMessageBox>
 #include <QRegExp>
 
-#include "applicationmodel.h"
+#include "src/model/applicationmodel.h"
 
 #include <unistd.h>
 #include <iostream>

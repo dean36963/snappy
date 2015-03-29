@@ -6,9 +6,9 @@
 #include <QPushButton>
 #include <QTreeWidget>
 
-#include "applicationmodel.h"
-#include "photoarea.h"
-#include "eventtreewidget.h"
+#include "src/model/applicationmodel.h"
+#include "src/photoarea.h"
+#include "src/eventtreewidget.h"
 
 class MainWidget : public QWidget
 {

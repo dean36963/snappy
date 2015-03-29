@@ -8,11 +8,11 @@
 #include <QIcon>
 #include <QMenuBar>
 
-#include "applicationmodel.h"
-#include "mainwidget.h"
-#include "importer.h"
-#include "persistedproperties.h"
-#include "setupwizard.h"
+#include "src/model/applicationmodel.h"
+#include "src/mainwidget.h"
+#include "src/utils/importer.h"
+#include "src/utils/persistedproperties.h"
+#include "src/wizards/setupwizard.h"
 
 using namespace std;
 

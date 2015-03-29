@@ -58,7 +58,6 @@ void LibraryModel::getContainingFolders() {
                break;
             } else {
                 containingFolders.append(eventDir.absolutePath());
-                cout << "Other dir: " << eventDir.absolutePath().toStdString() << endl;
             }
         }
     }

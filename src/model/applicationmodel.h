@@ -7,8 +7,8 @@
 #include <string>
 #include <QSize>
 
-#include "librarymodel.h"
-#include "persistedproperties.h"
+#include "src/model/librarymodel.h"
+#include "src/utils/persistedproperties.h"
 
 class ApplicationModel
 {

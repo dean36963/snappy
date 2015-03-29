@@ -13,8 +13,8 @@
 #include <string>
 #include <iostream>
 
-#include "imageutils.h"
-#include "importer.h"
+#include "src/utils/imageutils.h"
+#include "src/utils/importer.h"
 
 using namespace std;
 

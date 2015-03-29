@@ -11,8 +11,8 @@
 #include <QAction>
 #include <QKeyEvent>
 
-#include "applicationmodel.h"
-#include "thumbnailwidget.h"
+#include "src/model/applicationmodel.h"
+#include "src/thumbnailwidget.h"
 
 using namespace std;
 

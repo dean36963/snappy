@@ -9,8 +9,8 @@
 #include <QGridLayout>
 #include <QResizeEvent>
 
-#include "applicationmodel.h"
-#include "imageutils.h"
+#include "src/model/applicationmodel.h"
+#include "src/utils/imageutils.h"
 
 class LargePhotoView : public QWidget
 {

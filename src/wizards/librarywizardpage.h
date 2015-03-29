@@ -11,7 +11,7 @@
 #include <QGridLayout>
 #include <QFileDialog>
 
-#include "applicationmodel.h"
+#include "src/model/applicationmodel.h"
 
 class LibraryWizardPage : public QWizardPage
 {

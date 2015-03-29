@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QTreeWidget>
 
-#include "librarymodel.h"
-#include "applicationmodel.h"
+#include "src/model/librarymodel.h"
+#include "src/model/applicationmodel.h"
 
 class EventTreeWidget : public QTreeWidget
 {

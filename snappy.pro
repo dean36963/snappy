@@ -13,37 +13,37 @@ TEMPLATE = app
 
 LIBS += -lexif
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    applicationmodel.cpp \
-    mainwidget.cpp \
-    librarymodel.cpp \
-    eventfolder.cpp \
-    importer.cpp \
-    photoarea.cpp \
-    eventtreewidget.cpp \
-    thumbnailwidget.cpp \
-    thumbnailview.cpp \
-    persistedproperties.cpp \
-    largephotoview.cpp \
-    setupwizard.cpp \
-    librarywizardpage.cpp \
-    imageutils.cpp
+SOURCES += src/utils/imageutils.cpp \
+    src/utils/importer.cpp \
+    src/utils/persistedproperties.cpp \
+    src/model/applicationmodel.cpp \
+    src/model/librarymodel.cpp \
+    src/wizards/librarywizardpage.cpp \
+    src/wizards/setupwizard.cpp \
+    src/eventfolder.cpp \
+    src/eventtreewidget.cpp \
+    src/largephotoview.cpp \
+    src/main.cpp \
+    src/mainwidget.cpp \
+    src/mainwindow.cpp \
+    src/photoarea.cpp \
+    src/thumbnailview.cpp \
+    src/thumbnailwidget.cpp
 
-HEADERS  += mainwindow.h \
-    applicationmodel.h \
-    mainwidget.h \
-    librarymodel.h \
-    eventfolder.h \
-    importer.h \
-    photoarea.h \
-    eventtreewidget.h \
-    thumbnailwidget.h \
-    thumbnailview.h \
-    persistedproperties.h \
-    largephotoview.h \
-    setupwizard.h \
-    librarywizardpage.h \
-    imageutils.h
+HEADERS  += src/utils/imageutils.h \
+    src/utils/importer.h \
+    src/utils/persistedproperties.h \
+    src/model/applicationmodel.h \
+    src/model/librarymodel.h \
+    src/wizards/librarywizardpage.h \
+    src/wizards/setupwizard.h \
+    src/eventfolder.h \
+    src/eventtreewidget.h \
+    src/largephotoview.h \
+    src/mainwidget.h \
+    src/mainwindow.h \
+    src/photoarea.h \
+    src/thumbnailview.h \
+    src/thumbnailwidget.h
 
 RESOURCES = application.qrc

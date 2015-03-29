@@ -9,7 +9,7 @@
 #include <QListIterator>
 #include <QTreeWidgetItem>
 
-#include "eventfolder.h"
+#include "src/eventfolder.h"
 
 using namespace std;
 
