@@ -66,7 +66,7 @@ void MainWindow::setupMenus() {
     QObject::connect(quitAction,SIGNAL(triggered()),this,SLOT(quitClicked()));
     fileMenu->addAction(quitAction);
 
-    menu->setNativeMenuBar(false);
+    menu->setNativeMenuBar(true);
 
     mainWidget->addMenuItems(menu);
 
