@@ -31,11 +31,13 @@ public:
 private:
     QString photoPath;
     QGridLayout *layout;
-    QLabel *label;
+    QLabel *thumbnail;
+    QLabel *detailLabel;
     QString type;
 
     void setType();
     void setImage();
+    void setDetailLabel();
     QString getThumbPath(QString path);
     bool ifThumbExists();
     bool ifPhotoExists();

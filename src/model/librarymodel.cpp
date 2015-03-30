@@ -180,3 +180,17 @@ void LibraryModel::libraryHasChanged() {
     populateModel();
     emit libraryChanged();
 }
+
+QString LibraryModel::getFriendlyEventName(QString eventPath) {
+    EventFolder ev(libraryPath);
+    QDir eventDir(eventPath);
+    if(!ev.isValidEventFolderPath(eventDir)) {
+        return "";
+    }
+    QString eventName = eventDir.dirName();
+    eventDir.cdUp();
+    QString monthName = eventDir.dirName();
+    eventDir.cdUp();
+    QString yearName = eventDir.dirName();
+    return eventName.append("/").append(monthName).append("/").append(yearName);
+}

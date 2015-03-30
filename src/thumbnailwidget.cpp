@@ -4,14 +4,16 @@ ThumbnailWidget::ThumbnailWidget(QString photoPath, QWidget *parent, int w, int 
 {
     this->photoPath = photoPath;
     layout = new QGridLayout();
-    label = new QLabel(this);
-    layout->addWidget(label);
+    thumbnail = new QLabel(this);
+    layout->addWidget(thumbnail,0,0);
     width = w;
     height = h;
     setType();
     setImage();
-    label->setAlignment(Qt::AlignCenter);
-    label->setMinimumSize(width,height);
+    setDetailLabel();
+    thumbnail->setAlignment(Qt::AlignCenter);
+    thumbnail->setMinimumSize(width,height);
+    detailLabel = NULL;
 
     setLayout(layout);
 }
@@ -19,9 +21,26 @@ ThumbnailWidget::ThumbnailWidget(QString photoPath, QWidget *parent, int w, int 
 ThumbnailWidget::~ThumbnailWidget()
 {
     delete layout;
-    delete label;
+    delete thumbnail;
+    if(detailLabel!=NULL) {
+        delete detailLabel;
+    }
 }
 
+void ThumbnailWidget::setDetailLabel() {
+    if(type=="Photo") {
+        return;
+    } else if (type=="Event") {
+        detailLabel = new QLabel();
+        LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
+        detailLabel->setText(model->getFriendlyEventName(photoPath));
+        detailLabel->setAlignment(Qt::AlignCenter);
+        QPalette pal = detailLabel->palette();
+        pal.setColor(QPalette::Text,QColor(255,255,255));
+        detailLabel->setPalette(pal);
+        layout->addWidget(detailLabel,1,0);
+    }
+}
 
 void ThumbnailWidget::setImage() {
     if(type=="Photo") {
@@ -32,7 +51,7 @@ void ThumbnailWidget::setImage() {
         QImage icon(getThumbPath(photoPath));
         icon = icon.transformed(rotation);
         QSize size(width,height);
-        label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
+        thumbnail->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
     } else if(type=="Event") {
         QList<QString> photos = ApplicationModel::getApplicationModel()->getLibraryModel()->getPhotosFromPath(photoPath);
         if(!photos.isEmpty()) {
@@ -40,7 +59,7 @@ void ThumbnailWidget::setImage() {
             QImage icon(getThumbPath(photos.first()));
             icon = icon.transformed(rotation);
             QSize size(width,height);
-            label->setPixmap(roundCorners(icon,size));
+            thumbnail->setPixmap(roundCorners(icon,size));
         }
     }
 }
@@ -73,7 +92,7 @@ bool ThumbnailWidget::ifThumbExists() {
 void ThumbnailWidget::changeSize(int w, int h) {
     width = w;
     height = h;
-    label->setMinimumSize(width,height);
+    thumbnail->setMinimumSize(width,height);
     setImage();
 }
 
