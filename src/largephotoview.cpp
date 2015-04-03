@@ -14,7 +14,11 @@ LargePhotoView::LargePhotoView(QString photoPath, QWidget *parent) : QWidget(par
 {
     this->photoPath = photoPath;
     this->parent = parent;
+    image=NULL;
+    zoomArea=NULL;
+    zoomLevel=1.0;
     label = new QLabel(this);
+    setImage(parent->size());
     label->setAlignment(Qt::AlignCenter);
     label->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
     layout = new QGridLayout(this);
@@ -24,8 +28,8 @@ LargePhotoView::LargePhotoView(QString photoPath, QWidget *parent) : QWidget(par
     pal.setColor(QPalette::Background,greyIsh);
     setAutoFillBackground(true);
     setPalette(pal);
-    show();
-    setImage(parent->size());
+    show();  
+    resetZoom();
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(pictureChanged(QString)));
@@ -35,21 +39,29 @@ LargePhotoView::~LargePhotoView()
 {
     delete label;
     delete layout;
+    delete image;
 }
 
 void LargePhotoView::setImage(QSize size) {
     QMatrix rotation = ImageUtils::getImageRotation(photoPath);
-    QImage icon(photoPath);
-    icon = icon.transformed(rotation);
-    label->setPixmap(QPixmap::fromImage(icon).scaled(size,Qt::KeepAspectRatio));
+    QImage rawImage(photoPath);
+    rawImage = rawImage.transformed(rotation);
+    QPixmap pixmap = QPixmap::fromImage(rawImage).scaled(size,Qt::KeepAspectRatio);
+    label->setPixmap(pixmap);
+    image = new QImage(rawImage);
 }
 
 void LargePhotoView::resizeEvent(QResizeEvent *) {
     int w = label->width();
     int h = label->height();
-    QImage image(photoPath);
-    label->setPixmap(QPixmap::fromImage(image.scaled(w,h,Qt::KeepAspectRatio)));
+    if(image==NULL) {
+        cout << "Resize event before image is read" << endl;
+        setImage(QSize(w,h));
+    }
+    QImage icon(*image);
+    label->setPixmap(QPixmap::fromImage(icon).scaled(w,h,Qt::KeepAspectRatio));
     label->setMinimumSize(200,200);
+    resetZoom();
 }
 
 void LargePhotoView::pictureChanged(QString newPic) {
@@ -58,4 +70,64 @@ void LargePhotoView::pictureChanged(QString newPic) {
     }
     this->photoPath = newPic;
     setImage(parent->size());
+    resetZoom();
+}
+
+void LargePhotoView::wheelEvent(QWheelEvent *e) {
+    if(e->delta() > 0) {
+        increaseZoom();
+    } else {
+        decreaseZoom();
+    }
+    QWidget::wheelEvent(e);
+}
+
+void LargePhotoView::resetZoom() {
+    checkZoom();
+    zoomArea = new QRect(0,0,label->size().width(),label->size().height());
+    zoomLevel = 1.0;
+}
+
+void LargePhotoView::checkZoom() {
+    if(zoomArea!=NULL) {
+        delete zoomArea;
+    }
+}
+
+void LargePhotoView::increaseZoom() {
+    zoomLevel += 0.1*zoomLevel;
+    if(zoomLevel>10.0) zoomLevel=10.0;
+    drawZoomedState();
+}
+
+void LargePhotoView::decreaseZoom() {
+    zoomLevel -= 0.1*zoomLevel;
+    if(zoomLevel<1.0) zoomLevel=1.0;
+    drawZoomedState();
+}
+
+
+void LargePhotoView::drawZoomedState() {
+    int w = label->width();
+    int h = label->height();
+
+    QSize newSize(zoomLevel*w,zoomLevel*h);
+    QImage scaledImage = image->scaled(newSize,Qt::KeepAspectRatio);
+
+    QRect imageSizeNow(0,0,scaledImage.size().width(),scaledImage.size().height());
+    QPoint midPointOfImage = getMidPoint(imageSizeNow);
+    QRect zoomArea(midPointOfImage.x()-0.5*w,midPointOfImage.y()-0.5*h,
+                   w,h);
+
+    cout << "Image size is: " << scaledImage.size().width() << "," << scaledImage.size().height() << endl;
+    QImage scaledCroppedImage = scaledImage.copy(zoomArea);
+    label->setPixmap(QPixmap::fromImage(scaledCroppedImage));
+}
+
+QPoint LargePhotoView::getMidPoint(QRect input) {
+    int x1=0,y1=0,x2=0,y2=0;
+    input.getCoords(&x1,&y1,&x2,&y2);
+    int midX = 0.5*(x1+x2);
+    int midY = 0.5*(y1+y2);
+    return QPoint(midX,midY);
 }

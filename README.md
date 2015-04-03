@@ -19,5 +19,5 @@ Also, if you are running on a Mac, you may need to add an include library path t
 - [x] Make importer slightly more robust
 - [x] Photo area should show one picture per event under whatever folder is selected.
 - [ ] Add right click menu for photo area
-- [ ] Zoom functionality in large photo mode
+- [~] Zoom functionality in large photo mode. Kinda half done, but is pretty crap
 - [ ] Fullscreen functionality in large photo mode.
