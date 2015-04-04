@@ -167,6 +167,7 @@ void ThumbnailView::refreshWithEvents(QList<QString> events) {
         item->setFont(f);
         item->setSizeHint(size);
         item->setText(path);
+        item->setBackgroundColor(QColor(42,42,42));
         addItem(item);
         setItemWidget(item,widget);
         if(i % refreshAfterThisManyEvents == 0) {
@@ -193,6 +194,7 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         item->setFont(f);
         item->setSizeHint(size);
         item->setText(path);
+        item->setBackgroundColor(QColor(42,42,42));
         if(findItems(item->text(),Qt::MatchExactly).size()==0) {
             addItem(item);
         }
