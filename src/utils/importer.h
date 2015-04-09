@@ -17,6 +17,7 @@
 #include <QRegExp>
 
 #include "src/model/applicationmodel.h"
+#include "src/utils/imageutils.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -59,7 +60,6 @@ private:
     QString padInt(int i);
     bool isDuplicate(QString file1, QString file2);
     void showImportSummary(QWidget *parent);
-    QDateTime getDateTimeFromFilename(QString fileName);
     void safeCopy(QString from, QString to);
 };
 

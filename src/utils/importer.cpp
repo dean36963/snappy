@@ -86,6 +86,7 @@ void Importer::updateProgressDialog(QProgressDialog *dialog, int index) {
     QApplication::processEvents();
 }
 
+//TODO use some part of this in imageutils
 void Importer::importPhoto(QString filePath) {
     ExifData* exifData = exif_data_new_from_file(filePath.toStdString().c_str());
     ExifContent* content = NULL;
@@ -100,7 +101,7 @@ void Importer::importPhoto(QString filePath) {
     if(entry==NULL) {
         cerr << "Cannot find tag on " << filePath.toStdString() << endl;
         //Attempt to parse date from filename. IMG_20140812_143012.jpg for example;
-        dateTime = getDateTimeFromFilename(filePath);
+        dateTime = ImageUtils::getDateTimeFromFilename(filePath);
         if(dateTime == QDateTime()) {
             //Final resort is creation date from filesystem
             QFileInfo fInfo(filePath);
@@ -194,18 +195,6 @@ void Importer::showImportSummary(QWidget *parent) {
     }
     messageBox.setWindowTitle(QString::fromLocal8Bit("Import Summary"));
     messageBox.exec();
-}
-
-QDateTime Importer::getDateTimeFromFilename(QString fileName) {
-    QString dateTimeRegExpStr = QString::fromLocal8Bit("\\d{8}_\\d{6}");
-    QRegExp dateTimeRegExp(dateTimeRegExpStr);
-    int startPos = dateTimeRegExp.indexIn(fileName);
-    if(startPos==-1) {
-        return QDateTime();
-    }
-    QString dateStr = fileName.mid(startPos,dateTimeRegExp.matchedLength());
-    cout << "Guessed date <" << dateStr.toStdString() << "> from file: " << fileName.toStdString()<< endl;
-    return QDateTime::fromString(dateStr,"yyyyMMdd_HHmmss");
 }
 
 void Importer::safeCopy(QString from, QString to) {

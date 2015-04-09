@@ -78,33 +78,35 @@ void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
     setSelectionMode(QAbstractItemView::SingleSelection);
     ThumbnailWidget *widget = (ThumbnailWidget*) itemWidget(item);
     if(widget->getType()=="Photo") {
-        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->text());
-        emit photoDoubleClicked(item->text());
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->data(50).toString());
+        emit photoDoubleClicked(item->data(50).toString());
     } else if(widget->getType()=="Event") {
         ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(item->text());
     }
 }
 
 QString ThumbnailView::getNextPhoto(QString photo) {
-    QList<QListWidgetItem*> foundItems = findItems(photo,Qt::MatchExactly);
+    QDateTime dateTime = ImageUtils::getDateTimeFromFilename(photo);
+    QList<QListWidgetItem*> foundItems = findItems(dateTime.toString(),Qt::MatchExactly);
     if(foundItems.size()>0) {
         QListWidgetItem* foundItem = foundItems.first();
         QModelIndex index = indexFromItem(foundItem);
         QModelIndex next = index.sibling(index.row()+1,index.column());
         if(next.isValid()) {
-            return itemFromIndex(next)->text();
+            return itemFromIndex(next)->data(50).toString();
         }
     }
     return NULL;
 }
 QString ThumbnailView::getPreviousPhoto(QString photo) {
-    QList<QListWidgetItem*> foundItems = findItems(photo,Qt::MatchExactly);
+    QDateTime dateTime = ImageUtils::getDateTimeFromFilename(photo);
+    QList<QListWidgetItem*> foundItems = findItems(dateTime.toString(),Qt::MatchExactly);
     if(foundItems.size()>0) {
         QListWidgetItem* foundItem = foundItems.first();
         QModelIndex index = indexFromItem(foundItem);
         QModelIndex next = index.sibling(index.row()-1,index.column());
         if(next.isValid()) {
-            return itemFromIndex(next)->text();
+            return itemFromIndex(next)->data(50).toString();
         }
     }
     return NULL;
@@ -113,7 +115,7 @@ QString ThumbnailView::getPreviousPhoto(QString photo) {
 void ThumbnailView::photoChanged(QString newPhoto) {
     for(int i=0; i<count(); i++) {
         QListWidgetItem *localItem = item(i);
-        if(localItem->text()==newPhoto) {
+        if(localItem->data(50).toString()==newPhoto) {
             setItemSelected(localItem,true);
             setCurrentItem(localItem);
             scrollTo(indexFromItem(localItem));
@@ -177,6 +179,8 @@ void ThumbnailView::refreshWithEvents(QList<QString> events) {
         }
         i++;
     }
+    //Show recent events first
+    sortItems(Qt::DescendingOrder);
 }
 
 void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
@@ -193,7 +197,9 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         f.setPointSize(1);
         item->setFont(f);
         item->setSizeHint(size);
-        item->setText(path);
+        QDateTime time = ImageUtils::getDateTimeFromFilename(path);
+        item->setText(time.toString());
+        item->setData(50,QVariant(path));
         item->setBackgroundColor(QColor(42,42,42));
         if(findItems(item->text(),Qt::MatchExactly).size()==0) {
             addItem(item);
@@ -206,4 +212,6 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         }
         i++;
     }
+    //Show photos in order of date taken
+    sortItems(Qt::AscendingOrder);
 }
