@@ -25,6 +25,7 @@ public:
     QSize sizeHint() const;
     QString getNextPhoto(QString photo);
     QString getPreviousPhoto(QString photo);
+    static const int PHOTO_PATH_PROPERTY;
 protected:
     void keyPressEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent * event);

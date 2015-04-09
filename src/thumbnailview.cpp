@@ -1,5 +1,7 @@
 #include "thumbnailview.h"
 
+const int ThumbnailView::PHOTO_PATH_PROPERTY = 50;
+
 ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
 {
     setViewMode(QListWidget::IconMode);
@@ -78,8 +80,8 @@ void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
     setSelectionMode(QAbstractItemView::SingleSelection);
     ThumbnailWidget *widget = (ThumbnailWidget*) itemWidget(item);
     if(widget->getType()=="Photo") {
-        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->data(50).toString());
-        emit photoDoubleClicked(item->data(50).toString());
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->data(PHOTO_PATH_PROPERTY).toString());
+        emit photoDoubleClicked(item->data(PHOTO_PATH_PROPERTY).toString());
     } else if(widget->getType()=="Event") {
         ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(item->text());
     }
@@ -93,7 +95,7 @@ QString ThumbnailView::getNextPhoto(QString photo) {
         QModelIndex index = indexFromItem(foundItem);
         QModelIndex next = index.sibling(index.row()+1,index.column());
         if(next.isValid()) {
-            return itemFromIndex(next)->data(50).toString();
+            return itemFromIndex(next)->data(PHOTO_PATH_PROPERTY).toString();
         }
     }
     return NULL;
@@ -106,7 +108,7 @@ QString ThumbnailView::getPreviousPhoto(QString photo) {
         QModelIndex index = indexFromItem(foundItem);
         QModelIndex next = index.sibling(index.row()-1,index.column());
         if(next.isValid()) {
-            return itemFromIndex(next)->data(50).toString();
+            return itemFromIndex(next)->data(PHOTO_PATH_PROPERTY).toString();
         }
     }
     return NULL;
@@ -115,7 +117,7 @@ QString ThumbnailView::getPreviousPhoto(QString photo) {
 void ThumbnailView::photoChanged(QString newPhoto) {
     for(int i=0; i<count(); i++) {
         QListWidgetItem *localItem = item(i);
-        if(localItem->data(50).toString()==newPhoto) {
+        if(localItem->data(PHOTO_PATH_PROPERTY).toString()==newPhoto) {
             setItemSelected(localItem,true);
             setCurrentItem(localItem);
             scrollTo(indexFromItem(localItem));
@@ -199,7 +201,7 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         item->setSizeHint(size);
         QDateTime time = ImageUtils::getDateTimeFromFilename(path);
         item->setText(time.toString());
-        item->setData(50,QVariant(path));
+        item->setData(PHOTO_PATH_PROPERTY,QVariant(path));
         item->setBackgroundColor(QColor(42,42,42));
         if(findItems(item->text(),Qt::MatchExactly).size()==0) {
             addItem(item);
