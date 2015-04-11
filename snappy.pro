@@ -22,13 +22,14 @@ SOURCES += src/utils/imageutils.cpp \
     src/wizards/setupwizard.cpp \
     src/eventfolder.cpp \
     src/eventtreewidget.cpp \
-    src/largephotoview.cpp \
     src/main.cpp \
     src/mainwidget.cpp \
     src/mainwindow.cpp \
     src/photoarea.cpp \
     src/thumbnailview.cpp \
-    src/thumbnailwidget.cpp
+    src/thumbnailwidget.cpp \
+    src/largephotowidget.cpp \
+    src/largephotoview.cpp
 
 HEADERS  += src/utils/imageutils.h \
     src/utils/importer.h \
@@ -39,11 +40,12 @@ HEADERS  += src/utils/imageutils.h \
     src/wizards/setupwizard.h \
     src/eventfolder.h \
     src/eventtreewidget.h \
-    src/largephotoview.h \
     src/mainwidget.h \
     src/mainwindow.h \
     src/photoarea.h \
     src/thumbnailview.h \
-    src/thumbnailwidget.h
+    src/thumbnailwidget.h \
+    src/largephotowidget.h \
+    src/largephotoview.h
 
 RESOURCES = application.qrc

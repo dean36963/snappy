@@ -97,6 +97,7 @@ void PhotoArea::showThumbs() {
     if(largePhotoView!=NULL) {
         layout->removeWidget(largePhotoView);
         delete largePhotoView;
+        largePhotoView = NULL;
     }
     layout->addWidget(listArea,0,0,1,2);
     layout->addWidget(label,1,0);
