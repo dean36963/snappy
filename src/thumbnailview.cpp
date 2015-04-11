@@ -199,7 +199,7 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         f.setPointSize(1);
         item->setFont(f);
         item->setSizeHint(size);
-        QDateTime time = ImageUtils::getDateTimeFromFilename(path);
+        QDateTime time = ImageUtils::getImageDate(path);
         item->setText(time.toString());
         item->setData(PHOTO_PATH_PROPERTY,QVariant(path));
         item->setBackgroundColor(QColor(42,42,42));
