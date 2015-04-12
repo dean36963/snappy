@@ -23,6 +23,8 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
         listArea->thumbSizeChanged(thumbSizeSlider->value());
     }
 
+    largePhotoView = NULL;
+
     layout->addWidget(listArea,0,0,1,2);
     layout->addWidget(label,1,0);
     layout->addWidget(thumbSizeSlider,1,1);
@@ -40,16 +42,13 @@ PhotoArea::~PhotoArea()
     delete label;
     delete listArea;
     delete thumbSizeSlider;
-    delete backAction;
 }
 
 
 void PhotoArea::eventChanged() {
     QString path = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventPath();
     label->setText(path);
-    if(backAction->isEnabled()) {
-        showThumbs();
-    }
+    showThumbs();
 }
 
 void PhotoArea::showFullPhoto(QString photoPath) {
@@ -60,38 +59,13 @@ void PhotoArea::showFullPhoto(QString photoPath) {
     label->hide();
     thumbSizeSlider->hide();
 
-    largePhotoView = new LargePhotoView(photoPath,this);
+    largePhotoView = new LargePhotoView(photoPath,this,listArea);
     layout->addWidget(largePhotoView,1,1);
-
-    backAction->setEnabled(true);
-    nextAction->setEnabled(true);
-    prevAction->setEnabled(true);
+    connect(largePhotoView,SIGNAL(disposed()),this,SLOT(largePhotoViewDisposed()));
 }
 
-void PhotoArea::addMenuItems(QMenuBar *menu) {
-    QMenu *navMenu = menu->addMenu("Navigation");
-
-    //Add navigation Items
-
-    backAction = new QAction(QIcon::fromTheme("go-up"),"Back",this);
-    backAction->setShortcut(QKeySequence("Escape"));
-    navMenu->addAction(backAction);
-    backAction->setEnabled(false);
-    connect(backAction,SIGNAL(triggered()),this,SLOT(showThumbs()));
-
-    navMenu->addSeparator();
-
-    nextAction = new QAction(QIcon::fromTheme("go-next"),"Next",this);
-    nextAction->setShortcut(QKeySequence("Right"));
-    navMenu->addAction(nextAction);
-    nextAction->setEnabled(false);
-    connect(nextAction,SIGNAL(triggered()),this,SLOT(nextPhoto()));
-
-    prevAction = new QAction(QIcon::fromTheme("go-previous"),"Previous",this);
-    prevAction->setShortcut(QKeySequence("Left"));
-    navMenu->addAction(prevAction);
-    prevAction->setEnabled(false);
-    connect(prevAction,SIGNAL(triggered()),this,SLOT(prevPhoto()));
+void PhotoArea::addMenuItems(QMenuBar *) {
+    //Not needed atm
 }
 
 void PhotoArea::showThumbs() {
@@ -107,30 +81,14 @@ void PhotoArea::showThumbs() {
     label->show();
     thumbSizeSlider->show();
     listArea->setFocus();
-
-    backAction->setEnabled(false);
-    nextAction->setEnabled(false);
-    prevAction->setEnabled(false);
 }
 
 
 void PhotoArea::eventActivated(QTreeWidgetItem *, int) {
-    if(backAction->isEnabled()) {
-        showThumbs();
-    }
+    showThumbs();
 }
 
-void PhotoArea::nextPhoto() {
-    QString nextPhoto = listArea->getNextPhoto(ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedPhotoPath());
-    if(nextPhoto!="") {
-        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(nextPhoto);
-    }
-}
-
-
-void PhotoArea::prevPhoto() {
-    QString prevPhoto = listArea->getPreviousPhoto(ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedPhotoPath());
-    if(prevPhoto!="") {
-        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(prevPhoto);
-    }
+void PhotoArea::largePhotoViewDisposed() {
+    largePhotoView = NULL;
+    showThumbs();
 }

@@ -1,7 +1,8 @@
 #include "largephotoview.h"
 
-LargePhotoView::LargePhotoView(QString path, QWidget *parent) : QWidget(parent) {
+LargePhotoView::LargePhotoView(QString path, QWidget *parent, ThumbnailView *listArea) : QWidget(parent) {
     layout = new QGridLayout(this);
+    this->listArea = listArea;
 
     photoWidget = new LargePhotoWidget(path,this);
     layout->addWidget(photoWidget,1,0);
@@ -10,11 +11,42 @@ LargePhotoView::LargePhotoView(QString path, QWidget *parent) : QWidget(parent) 
     layout->addWidget(toolbar,2,0);
     setLayout(layout);
 
-    toolbar->addAction(QIcon::fromTheme("folder"),"Open in file manager",this,SLOT(openInFileManager()));
-    toolbar->addAction(QIcon::fromTheme("image-x-generic"),"Edit photo in other application",this,SLOT(editPhoto()));
+    QString shortCut("O");
+    QAction *action = toolbar->addAction(QIcon::fromTheme("folder"),getShortcutLabel("Open in file manager",shortCut),
+                                         this,SLOT(openInFileManager()));
+    action->setShortcut(QKeySequence(shortCut));
+    shortCut = QString("E");
+    action = toolbar->addAction(QIcon::fromTheme("image-x-generic"),getShortcutLabel("Edit photo in other application",shortCut),
+                                this,SLOT(editPhoto()));
+    action->setShortcut(QKeySequence(shortCut));
     toolbar->addSeparator();
-    toolbar->addAction(QIcon::fromTheme("object-rotate-left"),"Rotate anti-clockwise",this,SLOT(rotatePhotoAntiClockwise()));
-    toolbar->addAction(QIcon::fromTheme("object-rotate-right"),"Rotate clockwise",this,SLOT(rotatePhotoClockwise()));
+    shortCut = QString("Ctrl+Shift+R");
+    action = toolbar->addAction(QIcon::fromTheme("object-rotate-left"),getShortcutLabel("Rotate anti-clockwise",shortCut),
+                                this,SLOT(rotatePhotoAntiClockwise()));
+    action->setShortcut(QKeySequence(shortCut));
+    shortCut = QString("Ctrl+R");
+    action = toolbar->addAction(QIcon::fromTheme("object-rotate-right"),getShortcutLabel("Rotate clockwise",shortCut),
+                                this,SLOT(rotatePhotoClockwise()));
+    action->setShortcut(QKeySequence(shortCut));
+
+    toolbar->addSeparator();
+
+    shortCut = QString("Escape");
+    action = toolbar->addAction(QIcon::fromTheme("go-up"),getShortcutLabel("Back to event",shortCut),
+                                this,SLOT(backAction()));
+    action->setShortcut(QKeySequence(shortCut));
+
+    shortCut = QString("Left");
+    action = toolbar->addAction(QIcon::fromTheme("go-previous"),getShortcutLabel("Previous photo",shortCut),
+                                this,SLOT(prevPhoto()));
+    action->setShortcut(QKeySequence(shortCut));
+
+    shortCut = QString("Right");
+    action = toolbar->addAction(QIcon::fromTheme("go-next"),getShortcutLabel("Next photo",shortCut),
+                                this,SLOT(nextPhoto()));
+    action->setShortcut(QKeySequence(shortCut));
+
+    setFocus();
 }
 
 LargePhotoView::~LargePhotoView()
@@ -22,6 +54,7 @@ LargePhotoView::~LargePhotoView()
     delete photoWidget;
     delete layout;
     delete toolbar;
+    emit disposed();
 }
 
 
@@ -61,3 +94,24 @@ void LargePhotoView::rotatePhoto(int rotation) {
     Importer::createThumbnail(model->getSelectedPhotoPath());
 }
 
+void LargePhotoView::backAction() {
+    delete this;
+}
+
+void LargePhotoView::prevPhoto() {
+    QString prevPhoto = listArea->getPreviousPhoto(ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedPhotoPath());
+    if(prevPhoto!="") {
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(prevPhoto);
+    }
+}
+
+void LargePhotoView::nextPhoto() {
+    QString nextPhoto = listArea->getNextPhoto(ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedPhotoPath());
+    if(nextPhoto!="") {
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(nextPhoto);
+    }
+}
+
+QString LargePhotoView::getShortcutLabel(QString tooltip, QString shortcut) {
+    return tooltip.append(" (").append(shortcut).append(")");
+}

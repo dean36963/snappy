@@ -6,6 +6,8 @@
 #include <QList>
 #include <QToolBar>
 #include <QDesktopServices>
+#include <QAction>
+#include <QKeySequence>
 
 #include <iostream>
 
@@ -13,28 +15,35 @@
 #include "src/model/applicationmodel.h"
 #include "src/model/librarymodel.h"
 #include "src/utils/importer.h"
+#include "src/thumbnailview.h"
 
 class LargePhotoView : public QWidget
 {
     Q_OBJECT
 public:
-    explicit LargePhotoView(QString path, QWidget *parent=0);
+    explicit LargePhotoView(QString path, QWidget *parent, ThumbnailView *listArea);
     ~LargePhotoView();
 
 private:
     LargePhotoWidget *photoWidget;
     QGridLayout *layout;
     QToolBar *toolbar;
+    ThumbnailView *listArea;
 
     void rotatePhoto(int rotation);
+    QString getShortcutLabel(QString tooltip,QString shortcut);
 
 signals:
+    void disposed();
 
 public slots:
     void openInFileManager();
     void rotatePhotoAntiClockwise();
     void rotatePhotoClockwise();
     void editPhoto();
+    void backAction();
+    void prevPhoto();
+    void nextPhoto();
 };
 
 #endif // LARGEPHOTOVIEW_H
