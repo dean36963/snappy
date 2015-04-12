@@ -40,8 +40,6 @@ LargePhotoWidget::~LargePhotoWidget()
     delete label;
     delete layout;
     delete image;
-    LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
-    disconnect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(pictureChanged(QString)));
 }
 
 void LargePhotoWidget::setImage(QSize size) {

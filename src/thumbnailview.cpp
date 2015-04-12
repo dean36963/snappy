@@ -205,8 +205,11 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         item->setBackgroundColor(QColor(42,42,42));
         if(findItems(item->text(),Qt::MatchExactly).size()==0) {
             addItem(item);
+            setItemWidget(item,widget);
+        } else {
+            delete widget;
+            delete item;
         }
-        setItemWidget(item,widget);
         if(i % refreshAfterThisManyPhotos == 0) {
             if(event!=NULL) {
                 event->processEvents();

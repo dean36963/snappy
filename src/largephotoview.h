@@ -10,6 +10,8 @@
 #include <iostream>
 
 #include "largephotowidget.h"
+#include "src/model/applicationmodel.h"
+#include "src/model/librarymodel.h"
 
 class LargePhotoView : public QWidget
 {
@@ -27,6 +29,7 @@ signals:
 
 public slots:
     void openInFileManager();
+    void rotatePhotoAntiClockwise();
 };
 
 #endif // LARGEPHOTOVIEW_H
