@@ -86,19 +86,10 @@ void Importer::updateProgressDialog(QProgressDialog *dialog, int index) {
     QApplication::processEvents();
 }
 
-//TODO use some part of this in imageutils
 void Importer::importPhoto(QString filePath) {
-    ExifData* exifData = exif_data_new_from_file(filePath.toStdString().c_str());
-    ExifContent* content = NULL;
-    ExifEntry* entry = NULL;
-    if(exifData!=NULL) {
-        content = *exifData->ifd;
-        entry = exif_content_get_entry(content,EXIF_TAG_DATE_TIME);
-    }
-
     QDateTime dateTime;
-
-    if(entry==NULL) {
+    dateTime = ImageUtils::getImageDateExiv2(filePath);
+    if(dateTime==QDateTime()) {
         cerr << "Cannot find tag on " << filePath.toStdString() << endl;
         //Attempt to parse date from filename. IMG_20140812_143012.jpg for example;
         dateTime = ImageUtils::getDateTimeFromFilename(filePath);
@@ -110,10 +101,6 @@ void Importer::importPhoto(QString filePath) {
             guessedFiles.append(filePath);
         }
 
-    } else {
-        string dateStringStd = string((const char*)entry->data);
-        QString dateString = QString::fromLocal8Bit(dateStringStd.c_str());
-        dateTime = QDateTime::fromString(dateString,ISODate);
     }
     QString importArea = getDirToImportTo(dateTime);
     QString importFile = getPathToImportTo(dateTime,filePath);

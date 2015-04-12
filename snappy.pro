@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = snappy
 TEMPLATE = app
 
-LIBS += -lexif
+LIBS += -lexiv2
 
 SOURCES += src/utils/imageutils.cpp \
     src/utils/importer.cpp \

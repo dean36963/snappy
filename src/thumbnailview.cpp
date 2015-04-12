@@ -89,6 +89,7 @@ void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
 
 QString ThumbnailView::getNextPhoto(QString photo) {
     QDateTime dateTime = ImageUtils::getImageDate(photo);
+    ImageUtils::getImageDateExiv2(photo);
     QList<QListWidgetItem*> foundItems = findItems(dateTime.toString(),Qt::MatchExactly);
     if(foundItems.size()>0) {
         QListWidgetItem* foundItem = foundItems.first();

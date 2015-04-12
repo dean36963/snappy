@@ -8,16 +8,7 @@
 
 #include <string>
 #include <iostream>
-
-#include <libexif/exif-data.h>
-#include <libexif/exif-byte-order.h>
-#include <libexif/exif-data-type.h>
-#include <libexif/exif-ifd.h>
-#include <libexif/exif-log.h>
-#include <libexif/exif-tag.h>
-#include <libexif/exif-content.h>
-#include <libexif/exif-mnote-data.h>
-#include <libexif/exif-mem.h>
+#include <exiv2/exiv2.hpp>
 
 using namespace std;
 
@@ -28,7 +19,9 @@ public:
     ~ImageUtils();
     static QMatrix getImageRotation(QString imagePath);
     static QDateTime getImageDate(QString imagePath);
+    static QDateTime getImageDateExiv2(QString imagePath);
     static QDateTime getDateTimeFromFilename(QString fileName);
+    static void printImageMetadata(QString imagePath);
 };
 
 #endif // IMAGEUTILS_H
