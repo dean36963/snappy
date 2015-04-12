@@ -11,6 +11,8 @@ LargePhotoView::LargePhotoView(QString path, QWidget *parent) : QWidget(parent) 
     setLayout(layout);
 
     toolbar->addAction(QIcon::fromTheme("folder"),"Open in file manager",this,SLOT(openInFileManager()));
+    toolbar->addAction(QIcon::fromTheme("image-x-generic"),"Edit photo in other application",this,SLOT(editPhoto()));
+    toolbar->addSeparator();
     toolbar->addAction(QIcon::fromTheme("object-rotate-left"),"Rotate anti-clockwise",this,SLOT(rotatePhotoAntiClockwise()));
     toolbar->addAction(QIcon::fromTheme("object-rotate-right"),"Rotate clockwise",this,SLOT(rotatePhotoClockwise()));
 }
@@ -29,6 +31,11 @@ void LargePhotoView::openInFileManager() {
     QDir containingDir = info.dir();
 
     QDesktopServices::openUrl("file://"+containingDir.absolutePath());
+}
+
+void LargePhotoView::editPhoto() {
+    QString photoPath = photoWidget->getImagePath();
+    QDesktopServices::openUrl("file://"+photoPath);
 }
 
 void LargePhotoView::rotatePhotoAntiClockwise() {

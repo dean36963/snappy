@@ -33,6 +33,7 @@ public slots:
     void openInFileManager();
     void rotatePhotoAntiClockwise();
     void rotatePhotoClockwise();
+    void editPhoto();
 };
 
 #endif // LARGEPHOTOVIEW_H
