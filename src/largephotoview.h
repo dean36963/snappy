@@ -12,6 +12,7 @@
 #include "largephotowidget.h"
 #include "src/model/applicationmodel.h"
 #include "src/model/librarymodel.h"
+#include "src/utils/importer.h"
 
 class LargePhotoView : public QWidget
 {

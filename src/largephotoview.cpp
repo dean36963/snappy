@@ -58,5 +58,6 @@ void LargePhotoView::rotatePhoto(int rotation) {
     QImage antiClockwiseImage = currentImage.transformed(antiClockwise,Qt::SmoothTransformation);
     antiClockwiseImage.save(model->getSelectedPhotoPath());
     model->setSelectedPhotoPath(model->getSelectedPhotoPath());
+    Importer::createThumbnail(model->getSelectedPhotoPath());
 }
 
