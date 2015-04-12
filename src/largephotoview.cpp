@@ -12,6 +12,7 @@ LargePhotoView::LargePhotoView(QString path, QWidget *parent) : QWidget(parent) 
 
     toolbar->addAction(QIcon::fromTheme("folder"),"Open in file manager",this,SLOT(openInFileManager()));
     toolbar->addAction(QIcon::fromTheme("object-rotate-left"),"Rotate anti-clockwise",this,SLOT(rotatePhotoAntiClockwise()));
+    toolbar->addAction(QIcon::fromTheme("object-rotate-right"),"Rotate clockwise",this,SLOT(rotatePhotoClockwise()));
 }
 
 LargePhotoView::~LargePhotoView()
@@ -31,15 +32,24 @@ void LargePhotoView::openInFileManager() {
 }
 
 void LargePhotoView::rotatePhotoAntiClockwise() {
+    rotatePhoto(-90);
+}
+
+void LargePhotoView::rotatePhotoClockwise() {
+    rotatePhoto(90);
+}
+
+void LargePhotoView::rotatePhoto(int rotation) {
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     QImage image = QImage(model->getSelectedPhotoPath());
     QMatrix currentRotation = ImageUtils::getImageRotation(model->getSelectedPhotoPath());
     QImage currentImage = image.transformed(currentRotation,Qt::SmoothTransformation);
 
     QMatrix antiClockwise = QMatrix();
-    antiClockwise.rotate(-90);
+    antiClockwise.rotate(rotation);
 
     QImage antiClockwiseImage = currentImage.transformed(antiClockwise,Qt::SmoothTransformation);
     antiClockwiseImage.save(model->getSelectedPhotoPath());
     model->setSelectedPhotoPath(model->getSelectedPhotoPath());
 }
+

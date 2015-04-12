@@ -25,11 +25,14 @@ private:
     QGridLayout *layout;
     QToolBar *toolbar;
 
+    void rotatePhoto(int rotation);
+
 signals:
 
 public slots:
     void openInFileManager();
     void rotatePhotoAntiClockwise();
+    void rotatePhotoClockwise();
 };
 
 #endif // LARGEPHOTOVIEW_H
