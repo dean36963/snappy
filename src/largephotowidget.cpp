@@ -18,7 +18,7 @@ LargePhotoWidget::LargePhotoWidget(QString photoPath, QWidget *parent) : QWidget
     pal.setColor(QPalette::Background,greyIsh);
     setAutoFillBackground(true);
     setPalette(pal);
-    show();  
+    show();
     resetZoom();
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
@@ -109,7 +109,14 @@ void LargePhotoWidget::drawZoomedState() {
     QRect zoomArea(midPointOfImage.x()-0.5*w,midPointOfImage.y()-0.5*h,
                    w,h);
 
-    cout << "Image size is: " << scaledImage.size().width() << "," << scaledImage.size().height() << endl;
+    if (zoomArea.width() > scaledImage.width()) {
+        zoomArea.setLeft(0);
+        zoomArea.setWidth(scaledImage.width());
+    }
+    if (zoomArea.height() > scaledImage.height()) {
+        zoomArea.setTop(0);
+        zoomArea.setHeight(scaledImage.height());
+    }
     QImage scaledCroppedImage = scaledImage.copy(zoomArea);
     label->setPixmap(QPixmap::fromImage(scaledCroppedImage));
 }
