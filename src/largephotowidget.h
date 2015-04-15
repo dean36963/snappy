@@ -12,6 +12,7 @@
 #include <QImage>
 #include <QRect>
 #include <QPoint>
+#include <QPointF>
 
 #include "src/model/applicationmodel.h"
 #include "src/utils/imageutils.h"
@@ -33,17 +34,22 @@ private:
     QImage *image;
     QRect *zoomArea;
     double zoomLevel;
+    QPointF *lastPoint;
+    QImage *imageForPanning;
 
     void setImage(QSize size);
     void checkZoom();
     void resetZoom();
     void drawZoomedState();
-
+    void drawPannedState();
+    bool isNewPanStateValid(double diffX, double diffY);
     QPoint getMidPoint(QRect input);
 
 protected:
     virtual void resizeEvent(QResizeEvent *);
     void wheelEvent(QWheelEvent *e);
+    virtual void mouseMoveEvent(QMouseEvent * event);
+    virtual void mouseReleaseEvent(QMouseEvent *);
 
 signals:
 
