@@ -25,6 +25,7 @@ MainWindow::~MainWindow()
         delete importer;
         delete importAction;
         delete quitAction;
+        delete settingsAction;
     }
 
     //Final should be settings
@@ -66,6 +67,15 @@ void MainWindow::setupMenus() {
     QObject::connect(quitAction,SIGNAL(triggered()),this,SLOT(quitClicked()));
     fileMenu->addAction(quitAction);
 
+    QMenu* settingsMenu = menu->addMenu("&Settings");
+
+    settingsAction = new QAction(QIcon::fromTheme("emblem-system"),"Settings",this);
+    settingsAction->setIconVisibleInMenu(true);
+    connect(settingsAction,SIGNAL(triggered()),this,SLOT(settingsClicked()));
+
+    settingsMenu->addAction(settingsAction);
+
+
     menu->setNativeMenuBar(true);
 
     mainWidget->addMenuItems(menu);
@@ -99,4 +109,12 @@ void MainWindow::saveSize() {
 
 bool MainWindow::hasQuit() {
     return quit;
+}
+
+void MainWindow::settingsClicked() {
+    SetupWizard* wiz = new SetupWizard(this);
+    if(wiz->exec()==QWizard::Accepted) {
+        cout << "Saving library location as: " << ApplicationModel::getApplicationModel()->getLibraryDirectory().toStdString() << endl;
+        ApplicationModel::getApplicationModel()->setLibraryDirectory(wiz->getLibraryPath());
+    }
 }

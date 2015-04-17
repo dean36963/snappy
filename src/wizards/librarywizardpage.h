@@ -10,8 +10,7 @@
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QFileDialog>
-
-#include "src/model/applicationmodel.h"
+#include <QStandardPaths>
 
 class LibraryWizardPage : public QWizardPage
 {

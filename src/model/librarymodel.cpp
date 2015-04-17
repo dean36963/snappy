@@ -176,6 +176,11 @@ QString LibraryModel::getSelectedPhotoPath() {
     return selectedPhoto;
 }
 
+void LibraryModel::libraryPathChanged(QString libraryPath) {
+    this->libraryPath = libraryPath;
+    libraryHasChanged();
+}
+
 void LibraryModel::libraryHasChanged() {
     populateModel();
     emit libraryChanged();

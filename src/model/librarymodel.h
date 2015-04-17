@@ -28,6 +28,7 @@ public:
     void setSelectedPhotoPath(QString selectedPhoto);
     QString getSelectedPhotoPath();
     void libraryHasChanged();
+    void libraryPathChanged(QString libraryPath);
     QString getFriendlyEventName(QString eventPath);
 private:
     void populateModel();

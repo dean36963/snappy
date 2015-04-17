@@ -34,12 +34,14 @@ private:
     Importer* importer;
     QAction *importAction;
     QAction *quitAction;
+    QAction *settingsAction;
     static const QString WINDOW_HEIGHT_PROPERTY;
     static const QString WINDOW_WIDTH_PROPERTY;
     bool quit;
 public slots:
     void importClicked();
     void quitClicked();
+    void settingsClicked();
 };
 
 #endif // MAINWINDOW_H
