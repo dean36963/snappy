@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QTreeWidget>
+#include <QAction>
+#include <QList>
 
 #include "src/model/librarymodel.h"
 #include "src/model/applicationmodel.h"
@@ -14,6 +16,12 @@ public:
     explicit EventTreeWidget(QWidget *parent = 0);
     ~EventTreeWidget();
 signals:
+private:
+    QList<QAction*> actions;
+    const static int ACTION_CONTEXT_ROLE;
+
+    void initActions();
+    void changeActionContext();
 public slots:
     void onSelectionChange();
     void onLibraryChange();
