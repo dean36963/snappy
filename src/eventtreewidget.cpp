@@ -49,10 +49,17 @@ void EventTreeWidget::onEventChanged() {
 
 void EventTreeWidget::changeActionContext() {
     LibraryModel::SELECTION_TYPE currentType = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventType();
+    RolesEnums::ActionContext actionContext;
+    if(currentType==LibraryModel::EVENT_VIEW) {
+        actionContext = RolesEnums::EVENTS_ONLY;
+    } else if(currentType==LibraryModel::FOLDER_VIEW) {
+        actionContext = RolesEnums::FOLDERS_ONLY;
+    }
     QListIterator<QAction*> it(actions);
     while(it.hasNext()) {
         QAction * action = it.next();
-        if(action->data().toInt()==currentType) {
+        if(action->data().toInt()==actionContext ||
+                action->data().toInt()==RolesEnums::ALL) {
             addAction(action);
         } else {
             removeAction(action);
@@ -62,13 +69,6 @@ void EventTreeWidget::changeActionContext() {
 
 void EventTreeWidget::initActions() {
     actions = QList<QAction*>();
-//    QAction* photoAction = new QAction("folder",this);
-//    photoAction->setStatusTip(tr("My action demo"));
-//    photoAction->setData(QVariant(LibraryModel::FOLDER_VIEW));
-//    QAction *eventAction = new QAction("event",this);
-//    eventAction->setStatusTip(tr("My action demo"));
-//    eventAction->setData(QVariant(LibraryModel::EVENT_VIEW));
-//    actions.append(photoAction);
-//    actions.append(eventAction);
+    actions.append(new OpenInFolderAction());
     setContextMenuPolicy(Qt::ActionsContextMenu);
 }

@@ -9,6 +9,9 @@
 #include "src/model/librarymodel.h"
 #include "src/model/applicationmodel.h"
 
+#include "src/actions/openfolderaction.h"
+#include "src/utils/rolesenums.h"
+
 class EventTreeWidget : public QTreeWidget
 {
     Q_OBJECT

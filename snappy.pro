@@ -34,7 +34,9 @@ SOURCES += src/utils/imageutils.cpp \
     src/thumbnailview.cpp \
     src/thumbnailwidget.cpp \
     src/largephotowidget.cpp \
-    src/largephotoview.cpp
+    src/largephotoview.cpp \
+    src/actions/openfolderaction.cpp \
+    src/utils/rolesenums.cpp
 
 HEADERS  += src/utils/imageutils.h \
     src/utils/importer.h \
@@ -51,6 +53,8 @@ HEADERS  += src/utils/imageutils.h \
     src/thumbnailview.h \
     src/thumbnailwidget.h \
     src/largephotowidget.h \
-    src/largephotoview.h
+    src/largephotoview.h \
+    src/actions/openfolderaction.h \
+    src/utils/rolesenums.h
 
 RESOURCES = application.qrc
