@@ -8,6 +8,7 @@
 #include <QList>
 #include <QListIterator>
 #include <QTreeWidgetItem>
+#include <QRegExp>
 
 #include "src/eventfolder.h"
 
@@ -30,26 +31,39 @@ public:
     void libraryHasChanged();
     void libraryPathChanged(QString libraryPath);
     QString getFriendlyEventName(QString eventPath);
+
+    bool isEventItem(QString path);
+
+    enum SELECTION_TYPE {
+        FOLDER_VIEW,EVENT_VIEW
+    };
+    SELECTION_TYPE getSelectedEventType();
+
 private:
     void populateModel();
     void getContainingFolders();
-    void createTreeItems();
     bool isYearItem(QString path);
     bool isMonthItem(QString path);
-    bool isEventItem(QString path);
-    QTreeWidgetItem* addTreeItem(QString folder);
+
+    void createFolderItems();
+    void createEventItems();
+    QTreeWidgetItem *createEventFromFolderItem(QTreeWidgetItem *folderItem);
 
     QString libraryPath;
-    QList<QString> eventFolders;
-    QList<QString> containingFolders;
     QList<QTreeWidgetItem*> treeItems;
-    QMap<QString, QTreeWidgetItem*> pathToItemMap;
     QString selectedEventPath;
     QString selectedPhoto;
+    QTreeWidgetItem* rootFolderWidgetItem;
+    QTreeWidgetItem* rootEventWidgetItem;
+    QList<QTreeWidgetItem *> createFolderItems(QString path);
+    SELECTION_TYPE selectedType;
+
+    static const int TREE_ITEM_PATH;
+    static const int TREE_ITEM_TYPE;
 
 signals:
     void selectedPhotoChanged(QString selectedPhoto);
-    void eventPathChanged(QString eventPath);
+    void eventPathChanged(QString eventPath,SELECTION_TYPE eventOrFolder);
     void libraryChanged();
 };
 

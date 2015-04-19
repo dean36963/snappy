@@ -31,8 +31,7 @@ PhotoArea::PhotoArea(QWidget *parent) : QWidget(parent)
     setLayout(layout);
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
-    connect(model,SIGNAL(eventPathChanged(QString)),this,SLOT(eventChanged()));
-
+    connect(model,SIGNAL(eventPathChanged(QString,SELECTION_TYPE)),this,SLOT(eventChanged()));
     connect(listArea,SIGNAL(photoDoubleClicked(QString)),this,SLOT(showFullPhoto(QString)));
 }
 

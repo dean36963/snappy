@@ -6,7 +6,10 @@ LibraryWizardPage::LibraryWizardPage(QWidget *parent) : QWizardPage(parent) {
 
     pathLabel = new QLabel("Library Path: ");
     pathLineEdit = new QLineEdit;
-    pathLineEdit->setText(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    QString currentLibDir = ApplicationModel::getApplicationModel()->getLibraryDirectory();
+    QString picturesStdDir = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    QString initialPath = currentLibDir!="" ? currentLibDir : picturesStdDir;
+    pathLineEdit->setText(initialPath);
     pathButton = new QPushButton("Browse");
     pathLabel->setBuddy(pathLineEdit);
 

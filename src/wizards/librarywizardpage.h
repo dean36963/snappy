@@ -12,6 +12,8 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 
+#include "src/model/applicationmodel.h"
+
 class LibraryWizardPage : public QWizardPage
 {
     Q_OBJECT

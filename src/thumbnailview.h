@@ -12,6 +12,7 @@
 #include <QKeyEvent>
 
 #include "src/model/applicationmodel.h"
+#include "src/model/librarymodel.h"
 #include "src/thumbnailwidget.h"
 
 using namespace std;

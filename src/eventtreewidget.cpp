@@ -7,7 +7,7 @@ EventTreeWidget::EventTreeWidget(QWidget *parent) : QTreeWidget(parent)
     setHeaderHidden(true);
     connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(onSelectionChange()));
     connect(libraryModel,SIGNAL(libraryChanged()),this,SLOT(onLibraryChange()));
-    connect(libraryModel,SIGNAL(eventPathChanged(QString)),this,SLOT(onEventChanged()));
+    connect(libraryModel,SIGNAL(eventPathChanged(QString,SELECTION_TYPE)),this,SLOT(onEventChanged()));
     connect(this,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(onItemClicked(QTreeWidgetItem*,int)));
     setSortingEnabled(true);
 }

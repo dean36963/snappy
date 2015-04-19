@@ -24,6 +24,7 @@ public:
     bool isValidEventFolderPath(QDir dir);
     bool containsPhotos(QDir dir);
     bool isCorrectDepth(QDir dir);
+    bool isValidPhotoName(QString path);
     QList<QString> getPhotos(QDir dir);
     QList<QString> getEventSubdirectories(QDir dir);
 private:

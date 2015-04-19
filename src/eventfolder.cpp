@@ -43,14 +43,14 @@ bool EventFolder::isCorrectDepth(QDir dir) {
 
 QList<QString> EventFolder::getPhotos(QDir dir) {
     QList<QString> photos = QList<QString>();
-    if(isValidEventFolderPath(dir)) {
         dir.setFilter(QDir::NoDotAndDotDot|QDir::Files);
         QDirIterator it(dir);
         while(it.hasNext()) {
-            it.next();
-            photos.append(it.filePath());
+            QString file = it.next();
+            if(isValidPhotoName(file)) {
+                photos.append(it.filePath());
+            }
         }
-    }
     return photos;
 }
 
@@ -67,4 +67,13 @@ QList<QString> EventFolder::getEventSubdirectories(QDir dir) {
         }
     }
     return eventsFound;
+}
+
+bool EventFolder::isValidPhotoName(QString path) {
+    QStringList parts = path.split('.');
+    QString extension = parts.last();
+    if(extension.toUpper()=="JPG") {
+        return true;
+    }
+    return false;
 }

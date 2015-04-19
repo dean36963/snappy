@@ -18,7 +18,7 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(photoChanged(QString)));
-    connect(model,SIGNAL(eventPathChanged(QString)),this,SLOT(refresh()));
+    connect(model,SIGNAL(eventPathChanged(QString,SELECTION_TYPE)),this,SLOT(refresh()));
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
     connect(this,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(itemClicked(QListWidgetItem*)));
 
@@ -33,13 +33,18 @@ ThumbnailView::~ThumbnailView()
 void ThumbnailView::refresh() {
     startProgress();
     LibraryModel *libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
+    LibraryModel::SELECTION_TYPE type = libraryModel->getSelectedEventType();
     QList<QString> photos = libraryModel->getPhotosFromPath(libraryModel->getSelectedEventPath());
     clear();
-    if(photos.empty()) {
-        QList<QString> events = libraryModel->getEventsUnderPath(libraryModel->getSelectedEventPath());
-        refreshWithEvents(events);
-    } else {
+    if(type==LibraryModel::FOLDER_VIEW) {
         refreshWithPhotos(photos);
+    } else if(type==LibraryModel::EVENT_VIEW) {
+        if(libraryModel->isEventItem(libraryModel->getSelectedEventPath())) {
+            refreshWithPhotos(photos);
+        } else {
+            QList<QString> events = libraryModel->getEventsUnderPath(libraryModel->getSelectedEventPath());
+            refreshWithEvents(events);
+        }
     }
     endProgress();
 }

@@ -84,5 +84,5 @@ void ApplicationModel::deleteModel() {
 void ApplicationModel::setLibraryDirectory(QString libraryDirectory) {
     properties->setProperty(LIBRARY_PATH_PROPERTY,libraryDirectory);
     properties->saveProperties();
-    libModel->libraryPathChanged(libraryDirectory);
+    getLibraryModel()->libraryPathChanged(libraryDirectory);
 }
