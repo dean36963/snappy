@@ -14,6 +14,9 @@
 #include "src/model/applicationmodel.h"
 #include "src/model/librarymodel.h"
 #include "src/thumbnailwidget.h"
+#include "src/utils/rolesenums.h"
+
+#include "src/actions/thumbview/editphotoaction.h"
 
 using namespace std;
 
@@ -26,10 +29,10 @@ public:
     QSize sizeHint() const;
     QString getNextPhoto(QString photo);
     QString getPreviousPhoto(QString photo);
-    static const int PHOTO_PATH_PROPERTY;
+
+    void refocus();
 protected:
     void keyPressEvent(QKeyEvent *event);
-    void mousePressEvent(QMouseEvent * event);
 private:
     QEventLoop *event;
     void startProgress();
@@ -37,6 +40,9 @@ private:
     int mouseModifiers;
     void refreshWithEvents(QList<QString> events);
     void refreshWithPhotos(QList<QString> photos);
+    QList<QAction*> actions;
+    void initActions();
+    bool isActionVisible(QAction *action);
 
 signals:
     void photoDoubleClicked(QString photoPath);
@@ -46,7 +52,7 @@ public slots:
     void thumbSizeChanged(int newValue);
     void itemDoubleClicked(QListWidgetItem *item);
     void photoChanged(QString newPhoto);
-    void itemClicked(QListWidgetItem* item);
+    void updateActionContext();
 };
 
 #endif // THUMBNAILVIEW_H

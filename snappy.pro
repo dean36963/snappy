@@ -38,7 +38,8 @@ SOURCES += src/utils/imageutils.cpp \
     src/actions/openfolderaction.cpp \
     src/utils/rolesenums.cpp \
     src/actions/renameeventaction.cpp \
-    src/utils/libraryutils.cpp
+    src/utils/libraryutils.cpp \
+    src/actions/thumbview/editphotoaction.cpp
 
 HEADERS  += src/utils/imageutils.h \
     src/utils/importer.h \
@@ -59,6 +60,7 @@ HEADERS  += src/utils/imageutils.h \
     src/actions/openfolderaction.h \
     src/utils/rolesenums.h \
     src/actions/renameeventaction.h \
-    src/utils/libraryutils.h
+    src/utils/libraryutils.h \
+    src/actions/thumbview/editphotoaction.h
 
 RESOURCES = application.qrc

@@ -1,6 +1,6 @@
 #include "thumbnailview.h"
 
-const int ThumbnailView::PHOTO_PATH_PROPERTY = 50;
+
 
 ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
 {
@@ -14,15 +14,16 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
     setAutoFillBackground(true);
     setPalette(pal);
     show();
-    setSelectionMode(QAbstractItemView::MultiSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     connect(model,SIGNAL(selectedPhotoChanged(QString)),this,SLOT(photoChanged(QString)));
     connect(model,SIGNAL(eventPathChanged(QString,SELECTION_TYPE)),this,SLOT(refresh()));
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
-    connect(this,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(itemClicked(QListWidgetItem*)));
+    connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(updateActionContext()));
 
     setSortingEnabled(true);
+    initActions();
 }
 
 ThumbnailView::~ThumbnailView()
@@ -82,11 +83,10 @@ void ThumbnailView::thumbSizeChanged(int newValue) {
 }
 
 void ThumbnailView::itemDoubleClicked(QListWidgetItem *item) {
-    setSelectionMode(QAbstractItemView::SingleSelection);
     ThumbnailWidget *widget = (ThumbnailWidget*) itemWidget(item);
     if(widget->getType()=="Photo") {
-        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->data(PHOTO_PATH_PROPERTY).toString());
-        emit photoDoubleClicked(item->data(PHOTO_PATH_PROPERTY).toString());
+        ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedPhotoPath(item->data(RolesEnums::PHOTO_PATH_PROPERTY).toString());
+        emit photoDoubleClicked(item->data(RolesEnums::PHOTO_PATH_PROPERTY).toString());
     } else if(widget->getType()=="Event") {
         ApplicationModel::getApplicationModel()->getLibraryModel()->setSelectedEventPath(item->text());
     }
@@ -101,7 +101,7 @@ QString ThumbnailView::getNextPhoto(QString photo) {
         QModelIndex index = indexFromItem(foundItem);
         QModelIndex next = index.sibling(index.row()+1,index.column());
         if(next.isValid()) {
-            return itemFromIndex(next)->data(PHOTO_PATH_PROPERTY).toString();
+            return itemFromIndex(next)->data(RolesEnums::PHOTO_PATH_PROPERTY).toString();
         }
     }
     return NULL;
@@ -114,16 +114,17 @@ QString ThumbnailView::getPreviousPhoto(QString photo) {
         QModelIndex index = indexFromItem(foundItem);
         QModelIndex next = index.sibling(index.row()-1,index.column());
         if(next.isValid()) {
-            return itemFromIndex(next)->data(PHOTO_PATH_PROPERTY).toString();
+            return itemFromIndex(next)->data(RolesEnums::PHOTO_PATH_PROPERTY).toString();
         }
     }
     return NULL;
 }
 
 void ThumbnailView::photoChanged(QString newPhoto) {
+    setSelectionMode(QAbstractItemView::SingleSelection);
     for(int i=0; i<count(); i++) {
         QListWidgetItem *localItem = item(i);
-        if(localItem->data(PHOTO_PATH_PROPERTY).toString()==newPhoto) {
+        if(localItem->data(RolesEnums::PHOTO_PATH_PROPERTY).toString()==newPhoto) {
             setItemSelected(localItem,true);
             setCurrentItem(localItem);
             scrollTo(indexFromItem(localItem));
@@ -133,7 +134,6 @@ void ThumbnailView::photoChanged(QString newPhoto) {
 }
 
 void ThumbnailView::keyPressEvent(QKeyEvent *event) {
-    setSelectionMode(QAbstractItemView::SingleSelection);
     if(event->key()==Qt::Key_Return) {
         if(selectedItems().length()==1) {
             QListWidgetItem * first = selectedItems().first();
@@ -141,24 +141,6 @@ void ThumbnailView::keyPressEvent(QKeyEvent *event) {
         }
     } else {
         QListWidget::keyPressEvent(event);
-    }
-}
-
-void ThumbnailView::mousePressEvent(QMouseEvent * event) {
-    setSelectionMode(QAbstractItemView::MultiSelection);
-    mouseModifiers = event->modifiers();
-    QListWidget::mousePressEvent(event);
-}
-
-void ThumbnailView::itemClicked(QListWidgetItem* item) {
-    if(mouseModifiers == Qt::ControlModifier) {
-    } else {
-        QListIterator<QListWidgetItem*> currentSelectedItems = selectedItems();
-        while(currentSelectedItems.hasNext()) {
-            QListWidgetItem* selectedItem = currentSelectedItems.next();
-            setItemSelected(selectedItem,false);
-        }
-        setItemSelected(item,true);
     }
 }
 
@@ -178,6 +160,7 @@ void ThumbnailView::refreshWithEvents(QList<QString> events) {
         item->setSizeHint(size);
         item->setText(path);
         item->setBackgroundColor(QColor(42,42,42));
+        item->setData(RolesEnums::PHOTO_OR_EVENT_PROPERTY,QVariant(RolesEnums::EVENT));
         addItem(item);
         setItemWidget(item,widget);
         if(i % refreshAfterThisManyEvents == 0) {
@@ -207,7 +190,8 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
         item->setSizeHint(size);
         QDateTime time = ImageUtils::getImageDate(path);
         item->setText(time.toString());
-        item->setData(PHOTO_PATH_PROPERTY,QVariant(path));
+        item->setData(RolesEnums::PHOTO_PATH_PROPERTY,QVariant(path));
+        item->setData(RolesEnums::PHOTO_OR_EVENT_PROPERTY,QVariant(RolesEnums::PHOTO));
         item->setBackgroundColor(QColor(42,42,42));
         if(findItems(item->text(),Qt::MatchExactly).size()==0) {
             addItem(item);
@@ -226,3 +210,67 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
     //Show photos in order of date taken
     sortItems(Qt::AscendingOrder);
 }
+
+void ThumbnailView::initActions() {
+    actions = QList<QAction*>();
+    actions.append(new EditPhotoAction());
+
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+    QListIterator<QAction*> it(actions);
+    while(it.hasNext()) {
+        QAction* action = it.next();
+        addAction(action);
+    }
+}
+
+void ThumbnailView::refocus() {
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+}
+
+void ThumbnailView::updateActionContext() {
+    QListIterator<QAction*> it(actions);
+    while(it.hasNext()) {
+        QAction * action = it.next();
+        if(isActionVisible(action)) {
+            ((EditPhotoAction*)action)->setItems(selectedItems());
+            addAction(action);
+        } else {
+            removeAction(action);
+        }
+    }
+}
+
+bool ThumbnailView::isActionVisible(QAction *action) {
+    QList<QListWidgetItem*> items = selectedItems();
+    int actionRole = action->data().toInt();
+    QListIterator<QListWidgetItem*> it(items);
+    while(it.hasNext()) {
+        QListWidgetItem* item = it.next();
+        int thumbType = item->data(RolesEnums::PHOTO_OR_EVENT_PROPERTY).toInt();
+        if(thumbType==RolesEnums::PHOTO) {
+            if(items.size()==1
+                        && actionRole==RolesEnums::SINGLE_PHOTO) {
+                    return true;
+            } else if(items.size()>1
+                        && actionRole==RolesEnums::MULTIPLE_PHOTOS) {
+                    return true;
+            }
+            if(actionRole==RolesEnums::ANY_PHOTOS) {
+                return true;
+            }
+        } else if(thumbType==RolesEnums::EVENT) {
+            if(items.size()==1
+                        && actionRole==RolesEnums::SINGLE_EVENT) {
+                    return true;
+            } else if(items.size()>1
+                        && actionRole==RolesEnums::MULTIPLE_EVENTS) {
+                    return true;
+            }
+            if(actionRole==RolesEnums::ANY_EVENTS) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+

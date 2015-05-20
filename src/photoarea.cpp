@@ -80,6 +80,7 @@ void PhotoArea::showThumbs() {
     label->show();
     thumbSizeSlider->show();
     listArea->setFocus();
+    listArea->refocus();
 }
 
 
