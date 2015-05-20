@@ -10,6 +10,7 @@
 #include "src/model/applicationmodel.h"
 
 #include "src/actions/openfolderaction.h"
+#include "src/actions/renameeventaction.h"
 #include "src/utils/rolesenums.h"
 
 class EventTreeWidget : public QTreeWidget

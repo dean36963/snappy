@@ -31,8 +31,12 @@ public:
     void libraryHasChanged();
     void libraryPathChanged(QString libraryPath);
     QString getFriendlyEventName(QString eventPath);
+    bool isNamedEvent(QString path);
+    QString getEventDate(QString path);
 
     bool isEventItem(QString path);
+
+
 
     enum SELECTION_TYPE {
         FOLDER_VIEW,EVENT_VIEW

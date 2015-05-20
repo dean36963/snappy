@@ -158,12 +158,21 @@ QString LibraryModel::getFriendlyEventName(QString eventPath) {
     if(!ev.isValidEventFolderPath(eventDir)) {
         return "";
     }
-    QString eventName = eventDir.dirName();
-    eventDir.cdUp();
-    QString monthName = eventDir.dirName();
-    eventDir.cdUp();
-    QString yearName = eventDir.dirName();
-    return eventName.append("/").append(monthName).append("/").append(yearName);
+
+    if(isNamedEvent(eventPath)) {
+        QDir eventDir(eventPath);
+        QString eventDirName= eventDir.dirName();
+        QRegularExpression regexp("_");
+        QStringList tokens = eventDirName.split(regexp);
+        return tokens.at(1);
+    } else {
+        QString eventName = eventDir.dirName();
+        eventDir.cdUp();
+        QString monthName = eventDir.dirName();
+        eventDir.cdUp();
+        QString yearName = eventDir.dirName();
+        return eventName.append("/").append(monthName).append("/").append(yearName);
+    }
 }
 
 void LibraryModel::createFolderItems() {
@@ -245,9 +254,38 @@ void LibraryModel::createEventItems() {
 
 QTreeWidgetItem *LibraryModel::createEventFromFolderItem(QTreeWidgetItem *folderItem) {
     QTreeWidgetItem *newItem = new QTreeWidgetItem();
-    newItem->setText(0,folderItem->text(0));
+    if(isNamedEvent(folderItem->data(0,TREE_ITEM_PATH).toString())) {
+        newItem->setText(0,getFriendlyEventName(folderItem->data(0,TREE_ITEM_PATH).toString()));
+    } else {
+        newItem->setText(0,folderItem->text(0));
+    }
     newItem->setData(0,TREE_ITEM_PATH,folderItem->data(0,TREE_ITEM_PATH));
     newItem->setData(0,TREE_ITEM_TYPE,QVariant(EVENT_VIEW));
     newItem->setIcon(0,QIcon::fromTheme("folder"));
     return newItem;
+}
+
+
+QString LibraryModel::getEventDate(QString path) {
+    if(!isNamedEvent(path)) {
+        return "";
+    }
+    QDir eventDir(path);
+    QString eventDirName= eventDir.dirName();
+    QRegularExpression regexp("_");
+    QStringList tokens = eventDirName.split(regexp);
+    return tokens.at(0);
+}
+
+bool LibraryModel::isNamedEvent(QString path) {
+    if(!isEventItem(path)) {
+        return false;
+    }
+    QDir eventDir(path);
+    QString eventDirName= eventDir.dirName();
+    if(eventDirName.contains("_")) {
+        return true;
+    } else {
+        return false;
+    }
 }

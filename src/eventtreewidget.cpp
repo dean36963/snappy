@@ -48,9 +48,12 @@ void EventTreeWidget::onEventChanged() {
 }
 
 void EventTreeWidget::changeActionContext() {
-    LibraryModel::SELECTION_TYPE currentType = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventType();
+    LibraryModel *libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
+    LibraryModel::SELECTION_TYPE currentType = libraryModel->getSelectedEventType();
+
     RolesEnums::ActionContext actionContext;
-    if(currentType==LibraryModel::EVENT_VIEW) {
+    if(currentType==LibraryModel::EVENT_VIEW &&
+            libraryModel->isEventItem(libraryModel->getSelectedEventPath())) {
         actionContext = RolesEnums::EVENTS_ONLY;
     } else if(currentType==LibraryModel::FOLDER_VIEW) {
         actionContext = RolesEnums::FOLDERS_ONLY;
@@ -70,5 +73,6 @@ void EventTreeWidget::changeActionContext() {
 void EventTreeWidget::initActions() {
     actions = QList<QAction*>();
     actions.append(new OpenInFolderAction());
+    actions.append(new RenameEventAction());
     setContextMenuPolicy(Qt::ActionsContextMenu);
 }
