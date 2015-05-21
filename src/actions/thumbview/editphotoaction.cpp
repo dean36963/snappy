@@ -1,15 +1,11 @@
 #include "editphotoaction.h"
 
-EditPhotoAction::EditPhotoAction() : QAction(0) {
+EditPhotoAction::EditPhotoAction() : AbstractThumbAction() {
     setIcon(QIcon::fromTheme("image-x-generic"));
     setStatusTip("Edit photo in other application");
     setText("Edit photo in other application");
     setData(RolesEnums::SINGLE_PHOTO);
     connect(this,SIGNAL(triggered()),this,SLOT(edit()));
-}
-
-void EditPhotoAction::setItems(QList<QListWidgetItem *> items) {
-    this->items = items;
 }
 
 void EditPhotoAction::edit() {

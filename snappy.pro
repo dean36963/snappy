@@ -39,7 +39,8 @@ SOURCES += src/utils/imageutils.cpp \
     src/utils/rolesenums.cpp \
     src/actions/renameeventaction.cpp \
     src/utils/libraryutils.cpp \
-    src/actions/thumbview/editphotoaction.cpp
+    src/actions/thumbview/editphotoaction.cpp \
+    src/actions/thumbview/abstractthumbaction.cpp
 
 HEADERS  += src/utils/imageutils.h \
     src/utils/importer.h \
@@ -61,6 +62,7 @@ HEADERS  += src/utils/imageutils.h \
     src/utils/rolesenums.h \
     src/actions/renameeventaction.h \
     src/utils/libraryutils.h \
-    src/actions/thumbview/editphotoaction.h
+    src/actions/thumbview/editphotoaction.h \
+    src/actions/thumbview/abstractthumbaction.h
 
 RESOURCES = application.qrc

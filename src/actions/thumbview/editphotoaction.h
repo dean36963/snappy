@@ -6,18 +6,17 @@
 #include <QList>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QObject>
 
 #include "src/utils/rolesenums.h"
+#include "src/actions/thumbview/abstractthumbaction.h"
 
-class EditPhotoAction : public QAction {
+class EditPhotoAction : public AbstractThumbAction {
     Q_OBJECT
 public:
-    EditPhotoAction();
-    void setItems(QList<QListWidgetItem*> items);
+    explicit EditPhotoAction();
 public slots:
     void edit();
-private:
-    QList<QListWidgetItem*> items;
 };
 
 #endif // EDITPHOTOACTION_H

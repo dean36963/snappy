@@ -17,6 +17,7 @@
 #include "src/utils/rolesenums.h"
 
 #include "src/actions/thumbview/editphotoaction.h"
+#include "src/actions/thumbview/abstractthumbaction.h"
 
 using namespace std;
 
@@ -40,9 +41,9 @@ private:
     int mouseModifiers;
     void refreshWithEvents(QList<QString> events);
     void refreshWithPhotos(QList<QString> photos);
-    QList<QAction*> actions;
+    QList<AbstractThumbAction*> actions;
     void initActions();
-    bool isActionVisible(QAction *action);
+    bool isActionVisible(AbstractThumbAction *action);
 
 signals:
     void photoDoubleClicked(QString photoPath);

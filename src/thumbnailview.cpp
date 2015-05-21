@@ -212,14 +212,14 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
 }
 
 void ThumbnailView::initActions() {
-    actions = QList<QAction*>();
+    actions = QList<AbstractThumbAction*>();
     actions.append(new EditPhotoAction());
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
-    QListIterator<QAction*> it(actions);
+    QListIterator<AbstractThumbAction*> it(actions);
     while(it.hasNext()) {
-        QAction* action = it.next();
-        addAction(action);
+        AbstractThumbAction* action = it.next();
+        addAction((QAction*)action);
     }
 }
 
@@ -228,21 +228,21 @@ void ThumbnailView::refocus() {
 }
 
 void ThumbnailView::updateActionContext() {
-    QListIterator<QAction*> it(actions);
+    QListIterator<AbstractThumbAction*> it(actions);
     while(it.hasNext()) {
-        QAction * action = it.next();
+        AbstractThumbAction * action = it.next();
         if(isActionVisible(action)) {
-            ((EditPhotoAction*)action)->setItems(selectedItems());
-            addAction(action);
+            action->setItems(selectedItems());
+            addAction((QAction*)action);
         } else {
-            removeAction(action);
+            removeAction((QAction*)action);
         }
     }
 }
 
-bool ThumbnailView::isActionVisible(QAction *action) {
+bool ThumbnailView::isActionVisible(AbstractThumbAction *action) {
     QList<QListWidgetItem*> items = selectedItems();
-    int actionRole = action->data().toInt();
+    int actionRole = ((QAction*)action)->data().toInt();
     QListIterator<QListWidgetItem*> it(items);
     while(it.hasNext()) {
         QListWidgetItem* item = it.next();
