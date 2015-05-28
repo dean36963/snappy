@@ -18,6 +18,7 @@ public:
         PHOTO,EVENT
     };
     static const int PHOTO_PATH_PROPERTY;
+    static const int EVENT_PATH_PROPERTY;
     static const int PHOTO_OR_EVENT_PROPERTY;
 };
 

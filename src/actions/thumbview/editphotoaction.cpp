@@ -1,6 +1,6 @@
 #include "editphotoaction.h"
 
-EditPhotoAction::EditPhotoAction() : AbstractThumbAction() {
+EditPhotoAction::EditPhotoAction(QWidget* parent) : AbstractThumbAction(parent) {
     setIcon(QIcon::fromTheme("image-x-generic"));
     setStatusTip("Edit photo in other application");
     setText("Edit photo in other application");

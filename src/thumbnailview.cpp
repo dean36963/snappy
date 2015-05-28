@@ -161,6 +161,7 @@ void ThumbnailView::refreshWithEvents(QList<QString> events) {
         item->setText(path);
         item->setBackgroundColor(QColor(42,42,42));
         item->setData(RolesEnums::PHOTO_OR_EVENT_PROPERTY,QVariant(RolesEnums::EVENT));
+        item->setData(RolesEnums::EVENT_PATH_PROPERTY,QVariant(path));
         addItem(item);
         setItemWidget(item,widget);
         if(i % refreshAfterThisManyEvents == 0) {
@@ -213,7 +214,8 @@ void ThumbnailView::refreshWithPhotos(QList<QString> photos) {
 
 void ThumbnailView::initActions() {
     actions = QList<AbstractThumbAction*>();
-    actions.append(new EditPhotoAction());
+    actions.append(new EditPhotoAction(this));
+    actions.append(new MergeEventsAction(this));
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
     QListIterator<AbstractThumbAction*> it(actions);

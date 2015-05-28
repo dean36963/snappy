@@ -277,6 +277,30 @@ QString LibraryModel::getEventDate(QString path) {
     return tokens.at(0);
 }
 
+QDate LibraryModel::getEventDateTime(QString path) {
+    QDir eventDir(path);
+    QString dayOfMonth;
+    if(isNamedEvent(path)) {
+        QString eventDirName= eventDir.dirName();
+        QRegularExpression regexp("_");
+        QStringList tokens = eventDirName.split(regexp);
+        dayOfMonth = tokens.at(0);
+    } else {
+        dayOfMonth = eventDir.dirName();
+    }
+    eventDir.cdUp();
+    QString monthName = eventDir.dirName();
+    eventDir.cdUp();
+    QString yearName = eventDir.dirName();
+
+    QString dateString = QString("");
+    dateString = yearName + "/" + monthName + "/" + dayOfMonth;
+
+    QDate date = QDate::fromString(dateString,"yyyy/MM/dd");
+    return date;
+
+}
+
 bool LibraryModel::isNamedEvent(QString path) {
     if(!isEventItem(path)) {
         return false;

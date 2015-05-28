@@ -8,7 +8,7 @@
 class AbstractThumbAction : public QAction {
     Q_OBJECT
 public:
-    explicit AbstractThumbAction();
+    explicit AbstractThumbAction(QWidget *parent);
     void setItems(QList<QListWidgetItem*> items);
 protected:
     QList<QListWidgetItem*> items;

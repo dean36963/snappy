@@ -14,7 +14,7 @@
 class EditPhotoAction : public AbstractThumbAction {
     Q_OBJECT
 public:
-    explicit EditPhotoAction();
+    explicit EditPhotoAction(QWidget *parent);
 public slots:
     void edit();
 };

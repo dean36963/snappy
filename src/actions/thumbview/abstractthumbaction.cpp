@@ -1,6 +1,6 @@
 #include "abstractthumbaction.h"
 
-AbstractThumbAction::AbstractThumbAction() : QAction(0) {
+AbstractThumbAction::AbstractThumbAction(QWidget *parent) : QAction(parent) {
 }
 
 void AbstractThumbAction::setItems(QList<QListWidgetItem*> items) {

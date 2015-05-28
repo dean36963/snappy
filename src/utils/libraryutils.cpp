@@ -43,3 +43,58 @@ bool LibraryUtils::validName(QString name) {
         return false;
     }
 }
+
+bool LibraryUtils::mergeEvents(QString newName, QList<QString> eventPathList) {
+    LibraryModel* libraryModel = ApplicationModel::getApplicationModel()->getLibraryModel();
+    if(eventPathList.size()<=1) {
+        //can't merge one event!
+        return false;
+    }
+
+    QDate earliestDate = QDate();
+
+    QListIterator<QString> eventPaths(eventPathList);
+    while(eventPaths.hasNext()) {
+        QString eventPath = eventPaths.next();
+        QDate date = libraryModel->getEventDateTime(eventPath);
+        if(earliestDate.isNull() || date <= earliestDate) {
+           earliestDate = date;
+        }
+    }
+
+    QString newEventPath(Importer::getDirToImportTo(QDateTime(earliestDate)));
+    newEventPath.append("_");
+    newEventPath.append(newName);
+
+    QDir newEventDir = QDir(newEventPath);
+    if(newEventDir.exists() && !eventPathList.contains(newEventPath)) {
+        //Can't merge into an existing folder that you didn't intend to merge.
+        return false;
+    } else if (!newEventDir.exists()) {
+        bool newDir = newEventDir.mkpath(newEventPath);
+        if(!newDir) {
+            cout << "Can't create directory to merge event." << endl;
+            return false;
+        }
+    }
+
+    eventPaths.toFront();
+    while(eventPaths.hasNext()) {
+        QString eventPath = eventPaths.next();
+        QListIterator<QString> photosInEvent(libraryModel->getPhotosFromPath(eventPath));
+        while(photosInEvent.hasNext()) {
+            QString photoPath = photosInEvent.next();
+            QFileInfo photoFile(photoPath);
+            QString destinationFile(newEventPath+"/"+photoFile.fileName());
+            bool didItWork = QFile::rename(photoPath,destinationFile);
+            if(!didItWork) {
+                cout << "Cannot move file: " << photoPath.toStdString() << endl;
+            }
+        }
+    }
+
+    libraryModel->libraryHasChanged();
+    return true;
+}
+
+

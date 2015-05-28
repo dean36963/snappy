@@ -34,6 +34,7 @@ public:
     int importPhotosFromFolder(QString path, QWidget *parent);
     bool importPhotos(QWidget *parent);
     static void createThumbnail(QString origFile);
+    static QString getDirToImportTo(QDateTime dateTime);
 private:
     int importSuccess;
     int importFail;
@@ -47,8 +48,7 @@ private:
     QProgressDialog *createProgressDialog(QWidget *parent,int files);
     void updateProgressDialog(QProgressDialog *dialog,int index);
     QString getPathToImportTo(QDateTime dateTime, QString filename);
-    QString getDirToImportTo(QDateTime dateTime);
-    QString padInt(int i);
+    static QString padInt(int i);
     bool isDuplicate(QString file1, QString file2);
     void showImportSummary(QWidget *parent);
     void safeCopy(QString from, QString to);

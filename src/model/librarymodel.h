@@ -9,6 +9,7 @@
 #include <QListIterator>
 #include <QTreeWidgetItem>
 #include <QRegExp>
+#include <QDate>
 
 #include "src/eventfolder.h"
 
@@ -33,6 +34,7 @@ public:
     QString getFriendlyEventName(QString eventPath);
     bool isNamedEvent(QString path);
     QString getEventDate(QString path);
+    QDate getEventDateTime(QString path);
 
     bool isEventItem(QString path);
 

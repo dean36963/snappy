@@ -56,10 +56,16 @@ void ThumbnailWidget::setImage() {
         QList<QString> photos = ApplicationModel::getApplicationModel()->getLibraryModel()->getPhotosFromPath(photoPath);
         if(!photos.isEmpty()) {
             QMatrix rotation = ImageUtils::getImageRotation(photos.first());
+            QFile firstImageThumbnail(getThumbPath(photos.first()));
+            if(!firstImageThumbnail.exists()) {
+                Importer::createThumbnail(photos.first());
+            }
             QImage icon(getThumbPath(photos.first()));
             icon = icon.transformed(rotation);
             QSize size(width,height);
             thumbnail->setPixmap(roundCorners(icon,size));
+        } else {
+            cout << "Cannot find photos for this event" << endl;
         }
     }
 }
