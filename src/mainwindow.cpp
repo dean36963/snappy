@@ -69,7 +69,7 @@ void MainWindow::setupMenus() {
 
     QMenu* settingsMenu = menu->addMenu("&Settings");
 
-    settingsAction = new QAction(QIcon::fromTheme("emblem-system"),"Settings",this);
+    settingsAction = new QAction(QIcon::fromTheme("preferences-system"),"Library location",this);
     settingsAction->setIconVisibleInMenu(true);
     connect(settingsAction,SIGNAL(triggered()),this,SLOT(settingsClicked()));
 
