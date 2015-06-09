@@ -35,6 +35,7 @@ private:
     QAction *importAction;
     QAction *quitAction;
     QAction *settingsAction;
+    QAction *aboutAction;
     static const QString WINDOW_HEIGHT_PROPERTY;
     static const QString WINDOW_WIDTH_PROPERTY;
     bool quit;
@@ -42,6 +43,7 @@ public slots:
     void importClicked();
     void quitClicked();
     void settingsClicked();
+    void aboutClicked();
 };
 
 #endif // MAINWINDOW_H

@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
         restoreSize();
 
         setupMenus();
+        setWindowIcon(QIcon(":/res/snappy.png"));
     }
 }
 
@@ -75,6 +76,13 @@ void MainWindow::setupMenus() {
 
     settingsMenu->addAction(settingsAction);
 
+    QMenu *helpMenu = menu->addMenu("&Help");
+
+    aboutAction = new QAction(QIcon::fromTheme("dialog-information"),"About",this);
+    aboutAction->setIconVisibleInMenu(true);
+    connect(aboutAction,SIGNAL(triggered()),this,SLOT(aboutClicked()));
+    helpMenu->addAction(aboutAction);
+
 
     menu->setNativeMenuBar(true);
 
@@ -117,4 +125,9 @@ void MainWindow::settingsClicked() {
         cout << "Saving library location as: " << ApplicationModel::getApplicationModel()->getLibraryDirectory().toStdString() << endl;
         ApplicationModel::getApplicationModel()->setLibraryDirectory(wiz->getLibraryPath());
     }
+}
+
+void MainWindow::aboutClicked() {
+    QString message("Snappy is a simple photo manager written in C++ using Qt.");
+    QMessageBox::about(this,"Snappy",message);
 }

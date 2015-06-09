@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>res/eventMask.png</file>
+        <file>res/snappy.png</file>
     </qresource>
 </RCC>
