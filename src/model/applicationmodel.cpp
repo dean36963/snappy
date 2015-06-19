@@ -4,7 +4,7 @@ const QString ApplicationModel::LIBRARY_PATH_PROPERTY = "library.path";
 
 ApplicationModel *ApplicationModel::instance = NULL;
 
-ApplicationModel::ApplicationModel()
+ApplicationModel::ApplicationModel() : QObject(0)
 {
     preferredThumbnailSize = new QSize(100,100);
     libModel=NULL;
@@ -85,4 +85,8 @@ void ApplicationModel::setLibraryDirectory(QString libraryDirectory) {
     properties->setProperty(LIBRARY_PATH_PROPERTY,libraryDirectory);
     properties->saveProperties();
     getLibraryModel()->libraryPathChanged(libraryDirectory);
+}
+
+void ApplicationModel::requestFullscreen(QWidget* widget) {
+    emit widgetRequestedFullscreen(widget);
 }

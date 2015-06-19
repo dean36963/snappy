@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {
     quit = false;
     checkForFirstTimeRunning();
+    connect(ApplicationModel::getApplicationModel(),SIGNAL(widgetRequestedFullscreen(QWidget*)),this,SLOT(fullscreenChanged(QWidget*)));
 
     if(!quit) {
         mainWidget = new MainWidget();
@@ -130,4 +131,21 @@ void MainWindow::settingsClicked() {
 void MainWindow::aboutClicked() {
     QString message("Snappy is a simple photo manager written in C++ using Qt.");
     QMessageBox::about(this,"Snappy",message);
+}
+
+void MainWindow::fullscreenChanged(QWidget *widget) {
+    cout << "Main window has detected a full screen request" << endl;
+    if(isFullScreen()) {
+        menuBar()->setVisible(true);
+        if(widget!=NULL) {
+            takeCentralWidget();
+        }
+        setCentralWidget(mainWidget);
+        showNormal();
+    } else if (!isFullScreen() && widget!=NULL) {
+        menuBar()->setVisible(false);
+        mainWidget = (MainWidget*) takeCentralWidget();
+        setCentralWidget(widget);
+        showFullScreen();
+    }
 }

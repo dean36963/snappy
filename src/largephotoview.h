@@ -33,8 +33,11 @@ private:
     void rotatePhoto(int rotation);
     QString getShortcutLabel(QString tooltip,QString shortcut);
 
+    bool fullscreen;
+
 signals:
     void disposed();
+    void restore();
 
 public slots:
     void openInFileManager();
@@ -44,6 +47,7 @@ public slots:
     void backAction();
     void prevPhoto();
     void nextPhoto();
+    void toggleFullscreen();
 };
 
 #endif // LARGEPHOTOVIEW_H

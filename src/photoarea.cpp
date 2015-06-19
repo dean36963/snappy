@@ -61,6 +61,7 @@ void PhotoArea::showFullPhoto(QString photoPath) {
     largePhotoView = new LargePhotoView(photoPath,this,listArea);
     layout->addWidget(largePhotoView,1,1);
     connect(largePhotoView,SIGNAL(disposed()),this,SLOT(largePhotoViewDisposed()));
+    connect(largePhotoView,SIGNAL(restore()),this,SLOT(largePhotoViewRestored()));
 }
 
 void PhotoArea::addMenuItems(QMenuBar *) {
@@ -91,4 +92,8 @@ void PhotoArea::eventActivated(QTreeWidgetItem *, int) {
 void PhotoArea::largePhotoViewDisposed() {
     largePhotoView = NULL;
     showThumbs();
+}
+
+void PhotoArea::largePhotoViewRestored() {
+    layout->addWidget(largePhotoView,1,1);
 }

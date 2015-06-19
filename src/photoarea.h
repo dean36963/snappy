@@ -38,6 +38,7 @@ public slots:
     void showThumbs();
     void eventActivated(QTreeWidgetItem *, int);
     void largePhotoViewDisposed();
+    void largePhotoViewRestored();
 };
 
 #endif // PHOTOAREA_H

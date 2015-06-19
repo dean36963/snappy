@@ -6,12 +6,15 @@
 #include <QDir>
 #include <string>
 #include <QSize>
+#include <QMainWindow>
+#include <QObject>
 
 #include "src/model/librarymodel.h"
 #include "src/utils/persistedproperties.h"
 
-class ApplicationModel
+class ApplicationModel : public QObject
 {
+    Q_OBJECT
 protected:
     ApplicationModel();
     ~ApplicationModel();
@@ -29,12 +32,17 @@ public:
     void setPreferredThumbnailSize(QSize *thumbnailSize);
     PersistedProperties *getProperties();
     static const QString LIBRARY_PATH_PROPERTY;
+    void requestFullscreen(QWidget* widget);
 
 private:
     static ApplicationModel *instance;
     LibraryModel *libModel;
     QSize *preferredThumbnailSize;
     PersistedProperties *properties;
+
+signals:
+    void widgetRequestedFullscreen(QWidget* widget);
+
 
 };
 

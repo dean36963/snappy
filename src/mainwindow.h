@@ -44,6 +44,7 @@ public slots:
     void quitClicked();
     void settingsClicked();
     void aboutClicked();
+    void fullscreenChanged(QWidget *widget);
 };
 
 #endif // MAINWINDOW_H

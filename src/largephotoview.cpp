@@ -4,6 +4,8 @@ LargePhotoView::LargePhotoView(QString path, QWidget *parent, ThumbnailView *lis
     layout = new QGridLayout(this);
     this->listArea = listArea;
 
+    fullscreen = false;
+
     photoWidget = new LargePhotoWidget(path,this);
     layout->addWidget(photoWidget,1,0);
 
@@ -44,6 +46,12 @@ LargePhotoView::LargePhotoView(QString path, QWidget *parent, ThumbnailView *lis
     shortCut = QString("Right");
     action = toolbar->addAction(QIcon::fromTheme("go-next"),getShortcutLabel("Next photo",shortCut),
                                 this,SLOT(nextPhoto()));
+    action->setShortcut(QKeySequence(shortCut));
+
+    toolbar->addSeparator();
+
+    shortCut = QString("F11");
+    action = toolbar->addAction(QIcon::fromTheme("view-fullscreen"),getShortcutLabel("Toggle Fullscreen",shortCut),this,SLOT(toggleFullscreen()));
     action->setShortcut(QKeySequence(shortCut));
 
     setFocus();
@@ -95,7 +103,13 @@ void LargePhotoView::rotatePhoto(int rotation) {
 }
 
 void LargePhotoView::backAction() {
-    delete this;
+    //Need to either toggle fullscreen or delete
+    if(fullscreen) {
+        fullscreen = false;
+        ApplicationModel::getApplicationModel()->requestFullscreen(NULL);
+    } else {
+        delete this;
+    }
 }
 
 void LargePhotoView::prevPhoto() {
@@ -114,4 +128,14 @@ void LargePhotoView::nextPhoto() {
 
 QString LargePhotoView::getShortcutLabel(QString tooltip, QString shortcut) {
     return tooltip.append(" (").append(shortcut).append(")");
+}
+
+void LargePhotoView::toggleFullscreen() {
+    if(!fullscreen) {
+        ApplicationModel::getApplicationModel()->requestFullscreen(this);
+    } else {
+        ApplicationModel::getApplicationModel()->requestFullscreen(this);
+        emit restore();
+    }
+    fullscreen = !fullscreen;
 }
