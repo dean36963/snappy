@@ -24,6 +24,9 @@ ThumbnailView::ThumbnailView(QWidget *parent) : QListWidget(parent)
 
     setSortingEnabled(true);
     initActions();
+
+    //Avoid flickering and missing rightmost widgets.
+    setLayoutMode(SinglePass);
 }
 
 ThumbnailView::~ThumbnailView()
