@@ -7,6 +7,7 @@
 #include <QString>
 #include <QFileInfo>
 #include <QRegExp>
+#include <QInputDialog>
 #include <QList>
 #include <QDateTime>
 
@@ -25,6 +26,8 @@ public:
     static bool validName(QString name);
     static bool mergeEvents(QString newName, QList<QString> eventPaths);
     static bool getEarliestEventDate(QList<QString> eventPaths);
+    static void renameEventWithPrompt(QString eventPath, QWidget *parent);
+    static bool isValidInput(QFileInfo info, QString userInput, QString *errorMessage);
 
 signals:
 

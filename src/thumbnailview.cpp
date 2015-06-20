@@ -219,6 +219,7 @@ void ThumbnailView::initActions() {
     actions = QList<AbstractThumbAction*>();
     actions.append(new EditPhotoAction(this));
     actions.append(new MergeEventsAction(this));
+    actions.append(new RenameEventThumbAction(this));
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
     QListIterator<AbstractThumbAction*> it(actions);

@@ -19,6 +19,7 @@
 #include "src/actions/thumbview/editphotoaction.h"
 #include "src/actions/thumbview/abstractthumbaction.h"
 #include "src/actions/thumbview/mergeeventsaction.h"
+#include "src/actions/thumbview/renameeventthumbaction.h"
 
 using namespace std;
 

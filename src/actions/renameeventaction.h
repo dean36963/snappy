@@ -3,7 +3,6 @@
 
 #include <QAction>
 #include <QDesktopServices>
-#include <QInputDialog>
 #include <QFileInfo>
 
 #include <iostream>
@@ -20,8 +19,6 @@ class RenameEventAction : public QAction
 public:
     RenameEventAction();
     ~RenameEventAction();
-private:
-    bool isValidInput(QFileInfo info, QString userInput, QString *errorMessage);
 public slots:
     void renameEvent();
 };
