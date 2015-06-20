@@ -222,3 +222,8 @@ bool LargePhotoWidget::isNewPanStateValid(double diffX, double diffY) {
         return false;
     }
 }
+
+void LargePhotoWidget::mouseDoubleClickEvent(QMouseEvent * event) {
+    QWidget::mouseDoubleClickEvent(event);
+    emit doubleClicked();
+}

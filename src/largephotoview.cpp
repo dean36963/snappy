@@ -54,6 +54,8 @@ LargePhotoView::LargePhotoView(QString path, QWidget *parent, ThumbnailView *lis
     action = toolbar->addAction(QIcon::fromTheme("view-fullscreen"),getShortcutLabel("Toggle Fullscreen",shortCut),this,SLOT(toggleFullscreen()));
     action->setShortcut(QKeySequence(shortCut));
 
+    connect(photoWidget,SIGNAL(doubleClicked()),this,SLOT(toggleFullscreen()));
+
     setFocus();
 }
 

@@ -50,9 +50,10 @@ protected:
     void wheelEvent(QWheelEvent *e);
     virtual void mouseMoveEvent(QMouseEvent * event);
     virtual void mouseReleaseEvent(QMouseEvent *);
+    virtual void mouseDoubleClickEvent(QMouseEvent * event);
 
 signals:
-
+    void doubleClicked();
 
 public slots:
     void pictureChanged(QString newPic);
