@@ -29,7 +29,8 @@ bool EventFolder::containsPhotos(QDir dir) {
 
 bool EventFolder::isCorrectDepth(QDir dir) {
     std::string libDir = libFolder.toStdString();
-    bool canChange = dir.cd("../../..");
+    QString upThree = QString("..").append(QDir::separator()).append("..").append(QDir::separator()).append("..");
+    bool canChange = dir.cd(upThree);
     if(!canChange) {
         return false;
     }
@@ -72,6 +73,7 @@ QList<QString> EventFolder::getEventSubdirectories(QDir dir) {
 bool EventFolder::isValidPhotoName(QString path) {
     QStringList parts = path.split('.');
     QString extension = parts.last();
+    //TODO I'm sure more formats will work!
     if(extension.toUpper()=="JPG") {
         return true;
     }

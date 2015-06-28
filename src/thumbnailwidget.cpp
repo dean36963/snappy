@@ -84,7 +84,7 @@ QPixmap ThumbnailWidget::roundCorners(QImage icon,QSize size) {
 
 QString ThumbnailWidget::getThumbPath(QString path) {
     QFileInfo mainPhotoInfo(path);
-    return mainPhotoInfo.dir().absolutePath().append("/.thumbnails/").append(mainPhotoInfo.fileName());
+    return mainPhotoInfo.dir().absolutePath().append(QDir::separator()).append(".thumbnails").append(QDir::separator()).append(mainPhotoInfo.fileName());
 }
 
 bool ThumbnailWidget::ifThumbExists() {

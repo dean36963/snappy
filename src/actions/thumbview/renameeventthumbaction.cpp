@@ -2,7 +2,6 @@
 
 RenameEventThumbAction::RenameEventThumbAction(QWidget *parent) : AbstractThumbAction(parent)
 {
-//    setIcon(QIcon::fromTheme("image-x-generic"));
     setStatusTip("Rename event");
     setText("Rename event");
     setData(RolesEnums::SINGLE_EVENT);

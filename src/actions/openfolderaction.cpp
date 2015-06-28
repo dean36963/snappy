@@ -14,5 +14,6 @@ OpenInFolderAction::~OpenInFolderAction() {
 
 void OpenInFolderAction::openInFolder() {
     QString eventPath = ApplicationModel::getApplicationModel()->getLibraryModel()->getSelectedEventPath();
+    //TODO X platform?
     QDesktopServices::openUrl(QUrl("file://"+eventPath));
 }

@@ -8,6 +8,7 @@ ApplicationModel::ApplicationModel() : QObject(0)
 {
     preferredThumbnailSize = new QSize(100,100);
     libModel=NULL;
+    cout << "Persisting to: " << getMainConfigFile().toStdString() << endl;
     properties = new PersistedProperties(getMainConfigFile());
 }
 
@@ -33,6 +34,10 @@ QString ApplicationModel::getConfigDir() {
 }
 
 QString ApplicationModel::getMainConfigFile() {
+    QDir configDir(getConfigDir());
+    if(!configDir.exists()) {
+        configDir.mkpath(configDir.absolutePath());
+    }
     return appendPath(getConfigDir().toStdString(),"config");
 }
 
@@ -40,8 +45,7 @@ QString ApplicationModel::appendPath(std::string path1, std::string path2)
 {
     QString qPath1 = QString::fromUtf8(path1.c_str());
     QString qPath2 = QString::fromUtf8(path2.c_str());
-    QString separator = QString(QDir::separator());
-    return QDir::cleanPath(qPath1 + separator + qPath2);
+    return QDir::cleanPath(qPath1 + QString(QDir::separator()) + qPath2);
 }
 
 QString ApplicationModel::getLibraryDirectory() {

@@ -115,7 +115,7 @@ void Importer::importPhoto(QString filePath) {
 QString Importer::getPathToImportTo(QDateTime dateTime, QString filepath) {
     QString dirToImportTo = getDirToImportTo(dateTime);
     QFileInfo info(filepath);
-    return dirToImportTo.append("/").append(info.fileName());
+    return dirToImportTo.append(QDir::separator()).append(info.fileName());
 }
 
 QString Importer::getDirToImportTo(QDateTime dateTime) {
@@ -124,8 +124,8 @@ QString Importer::getDirToImportTo(QDateTime dateTime) {
     QString dayString = padInt(dateTime.date().day());
     QString monthString = padInt(dateTime.date().month());
     QString yearString = QString::number(dateTime.date().year());
-    QString pathToImportTo = libPath.append("/").append(yearString).append("/")
-            .append(monthString).append("/").append(dayString);
+    QString pathToImportTo = libPath.append(QDir::separator()).append(yearString).append(QDir::separator())
+            .append(monthString).append(QDir::separator()).append(dayString);
     return pathToImportTo;
 }
 
@@ -192,7 +192,7 @@ void Importer::safeCopy(QString from, QString to) {
     }
     int duplicateName=1;
     QFileInfo old(from);
-    to.append("/").append(old.fileName());
+    to.append(QDir::separator()).append(old.fileName());
     QString toNew(to);
     while(true) {
         QFile f(toNew);
@@ -210,12 +210,12 @@ void Importer::safeCopy(QString from, QString to) {
 
 void Importer::createThumbnail(QString origFile) {
     QFileInfo origInfo(origFile);
-    QDir thumbnailDir(origInfo.absoluteDir().absolutePath().append("/.thumbnails"));
+    QDir thumbnailDir(origInfo.absoluteDir().absolutePath().append(QDir::separator()).append(".thumbnails"));
     if(!thumbnailDir.exists()) {
         thumbnailDir.mkdir(thumbnailDir.absolutePath());
     }
     QImage origImage(origFile);
     QImage thumbImage = origImage.scaled(200,200,KeepAspectRatio);
-    QString thumbFile = thumbnailDir.absolutePath().append("/").append(origInfo.fileName());
+    QString thumbFile = thumbnailDir.absolutePath().append(QDir::separator()).append(origInfo.fileName());
     thumbImage.save(thumbFile);
 }

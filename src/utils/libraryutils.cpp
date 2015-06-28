@@ -18,7 +18,7 @@ bool LibraryUtils::renameEvent(QString eventPath, QString newName) {
         oldName = libraryModel->getEventDate(eventPath);
     }
     QDir containingDir = info.dir();
-    QString newPath = QDir::toNativeSeparators(containingDir.absolutePath().append("/")
+    QString newPath = QDir::toNativeSeparators(containingDir.absolutePath().append(QDir::separator())
                     .append(oldName).append("_").append(newName));
     QFileInfo newDirInfo(newPath);
     if(newDirInfo.exists()) {
@@ -85,7 +85,7 @@ bool LibraryUtils::mergeEvents(QString newName, QList<QString> eventPathList) {
         while(photosInEvent.hasNext()) {
             QString photoPath = photosInEvent.next();
             QFileInfo photoFile(photoPath);
-            QString destinationFile(newEventPath+"/"+photoFile.fileName());
+            QString destinationFile(newEventPath+QDir::separator()+photoFile.fileName());
             bool didItWork = QFile::rename(photoPath,destinationFile);
             if(!didItWork) {
                 cout << "Cannot move file: " << photoPath.toStdString() << endl;
@@ -111,8 +111,7 @@ void LibraryUtils::renameEventWithPrompt(QString eventPath,QWidget *parent) {
 
         userInput = QInputDialog::getText(parent,"Rename Event",errorMessage,
                                                   QLineEdit::Normal,userInput,&ok);
-        //TODO proper path handling, do for windows port :S
-        info.setFile(info.dir().absolutePath().append("/").append(userInput));
+        info.setFile(info.dir().absolutePath().append(QDir::separator()).append(userInput));
         valid = isValidInput(info,userInput,&errorMessage);
     } while (ok && !valid);
     if(ok) {

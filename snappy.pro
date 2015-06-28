@@ -14,7 +14,7 @@ TEMPLATE = app
 #Linux
 LIBS += -lexiv2
 #Windows
-#LIBS += -lexiv2 -liconv -lexpat
+#LIBS += -lexiv2 -liconv -lexpat -lpsapi
 #Mac
 #LIBS += Unknown
 

@@ -65,7 +65,7 @@ bool LibraryModel::isYearItem(QString path) {
 bool LibraryModel::isMonthItem(QString path) {
     QDir dir(path);
     QFileInfo info(dir.absolutePath());
-    dir.cd("../..");
+    dir.cd(".."+QString(QDir::separator())+"..");
     if(dir.absolutePath()!=libraryPath) {
         return false;
     }
@@ -171,7 +171,7 @@ QString LibraryModel::getFriendlyEventName(QString eventPath) {
         QString monthName = eventDir.dirName();
         eventDir.cdUp();
         QString yearName = eventDir.dirName();
-        return eventName.append("/").append(monthName).append("/").append(yearName);
+        return eventName.append(QDir::separator()).append(monthName).append(QDir::separator()).append(yearName);
     }
 }
 
@@ -294,7 +294,7 @@ QDate LibraryModel::getEventDateTime(QString path) {
     QString yearName = eventDir.dirName();
 
     QString dateString = QString("");
-    dateString = yearName + "/" + monthName + "/" + dayOfMonth;
+    dateString = yearName + QDir::separator() + monthName + QDir::separator() + dayOfMonth;
 
     QDate date = QDate::fromString(dateString,"yyyy/MM/dd");
     return date;

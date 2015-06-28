@@ -10,5 +10,6 @@ EditPhotoAction::EditPhotoAction(QWidget* parent) : AbstractThumbAction(parent) 
 
 void EditPhotoAction::edit() {
     QListWidgetItem *item = items.at(0);
+    //TODO possibly ned to alter this url for windows?
     QDesktopServices::openUrl("file://"+item->data(RolesEnums::PHOTO_PATH_PROPERTY).toString());
 }
