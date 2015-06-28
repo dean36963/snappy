@@ -6,7 +6,7 @@ Just written as a side project for fun. Currently just runs on Linux but should 
 
 ## Requirements
 If you want to build yourself from source, you'll need ``Qt5`` and ``eviv2``.
-Linker options may need to be changed for different operating systems, uncomment the appropriate sections.
+Linker options may need to be changed for different operating systems, uncomment the appropriate sections in the snappy.pro file.
 Qt Creator will be able to build from this project easily enough but if you want to build in the command line, you'll need to run the following code.
 
 ```bash
