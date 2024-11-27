@@ -5,7 +5,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QImage>
-#include <QMatrix>
+#include <QMatrix2x2>
 #include <QPixmap>
 #include <QFileInfo>
 #include <QDir>

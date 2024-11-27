@@ -10,10 +10,10 @@ ImageUtils::~ImageUtils()
 
 }
 
-QMatrix ImageUtils::getImageRotation(QString imagePath) {
-    QMatrix rotation = QMatrix();
+QTransform ImageUtils::getImageRotation(QString imagePath) {
+    QTransform rotation = QTransform();
 
-    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(imagePath.toStdString().c_str());
+    Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(std::move(imagePath.toStdString().c_str()));
     if(image.get() == 0) {
         return rotation;
     }
@@ -69,7 +69,7 @@ QDateTime ImageUtils::getDateTimeFromFilename(QString fileName) {
 
 QDateTime ImageUtils::getImageDateExiv2(QString imagePath) {
     QDateTime dateTime;
-    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(imagePath.toStdString().c_str());
+    Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(std::move(imagePath.toStdString().c_str()));
     if(image.get() == 0) {
         return dateTime;
     }
@@ -95,7 +95,7 @@ QDateTime ImageUtils::getImageDateExiv2(QString imagePath) {
 }
 
 void ImageUtils::printImageMetadata(QString imagePath) {
-    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(imagePath.toStdString().c_str());
+    Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(std::move(imagePath.toStdString().c_str()));
     if(image.get() == 0) {
         return;
     }

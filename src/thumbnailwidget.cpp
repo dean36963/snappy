@@ -47,7 +47,7 @@ void ThumbnailWidget::setImage() {
         if(!ifThumbExists()) {
             Importer::createThumbnail(photoPath);
         }
-        QMatrix rotation = ImageUtils::getImageRotation(photoPath);
+        QTransform rotation = ImageUtils::getImageRotation(photoPath);
         QImage icon(getThumbPath(photoPath));
         icon = icon.transformed(rotation);
         QSize size(width,height);
@@ -55,7 +55,7 @@ void ThumbnailWidget::setImage() {
     } else if(type=="Event") {
         QList<QString> photos = ApplicationModel::getApplicationModel()->getLibraryModel()->getPhotosFromPath(photoPath);
         if(!photos.isEmpty()) {
-            QMatrix rotation = ImageUtils::getImageRotation(photos.first());
+            QTransform rotation = ImageUtils::getImageRotation(photos.first());
             QFile firstImageThumbnail(getThumbPath(photos.first()));
             if(!firstImageThumbnail.exists()) {
                 Importer::createThumbnail(photos.first());

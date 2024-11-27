@@ -8,7 +8,7 @@
 #include <QList>
 #include <QListIterator>
 #include <QTreeWidgetItem>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QDate>
 
 #include "src/eventfolder.h"

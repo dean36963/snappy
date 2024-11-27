@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QString>
 #include <QFileInfo>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QInputDialog>
 #include <QList>
 #include <QDateTime>

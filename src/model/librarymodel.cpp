@@ -54,8 +54,8 @@ bool LibraryModel::isYearItem(QString path) {
     if(dir.absolutePath()!=libraryPath) {
         return false;
     }
-    QRegExp yearPattern("\\d{4}");
-    if(yearPattern.exactMatch(info.baseName())) {
+    QRegularExpression yearPattern("\\d{4}");
+    if(yearPattern.match("^"+info.baseName()+"$").hasMatch()) {
         return true;
     } else {
         return false;
@@ -69,8 +69,8 @@ bool LibraryModel::isMonthItem(QString path) {
     if(dir.absolutePath()!=libraryPath) {
         return false;
     }
-    QRegExp monthPattern("\\d{2}");
-    if(monthPattern.exactMatch(info.baseName())) {
+    QRegularExpression monthPattern("\\d{2}");
+    if(monthPattern.match("^"+info.baseName()+"$").hasMatch()) {
         return true;
     } else {
         return false;

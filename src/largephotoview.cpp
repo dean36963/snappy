@@ -92,10 +92,10 @@ void LargePhotoView::rotatePhotoClockwise() {
 void LargePhotoView::rotatePhoto(int rotation) {
     LibraryModel *model = ApplicationModel::getApplicationModel()->getLibraryModel();
     QImage image = QImage(model->getSelectedPhotoPath());
-    QMatrix currentRotation = ImageUtils::getImageRotation(model->getSelectedPhotoPath());
+    QTransform currentRotation = ImageUtils::getImageRotation(model->getSelectedPhotoPath());
     QImage currentImage = image.transformed(currentRotation,Qt::SmoothTransformation);
 
-    QMatrix antiClockwise = QMatrix();
+    QTransform antiClockwise = QTransform();
     antiClockwise.rotate(rotation);
 
     QImage antiClockwiseImage = currentImage.transformed(antiClockwise,Qt::SmoothTransformation);

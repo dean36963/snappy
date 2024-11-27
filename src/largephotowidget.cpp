@@ -40,7 +40,7 @@ LargePhotoWidget::~LargePhotoWidget()
 }
 
 void LargePhotoWidget::setImage(QSize size) {
-    QMatrix rotation = ImageUtils::getImageRotation(photoPath);
+    QTransform rotation = ImageUtils::getImageRotation(photoPath);
     QImage rawImage(photoPath);
     rawImage = rawImage.transformed(rotation);
     QPixmap pixmap = QPixmap::fromImage(rawImage).scaled(size,Qt::KeepAspectRatio);

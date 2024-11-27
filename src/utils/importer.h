@@ -14,7 +14,7 @@
 #include <QApplication>
 #include <QCryptographicHash>
 #include <QMessageBox>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "src/model/applicationmodel.h"
 #include "src/utils/imageutils.h"

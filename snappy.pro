@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui widgets
 
 TARGET = snappy
 TEMPLATE = app
@@ -17,6 +15,7 @@ LIBS += -lexiv2
 #LIBS += -lexiv2 -liconv -lexpat -lpsapi
 #Mac
 #LIBS += Unknown
+INCLUDEPATH = /usr/lib/include
 
 SOURCES += src/utils/imageutils.cpp \
     src/utils/importer.cpp \
