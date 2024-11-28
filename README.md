@@ -1,6 +1,8 @@
 # Snappy
 A simple program to import, organise and browse photos.
 
+![Screen of snapshot showing the event view page](res/eventview.png?raw=true)
+
 ## Status
 Just written as a side project for fun. Currently just runs on Linux but should also work on Mac if the right libraries are installed. Windows is currently untested.
 
